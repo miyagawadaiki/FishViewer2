@@ -16,6 +16,7 @@ public class MyWindowController : MonoBehaviour {
 	private Rect rect;
 
 	private bool isSelected = false;
+	private bool isDestroyed = false;
 
 	void Awake() {
 		SetNormalMode ();
@@ -25,8 +26,9 @@ public class MyWindowController : MonoBehaviour {
 	void Start () {
 		recTra = this.GetComponent<RectTransform> ();
 		canvas = (Vector2)GameObject.Find ("Canvas").transform.localScale;
-		//rect = recTra.rect;
-		//rect.size *= canvas.x;
+
+		Button destroy = this.GetComponentInChildren<Button> ();
+		destroy.onClick.AddListener (() => this.GetComponentInParent<MyWindowManager> ().CallRemove ());
 	}
 	
 	// Update is called once per frame
@@ -72,6 +74,10 @@ public class MyWindowController : MonoBehaviour {
 		}
 	}
 
+	public void Destroy() {
+		isDestroyed = true;
+	}
+
 	public bool Contains(Vector2 vec) {
 		rect = recTra.rect;
 		rect.size *= canvas.x;
@@ -96,5 +102,9 @@ public class MyWindowController : MonoBehaviour {
 
 	public bool IsSelect {
 		get { return isSelected; }
+	}
+
+	public bool IsDestroyed {
+		get { return isDestroyed; }
 	}
 }

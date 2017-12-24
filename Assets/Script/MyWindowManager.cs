@@ -12,7 +12,7 @@ public class MyWindowManager : MonoBehaviour {
 	private RectTransform recTra;
 
 	private Vector2 start;
-	private bool isMoveMode, isExpMode, multiSelect;
+	private bool isMoveMode, isExpMode, multiSelect, removeFlag;
 	private float canvasScale;
 
 	void Awake() {
@@ -31,6 +31,10 @@ public class MyWindowManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (removeFlag) {
+			Remove ();
+		}
+
 		if (Input.GetKeyDown (KeyCode.LeftShift)) {
 			multiSelect = true;
 		} else if (Input.GetKeyUp (KeyCode.LeftShift)) {
@@ -52,9 +56,24 @@ public class MyWindowManager : MonoBehaviour {
 		Debug.Log ("Add window");
 		GameObject obj = Instantiate (windowObj, this.transform) as GameObject;
 		RectTransform wrt = obj.GetComponent<RectTransform>();
-		wrt.position = new Vector3 (wrt.rect.width / 2 + windowList.Count * 20f, recTra.rect.height - wrt.rect.height / 2 - windowList.Count * 20f, 0f) * canvasScale;
+		wrt.position = new Vector3 (wrt.rect.width / 2 + windowList.Count * 20f + 10f, recTra.rect.height - wrt.rect.height / 2 - windowList.Count * 20f - 10f, 0f) * canvasScale;
 		MyWindowController mwc = obj.GetComponent<MyWindowController> ();
 		windowList.Add (mwc);
+	}
+
+	public void CallRemove() {
+		removeFlag = true;
+	}
+
+	public void Remove() {
+		for (int i = 0;i<windowList.Count;i++) {
+			if (windowList[i].IsDestroyed) {
+				MyWindowController mwc = windowList [i];
+				windowList.RemoveAt (i);
+				Destroy (mwc.gameObject, 0.1f);
+			}
+		}
+		removeFlag = false;
 	}
 
 	void OnMouseDown() {
