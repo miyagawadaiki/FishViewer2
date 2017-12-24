@@ -56,6 +56,10 @@ public class MyWindowManager : MonoBehaviour {
 				Debug.Log ("Translate");
 				isMoveMode = true;
 				start = (Vector2)Input.mousePosition;
+			} else if (clicked.IsOnBottomRight (pos)) {
+				Debug.Log ("Expand");
+				isExpMode = true;
+				start = (Vector2)Input.mousePosition;
 			}
 		}
 	}
@@ -66,6 +70,14 @@ public class MyWindowManager : MonoBehaviour {
 			foreach (MyWindowController mwc in windowList) {
 				if (mwc.IsSelect) {
 					mwc.Translate (now - start);
+					start = now;
+				}
+			}
+		} else if(isExpMode) {
+			foreach (MyWindowController mwc in windowList) {
+				if (mwc.IsSelect) {
+					Vector2 ex = now - start;
+					mwc.Expand (new Vector2(ex.x, -ex.y));
 					start = now;
 				}
 			}

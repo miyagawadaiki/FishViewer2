@@ -25,8 +25,8 @@ public class MyWindowController : MonoBehaviour {
 	void Start () {
 		recTra = this.GetComponent<RectTransform> ();
 		canvas = (Vector2)GameObject.Find ("Canvas").transform.localScale;
-		rect = recTra.rect;
-		rect.size *= canvas.x;
+		//rect = recTra.rect;
+		//rect.size *= canvas.x;
 	}
 	
 	// Update is called once per frame
@@ -57,21 +57,41 @@ public class MyWindowController : MonoBehaviour {
 	}
 
 	public void Translate(Vector2 vec) {
-		recTra.position += (Vector3)vec / canvas.x;
+		recTra.position += (Vector3)vec;
+	}
+
+	public void Expand(Vector2 vec) {
+		Vector2 hoge = recTra.sizeDelta;
+		Vector2 tmp = recTra.sizeDelta + vec / canvas.x;
+		//Debug.Log ("tmp=" + (tmp + recTra.rect.size * canvas.x));
+		recTra.sizeDelta = tmp;
+		if (recTra.rect.width < 140f || recTra.rect.height < 70f) {
+			recTra.sizeDelta = hoge;
+		} else {
+			Translate (new Vector2 (vec.x, -vec.y) / 2);
+		}
 	}
 
 	public bool Contains(Vector2 vec) {
+		rect = recTra.rect;
+		rect.size *= canvas.x;
 		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2;
-		return tmp.x >= 0 && tmp.x <= rect.width && tmp.y >= 0 && tmp.y <= rect.height;
+		return (tmp.x >= 0 && tmp.x <= rect.width && tmp.y >= 0 && tmp.y <= rect.height - 13.1 * canvas.x) || IsInMenu(vec);
 	}
 
 	public bool IsInMenu(Vector2 vec) {
+		rect = recTra.rect;
+		rect.size *= canvas.x;
 		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2 - new Vector2(0f, rect.height - 13.1f * canvas.x);
 		return tmp.x >= 0 && tmp.x <= 114.7 * canvas.x && tmp.y >= 0 && tmp.y <= 13.1 * canvas.x;
 	}
 
-	void OnMouseDown() {
-		
+	public bool IsOnBottomRight(Vector2 vec) {
+		rect = recTra.rect;
+		rect.size *= canvas.x;
+		float rad = 20f;
+		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2 - new Vector2(rect.width, 0f);
+		return tmp.sqrMagnitude <= rad * rad;
 	}
 
 	public bool IsSelect {
