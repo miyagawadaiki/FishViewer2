@@ -12,6 +12,8 @@ public class MyWindowController : MonoBehaviour {
 	private Color selectedColor = Color.white;
 
 	private RectTransform recTra;
+	private Vector2 canvas;
+	private Rect rect;
 
 	private bool isSelected = false;
 
@@ -22,6 +24,9 @@ public class MyWindowController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		recTra = this.GetComponent<RectTransform> ();
+		canvas = (Vector2)GameObject.Find ("Canvas").transform.localScale;
+		rect = recTra.rect;
+		rect.size *= canvas.x;
 	}
 	
 	// Update is called once per frame
@@ -51,16 +56,22 @@ public class MyWindowController : MonoBehaviour {
 		recTra.SetAsLastSibling();
 	}
 
+	public void Translate(Vector2 vec) {
+		recTra.position += (Vector3)vec / canvas.x;
+	}
+
 	public bool Contains(Vector2 vec) {
-		Rect rect = recTra.rect;
-		Vector2 tmp = vec - (Vector2)this.transform.position;
-		Vector2 canvas = (Vector2)GameObject.Find ("Canvas").transform.localScale;
-		return tmp.x >= -rect.width * canvas.x / 2 && tmp.x <= rect.width * canvas.x / 2 && tmp.y >= -rect.height * canvas.y / 2 && tmp.y <= rect.height * canvas.y / 2;
+		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2;
+		return tmp.x >= 0 && tmp.x <= rect.width && tmp.y >= 0 && tmp.y <= rect.height;
+	}
+
+	public bool IsInMenu(Vector2 vec) {
+		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2 - new Vector2(0f, rect.height - 13.1f * canvas.x);
+		return tmp.x >= 0 && tmp.x <= 114.7 * canvas.x && tmp.y >= 0 && tmp.y <= 13.1 * canvas.x;
 	}
 
 	void OnMouseDown() {
-		// Debug
-		Debug.Log(this.ToString());
+		
 	}
 
 	public bool IsSelect {

@@ -7,6 +7,9 @@ public class MyWindowManager : MonoBehaviour {
 
 	private List<MyWindowController> windowList;
 
+	private Vector2 start;
+	private bool isMoveMode, isExpMode;
+
 	void Awake() {
 		windowList = new List<MyWindowController> ();
 	}
@@ -21,8 +24,13 @@ public class MyWindowManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetMouseButtonDown (0)) {
-			Debug.Log (Input.mousePosition);
+			Debug.Log ("Down");
 			OnMouseDown ();
+		} else if (Input.GetMouseButton (0)) {
+			Debug.Log ("Drag");
+			OnMouseDrag ();
+		} else if(Input.GetMouseButtonUp(0)) {
+			OnMouseUp ();
 		}
 	}
 
@@ -33,16 +41,39 @@ public class MyWindowManager : MonoBehaviour {
 		foreach (MyWindowController mwc in windowList) {
 			mwc.SetNormalMode ();
 			if (mwc.Contains(pos)) {
-				Debug.Log ("Contains");
 				if (mwc.GetSiblingIndex () > max) {
 					clicked = mwc;
 					max = mwc.GetSiblingIndex ();
 				}
 			}
 		}
+
 		if(clicked != null) {
 			clicked.SetAsLastSibling ();
 			clicked.SetSelectMode ();
+
+			if (clicked.IsInMenu (pos)) {
+				Debug.Log ("Translate");
+				isMoveMode = true;
+				start = (Vector2)Input.mousePosition;
+			}
 		}
+	}
+
+	void OnMouseDrag() {
+		Vector2 now = (Vector2)Input.mousePosition;
+		if (isMoveMode) {
+			foreach (MyWindowController mwc in windowList) {
+				if (mwc.IsSelect) {
+					mwc.Translate (now - start);
+					start = now;
+				}
+			}
+		}
+	}
+
+	void OnMouseUp() {
+		isMoveMode = false;
+		isExpMode = false;
 	}
 }
