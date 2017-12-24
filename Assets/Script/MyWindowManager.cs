@@ -81,7 +81,7 @@ public class MyWindowManager : MonoBehaviour {
 		MyWindowController clicked = null;
 		Vector2 pos = Input.mousePosition;
 		foreach (MyWindowController mwc in windowList) {
-			if(!multiSelect) mwc.SetNormalMode ();
+			if(recTra.rect.Contains(pos) && !multiSelect) mwc.SetNormalMode ();
 			if (mwc.Contains(pos)) {
 				if (mwc.GetSiblingIndex () > max) {
 					clicked = mwc;
