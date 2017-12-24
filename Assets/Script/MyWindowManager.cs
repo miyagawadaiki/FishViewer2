@@ -5,10 +5,15 @@ using UnityEngine.UI;
 
 public class MyWindowManager : MonoBehaviour {
 
+	[SerializeField]
+	private GameObject windowObj = null;
+
 	private List<MyWindowController> windowList;
+	private RectTransform recTra;
 
 	private Vector2 start;
 	private bool isMoveMode, isExpMode, multiSelect;
+	private float canvasScale;
 
 	void Awake() {
 		windowList = new List<MyWindowController> ();
@@ -16,6 +21,9 @@ public class MyWindowManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		recTra = GameObject.Find("Canvas").GetComponent<RectTransform>();
+		canvasScale = recTra.localScale.x;
+
 		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Window")) {
 			windowList.Add (obj.GetComponent<MyWindowController> ());
 		}
@@ -38,6 +46,15 @@ public class MyWindowManager : MonoBehaviour {
 		} else if(Input.GetMouseButtonUp(0)) {
 			OnMouseUp ();
 		}
+	}
+
+	public void AddWindow() {
+		Debug.Log ("Add window");
+		GameObject obj = Instantiate (windowObj, this.transform) as GameObject;
+		RectTransform wrt = obj.GetComponent<RectTransform>();
+		wrt.position = new Vector3 (wrt.rect.width / 2 + windowList.Count * 20f, recTra.rect.height - wrt.rect.height / 2 - windowList.Count * 20f, 0f) * canvasScale;
+		MyWindowController mwc = obj.GetComponent<MyWindowController> ();
+		windowList.Add (mwc);
 	}
 
 	void OnMouseDown() {
