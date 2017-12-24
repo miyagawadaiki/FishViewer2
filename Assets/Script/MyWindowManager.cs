@@ -8,7 +8,7 @@ public class MyWindowManager : MonoBehaviour {
 	private List<MyWindowController> windowList;
 
 	private Vector2 start;
-	private bool isMoveMode, isExpMode;
+	private bool isMoveMode, isExpMode, multiSelect;
 
 	void Awake() {
 		windowList = new List<MyWindowController> ();
@@ -23,6 +23,12 @@ public class MyWindowManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (Input.GetKeyDown (KeyCode.LeftShift)) {
+			multiSelect = true;
+		} else if (Input.GetKeyUp (KeyCode.LeftShift)) {
+			multiSelect = false;
+		}
+
 		if (Input.GetMouseButtonDown (0)) {
 			Debug.Log ("Down");
 			OnMouseDown ();
@@ -39,7 +45,7 @@ public class MyWindowManager : MonoBehaviour {
 		MyWindowController clicked = null;
 		Vector2 pos = Input.mousePosition;
 		foreach (MyWindowController mwc in windowList) {
-			mwc.SetNormalMode ();
+			if(!multiSelect) mwc.SetNormalMode ();
 			if (mwc.Contains(pos)) {
 				if (mwc.GetSiblingIndex () > max) {
 					clicked = mwc;
@@ -70,7 +76,6 @@ public class MyWindowManager : MonoBehaviour {
 			foreach (MyWindowController mwc in windowList) {
 				if (mwc.IsSelect) {
 					mwc.Translate (now - start);
-					start = now;
 				}
 			}
 		} else if(isExpMode) {
@@ -78,10 +83,10 @@ public class MyWindowManager : MonoBehaviour {
 				if (mwc.IsSelect) {
 					Vector2 ex = now - start;
 					mwc.Expand (new Vector2(ex.x, -ex.y));
-					start = now;
 				}
 			}
 		}
+		start = now;
 	}
 
 	void OnMouseUp() {
