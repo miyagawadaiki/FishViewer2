@@ -11,6 +11,8 @@ public class FileSelectWindow : MyWindowContent {
 
 	[SerializeField]
 	private FileKey key = FileKey.Read;
+	[SerializeField]
+	private RectTransform recTra = null;
 
 	private MyWindowController mwc;
 	private FileInputFieldManager fifm;
@@ -38,7 +40,7 @@ public class FileSelectWindow : MyWindowContent {
 	}
 
 	public override void OnRightClick(Vector2 pos) {
-
+		
 	}
 
 	public override void OnLeftDrag(Vector2 start, Vector2 end) {

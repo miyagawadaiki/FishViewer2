@@ -43,12 +43,20 @@ public class MyWindowManager : MonoBehaviour {
 
 		if (Input.GetMouseButtonDown (0)) {
 			Debug.Log ("Down");
-			OnMouseDown ();
+			OnMouseLeftDown ();
 		} else if (Input.GetMouseButton (0)) {
 			Debug.Log ("Drag");
-			OnMouseDrag ();
+			OnMouseLeftDrag ();
 		} else if(Input.GetMouseButtonUp(0)) {
-			OnMouseUp ();
+			OnMouseLeftUp ();
+		}
+
+		if (Input.GetMouseButtonDown (1)) {
+
+		} else if (Input.GetMouseButton (1)) {
+
+		} else if (Input.GetMouseButtonUp (1)) {
+
 		}
 	}
 
@@ -76,7 +84,7 @@ public class MyWindowManager : MonoBehaviour {
 		removeFlag = false;
 	}
 
-	void OnMouseDown() {
+	void OnMouseLeftDown() {
 		int max = -1;
 		MyWindowController clicked = null;
 		Vector2 pos = Input.mousePosition;
@@ -85,6 +93,7 @@ public class MyWindowManager : MonoBehaviour {
 				Debug.Log ("in window");
 				mwc.SetNormalMode ();
 			}
+
 			if (mwc.Contains(pos)) {
 				if (mwc.GetSiblingIndex () > max) {
 					clicked = mwc;
@@ -101,15 +110,17 @@ public class MyWindowManager : MonoBehaviour {
 				Debug.Log ("Translate");
 				isMoveMode = true;
 				start = (Vector2)Input.mousePosition;
-			} else if (clicked.IsOnBottomRight (pos)) {
+			} else if (clicked.IsOnCorner(pos)) {
 				Debug.Log ("Expand");
 				isExpMode = true;
 				start = (Vector2)Input.mousePosition;
 			}
+
+			//clicked.content.OnLeftClick (pos);
 		}
 	}
 
-	void OnMouseDrag() {
+	void OnMouseLeftDrag() {
 		Vector2 now = (Vector2)Input.mousePosition;
 		if (isMoveMode) {
 			foreach (MyWindowController mwc in windowList) {
@@ -120,15 +131,23 @@ public class MyWindowManager : MonoBehaviour {
 		} else if(isExpMode) {
 			foreach (MyWindowController mwc in windowList) {
 				if (mwc.isSelected) {
-					Vector2 ex = now - start;
-					mwc.Expand (new Vector2(ex.x, -ex.y));
+					mwc.Expand (now - start);
 				}
 			}
 		}
+
+		/*
+		foreach (MyWindowController mwc in windowList) {
+			if (mwc.isSelected) {
+				mwc.content.OnLeftDrag (start, now);
+			}
+		}
+		*/
+
 		start = now;
 	}
 
-	void OnMouseUp() {
+	void OnMouseLeftUp() {
 		isMoveMode = false;
 		isExpMode = false;
 	}
