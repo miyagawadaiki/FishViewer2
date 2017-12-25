@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MyWindowContent : MonoBehaviour {
 
@@ -14,23 +15,23 @@ public class MyWindowContent : MonoBehaviour {
 		
 	}
 
-	public void OnLeftClick(Vector2 pos) {
+	public virtual void OnLeftClick(Vector2 pos) {
 
 	}
 
-	public void OnRightClick(Vector2 pos) {
+	public virtual void OnRightClick(Vector2 pos) {
 
 	}
 
-	public void OnLeftDrag(Vector2 start, Vector2 end) {
+	public virtual void OnLeftDrag(Vector2 start, Vector2 end) {
 
 	}
 
-	public void OnRightDrag(Vector2 start, Vector2 end) {
+	public virtual void OnRightDrag(Vector2 start, Vector2 end) {
 
 	}
 
-	public void OnWheelChange(float value) {
+	public virtual void OnWheelChange(float value) {
 
 	}
 }
