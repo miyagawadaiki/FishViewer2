@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MyWindowController : MonoBehaviour {
+
+	[System.NonSerialized]
+	public MyWindowContent content;
+
 	[SerializeField]
 	private Image frameImg = null;
 	[SerializeField]
