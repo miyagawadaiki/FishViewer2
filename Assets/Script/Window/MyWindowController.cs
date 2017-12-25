@@ -19,8 +19,14 @@ public class MyWindowController : MonoBehaviour {
 	private Vector2 canvas;
 	private Rect rect;
 
-	private bool isSelected = false;
-	private bool isDestroyed = false;
+	[System.NonSerialized]
+	public bool isSelected = false;
+	[System.NonSerialized]
+	public bool isDestroyed = false;
+	[System.NonSerialized]
+	public bool canMove = true;
+	[System.NonSerialized]
+	public bool canExpand = true;
 
 	void Awake() {
 		SetNormalMode ();
@@ -63,10 +69,14 @@ public class MyWindowController : MonoBehaviour {
 	}
 
 	public void Translate(Vector2 vec) {
+		if (!canMove)
+			return;
 		recTra.position += (Vector3)vec;
 	}
 
 	public void Expand(Vector2 vec) {
+		if (!canExpand)
+			return;
 		Vector2 hoge = recTra.sizeDelta;
 		Vector2 tmp = recTra.sizeDelta + vec / canvas.x;
 		//Debug.Log ("tmp=" + (tmp + recTra.rect.size * canvas.x));
@@ -102,13 +112,5 @@ public class MyWindowController : MonoBehaviour {
 		float rad = 20f;
 		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2 - new Vector2(rect.width, 0f);
 		return tmp.sqrMagnitude <= rad * rad;
-	}
-
-	public bool IsSelect {
-		get { return isSelected; }
-	}
-
-	public bool IsDestroyed {
-		get { return isDestroyed; }
 	}
 }

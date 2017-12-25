@@ -67,7 +67,7 @@ public class MyWindowManager : MonoBehaviour {
 
 	public void Remove() {
 		for (int i = 0;i<windowList.Count;i++) {
-			if (windowList[i].IsDestroyed) {
+			if (windowList[i].isDestroyed) {
 				MyWindowController mwc = windowList [i];
 				windowList.RemoveAt (i);
 				Destroy (mwc.gameObject, 0.1f);
@@ -113,13 +113,13 @@ public class MyWindowManager : MonoBehaviour {
 		Vector2 now = (Vector2)Input.mousePosition;
 		if (isMoveMode) {
 			foreach (MyWindowController mwc in windowList) {
-				if (mwc.IsSelect) {
+				if (mwc.isSelected) {
 					mwc.Translate (now - start);
 				}
 			}
 		} else if(isExpMode) {
 			foreach (MyWindowController mwc in windowList) {
-				if (mwc.IsSelect) {
+				if (mwc.isSelected) {
 					Vector2 ex = now - start;
 					mwc.Expand (new Vector2(ex.x, -ex.y));
 				}

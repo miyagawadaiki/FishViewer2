@@ -46,10 +46,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Script\FileSelectWindow.cs" />
-     <Compile Include="Assets\Script\MyWindowContent.cs" />
-     <Compile Include="Assets\Script\MyWindowController.cs" />
-     <Compile Include="Assets\Script\MyWindowManager.cs" />
+     <Compile Include="Assets\Script\ProjectData.cs" />
+     <Compile Include="Assets\Script\Window\FileSelect\FileInputFieldManager.cs" />
+     <Compile Include="Assets\Script\Window\FileSelect\FileNode.cs" />
+     <Compile Include="Assets\Script\Window\FileSelect\FileSelectWindow.cs" />
+     <Compile Include="Assets\Script\Window\FileSelect\FileViewController.cs" />
+     <Compile Include="Assets\Script\Window\MyWindowContent.cs" />
+     <Compile Include="Assets\Script\Window\MyWindowController.cs" />
+     <Compile Include="Assets\Script\Window\MyWindowManager.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
