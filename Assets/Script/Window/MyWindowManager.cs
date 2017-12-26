@@ -110,7 +110,7 @@ public class MyWindowManager : MonoBehaviour {
 				Debug.Log ("Translate");
 				isMoveMode = true;
 				start = (Vector2)Input.mousePosition;
-			} else if (clicked.IsOnCorner(pos)) {
+			} else if (clicked.IsOnSide(pos)) {
 				Debug.Log ("Expand");
 				isExpMode = true;
 				start = (Vector2)Input.mousePosition;

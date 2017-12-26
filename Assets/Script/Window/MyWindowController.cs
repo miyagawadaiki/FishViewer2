@@ -86,7 +86,11 @@ public class MyWindowController : MonoBehaviour {
 		if (recTra.rect.width < 140f || recTra.rect.height < 70f) {
 			recTra.sizeDelta = hoge;
 		} else {
-			Translate (vec / 2);
+			if (expandDir.x == 0f)
+				vec.x = 0f;
+			if (expandDir.y == 0f)
+				vec.y = 0f;
+			Translate (vec / 2f);
 		}
 	}
 
@@ -108,15 +112,67 @@ public class MyWindowController : MonoBehaviour {
 		return tmp.x >= 0 && tmp.x <= 114.7 * canvas.x && tmp.y >= 0 && tmp.y <= 13.1 * canvas.x;
 	}
 
+	public bool IsOnSide(Vector2 vec) {
+		Vector2 v = ScreenToWindow (vec);
+		expandDir = new Vector2 ();
+		bool a = IsOnLeftSide (v);
+		bool b = IsOnBottomSide (v);
+		bool c = IsOnRightSide (v);
+		bool d = IsOnTopSide (v);
+		return a || b || c || d;
+	}
+
+	public bool IsOnLeftSide(Vector2 vec) {
+		Rect r = new Rect (recTra.rect.x, recTra.rect.y, 20f, recTra.rect.height);
+		if (r.Contains (vec))
+			expandDir.x = -1f;
+		return r.Contains (vec);
+	}
+
+	public bool IsOnBottomSide(Vector2 vec) {
+		Rect r = new Rect(recTra.rect.x, recTra.rect.y, recTra.rect.width, 20f);
+		if (r.Contains (vec))
+			expandDir.y = -1f;
+		return r.Contains (vec);
+	}
+
+	public bool IsOnRightSide(Vector2 vec) {
+		Rect r = new Rect(recTra.rect.width / 2 - 20f, recTra.rect.y, 20f, recTra.rect.height);
+		if (r.Contains (vec))
+			expandDir.x = 1f;
+		return r.Contains (vec);
+	}
+
+	public bool IsOnTopSide(Vector2 vec) {
+		Rect r = new Rect(recTra.rect.x, recTra.rect.height / 2 - 20f, recTra.rect.width, 20f);
+		if (r.Contains (vec))
+			expandDir.y = 1f;
+		return r.Contains (vec);
+	}
+
+	public Vector2 ScreenToWindow(Vector2 vec) {
+		//Debug.Log ("position=" + (Vector2)recTra.position);
+		//Debug.Log ("local=" + (vec - (Vector2)this.transform.position) / canvas.x);
+
+		return (vec - (Vector2)this.transform.position) / canvas.x;
+	}
+
+
+
+	/*
 	public bool IsOnCorner(Vector2 vec) {
-		return IsOnBottomRight (vec) || IsOnBottomLeft (vec) || IsOnTopRight (vec) || IsOnTopLeft (vec);
+		bool a = IsOnBottomRight (vec);
+		bool b = IsOnBottomLeft (vec);
+		bool c = IsOnTopRight (vec);
+		bool d = IsOnTopLeft (vec);
+		return a || b || c || d;
 	}
 
 	public bool IsOnBottomRight(Vector2 vec) {
 		rect = recTra.rect;
 		rect.size *= canvas.x;
 		float rad = 20f;
-		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2 + new Vector2(-rect.width, 0f);
+		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2 + new Vector2(-rect.size.x, 0f);
 		if (tmp.sqrMagnitude <= rad * rad)
 			expandDir = new Vector2 (1f, -1f);
 		return tmp.sqrMagnitude <= rad * rad;
@@ -136,7 +192,7 @@ public class MyWindowController : MonoBehaviour {
 		rect = recTra.rect;
 		rect.size *= canvas.x;
 		float rad = 20f;
-		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2 + new Vector2(-rect.width, -rect.height);
+		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2 + new Vector2(-rect.size.x, -rect.size.y);
 		if (tmp.sqrMagnitude <= rad * rad)
 			expandDir = new Vector2 (1f, 1f);
 		return tmp.sqrMagnitude <= rad * rad;
@@ -146,9 +202,10 @@ public class MyWindowController : MonoBehaviour {
 		rect = recTra.rect;
 		rect.size *= canvas.x;
 		float rad = 20f;
-		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2 + new Vector2(0f, -rect.height);
+		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2 + new Vector2(0f, -rect.size.y);
 		if (tmp.sqrMagnitude <= rad * rad)
 			expandDir = new Vector2 (-1f, 1f);
 		return tmp.sqrMagnitude <= rad * rad;
 	}
+	*/
 }
