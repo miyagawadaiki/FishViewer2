@@ -31,11 +31,14 @@ public class MyWindowController : MonoBehaviour {
 
 	void Awake() {
 		SetNormalMode ();
+		recTra = this.GetComponent<RectTransform> ();
 	}
 
 	// Use this for initialization
 	void Start () {
-		recTra = this.GetComponent<RectTransform> ();
+		content = this.GetComponentInChildren<MyWindowContent> ();
+		content.transform.SetAsFirstSibling ();
+
 		canvas = (Vector2)GameObject.Find ("Canvas").transform.localScale;
 
 		Button destroy = this.GetComponentInChildren<Button> ();
@@ -67,6 +70,15 @@ public class MyWindowController : MonoBehaviour {
 		
 	public void SetAsLastSibling() {
 		recTra.SetAsLastSibling();
+	}
+
+	public void SetSize(Vector2 size) {
+		Vector2 hoge = this.transform.parent.gameObject.GetComponent<RectTransform> ().rect.size;
+		recTra.sizeDelta = new Vector2(size.x - hoge.x, size.y - hoge.y);
+	}
+
+	public void SetPosition(Vector2 localPos) {
+
 	}
 
 	public void Translate(Vector2 vec) {

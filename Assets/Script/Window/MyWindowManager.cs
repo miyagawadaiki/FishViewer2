@@ -69,10 +69,37 @@ public class MyWindowManager : MonoBehaviour {
 		windowList.Add (mwc);
 	}
 
+
+	// WindowにContentを指定して追加する
+	public void AddWindow(ContentType type) {
+		Debug.Log ("Add window");
+
+		// MyWindowManagerに新規Windowを追加
+		GameObject obj = Instantiate (windowObj, this.transform) as GameObject;
+		RectTransform wrt = obj.GetComponent<RectTransform>();
+		wrt.position = new Vector3 (wrt.rect.width / 2 + windowList.Count * 20f + 10f, recTra.rect.height - wrt.rect.height / 2 - windowList.Count * 20f - 10f, 0f) * canvasScale;
+		MyWindowController mwc = obj.GetComponent<MyWindowController> ();
+		windowList.Add (mwc);
+
+		// 追加したWindowにContentを設定する
+		Instantiate(Resources.Load (System.Enum.GetName (typeof(ContentType), type) + "Content"), obj.transform);
+		//contentObj.transform.SetAsFirstSibling ();
+		//mwc.content = contentObj.GetComponent<MyWindowContent> ();
+	}
+
+
+	public void AddWindow(string name) {
+		AddWindow ((ContentType)System.Enum.Parse (typeof(ContentType), name));
+	}
+
+
+	// Remove()をCallする（次のUpdate()のときにRemove()を実行させる）
 	public void CallRemove() {
 		removeFlag = true;
 	}
 
+
+	// Windowを削除する
 	public void Remove() {
 		for (int i = 0;i<windowList.Count;i++) {
 			if (windowList[i].isDestroyed) {
@@ -84,6 +111,8 @@ public class MyWindowManager : MonoBehaviour {
 		removeFlag = false;
 	}
 
+
+	// 左クリック時の動作
 	void OnMouseLeftDown() {
 		int max = -1;
 		MyWindowController clicked = null;
@@ -120,6 +149,8 @@ public class MyWindowManager : MonoBehaviour {
 		}
 	}
 
+
+	// 左ドラッグ時の動作
 	void OnMouseLeftDrag() {
 		Vector2 now = (Vector2)Input.mousePosition;
 		if (isMoveMode) {
@@ -147,8 +178,15 @@ public class MyWindowManager : MonoBehaviour {
 		start = now;
 	}
 
+
+	// 左ドロップ時の動作
 	void OnMouseLeftUp() {
 		isMoveMode = false;
 		isExpMode = false;
+	}
+
+	public enum ContentType {
+		FileSelect,
+		Sample,
 	}
 }

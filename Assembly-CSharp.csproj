@@ -49,11 +49,12 @@
      <Compile Include="Assets\Script\ProjectData.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileInputFieldManager.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileNode.cs" />
-     <Compile Include="Assets\Script\Window\FileSelect\FileSelectWindow.cs" />
+     <Compile Include="Assets\Script\Window\FileSelect\FileSelectContent.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileViewController.cs" />
      <Compile Include="Assets\Script\Window\MyWindowContent.cs" />
      <Compile Include="Assets\Script\Window\MyWindowController.cs" />
      <Compile Include="Assets\Script\Window\MyWindowManager.cs" />
+     <Compile Include="Assets\Script\Window\Sample\SampleContent.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

@@ -7,21 +7,25 @@ using UnityEngine.UI;
 
 using ProjectData;
 
-public class FileSelectWindow : MyWindowContent {
+public class FileSelectContent : MyWindowContent {
 
 	[SerializeField]
 	private FileKey key = FileKey.Read;
-	[SerializeField]
-	private RectTransform recTra = null;
+	//[SerializeField]
+	//private RectTransform recTra = null;
 
 	private MyWindowController mwc;
 	private FileInputFieldManager fifm;
+
+	private Vector2 defaultSize = new Vector2 (321f, 294f);
 
 	// Use this for initialization
 	void Start () {
 		mwc = this.GetComponentInParent<MyWindowController> ();
 		mwc.canMove = false;
 		mwc.canExpand = false;
+		mwc.SetSize (defaultSize);
+
 		fifm = this.GetComponent<FileInputFieldManager> ();
 		fifm.key = key;
 	}
