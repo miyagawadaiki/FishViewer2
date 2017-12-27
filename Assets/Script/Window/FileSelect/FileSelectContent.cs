@@ -25,6 +25,7 @@ public class FileSelectContent : MyWindowContent {
 		mwc.canMove = false;
 		mwc.canExpand = false;
 		mwc.SetSize (defaultSize);
+		mwc.MoveTo (new Vector2 (0f, 0f));
 
 		fifm = this.GetComponent<FileInputFieldManager> ();
 		fifm.key = key;

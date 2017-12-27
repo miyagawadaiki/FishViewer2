@@ -111,7 +111,7 @@ MonoBehaviour:
   m_MinSize: {x: 917, y: 421}
   m_MaxSize: {x: 22012, y: 14042}
   vertical: 0
-  controlID: 1207
+  controlID: 19111
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_MinSize: {x: 202, y: 421}
   m_MaxSize: {x: 4002, y: 8021}
   vertical: 1
-  controlID: 966
+  controlID: 19112
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -236,7 +236,7 @@ MonoBehaviour:
   m_MinSize: {x: 234, y: 392}
   m_MaxSize: {x: 10004, y: 14042}
   vertical: 1
-  controlID: 1140
+  controlID: 19069
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -416,14 +416,14 @@ MonoBehaviour:
     width: 875
     height: 378
   m_SceneLighting: 1
-  lastFramingTime: 5213.430293209896
+  lastFramingTime: 92720.30944649645
   m_2DMode: 1
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 328.5992, y: 418.20078, z: 0}
+    m_Target: {x: 169.31256, y: 202.03125, z: 0}
     speed: 2
-    m_Value: {x: 328.5992, y: 418.20078, z: 0}
+    m_Value: {x: 169.31256, y: 202.03125, z: 0}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -450,9 +450,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 223.04329
+    m_Target: 569.85223
     speed: 2
-    m_Value: 223.04329
+    m_Value: 569.85223
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -566,9 +566,9 @@ MonoBehaviour:
     height: 908
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: e8250000
-    m_LastClickedID: 9704
-    m_ExpandedIDs: dcfbffff000000009c250000
+    m_SelectedIDs: 
+    m_LastClickedID: 0
+    m_ExpandedIDs: 42e3fbff4ae3fbff5ae3fbffec22fcfff422fcff0423fcff56b9fcff5eb9fcff6eb9fcffa42effffdcfbffff00000000a225000000260000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -628,19 +628,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Script/MenuBar
+    - Assets/Sprite
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Script/MenuBar
+  - Assets/Sprite
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Daiki\Desktop\Unity\FishViewer_2
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 4e270000
-    m_LastClickedID: 10062
-    m_ExpandedIDs: 00000000aa2400002a2500007425000000ca9a3bffffff7f
+    m_SelectedIDs: 2c250000
+    m_LastClickedID: 9516
+    m_ExpandedIDs: 00000000ac2400002e2500007825000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -668,7 +668,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000aa2400002a2500007425000000ca9a3bffffff7f
+    m_ExpandedIDs: 00000000ac2400002e2500007825000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -696,7 +696,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 0
-    m_ExpandedInstanceIDs: 0e250000422e000000000000de3ffdffe82b0000c0f1fbffec2b0000489ef9ff1a250000ca25000094250000be260000e817ffff6e73feff9e7bffffec2400002a25000044250000
+    m_ExpandedInstanceIDs: 0e250000422e000000000000de3ffdffe82b0000c0f1fbffec2b0000489ef9ff1a250000ca25000094250000be260000e817ffff6e73feff9e7bffffec2400002a2500004425000058270000dce4fcffc4c3fbff
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

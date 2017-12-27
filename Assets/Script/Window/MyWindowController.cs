@@ -5,19 +5,25 @@ using UnityEngine.UI;
 
 public class MyWindowController : MonoBehaviour {
 
-	[System.NonSerialized]
-	public MyWindowContent content;
-
+	public MyWindowContent content = null;
+	public GameObject menuArea = null;
+	[SerializeField]
+	private Image menuImg = null;
 	[SerializeField]
 	private Image frameImg = null;
 	[SerializeField]
 	private Color normalColor = Color.white;
 	[SerializeField]
 	private Color selectedColor = Color.white;
+	[SerializeField]
+	private RectTransform menuRT = null;
+	[SerializeField]
+	private RectTransform frameRT = null;
 
-	private RectTransform recTra;
+	private MyWindowManager mwm;
+	private RectTransform recTra, parRecTra;
 	private Vector2 canvas;
-	private Rect rect;
+	private Rect rect, parRect;
 	private Vector2 expandDir;
 
 	[System.NonSerialized]
@@ -31,7 +37,11 @@ public class MyWindowController : MonoBehaviour {
 
 	void Awake() {
 		SetNormalMode ();
+		mwm = this.GetComponentInParent<MyWindowManager> ();
 		recTra = this.GetComponent<RectTransform> ();
+		parRecTra = this.transform.parent.gameObject.GetComponent<RectTransform> ();
+		rect = recTra.rect;
+		parRect = parRecTra.rect;
 	}
 
 	// Use this for initialization
@@ -41,8 +51,8 @@ public class MyWindowController : MonoBehaviour {
 
 		canvas = (Vector2)GameObject.Find ("Canvas").transform.localScale;
 
-		Button destroy = this.GetComponentInChildren<Button> ();
-		destroy.onClick.AddListener (() => this.GetComponentInParent<MyWindowManager> ().CallRemove ());
+		//Button destroy = this.GetComponentInChildren<Button> ();
+		//destroy.onClick.AddListener (() => this.GetComponentInParent<MyWindowManager> ().CallRemove ());
 	}
 	
 	// Update is called once per frame
@@ -54,6 +64,7 @@ public class MyWindowController : MonoBehaviour {
 		if (isSelected)
 			return;
 		isSelected = true;
+		menuImg.color = selectedColor;
 		frameImg.color = selectedColor;
 	}
 
@@ -61,6 +72,7 @@ public class MyWindowController : MonoBehaviour {
 		if (!isSelected)
 			return;
 		isSelected = false;
+		menuImg.color = normalColor;
 		frameImg.color = normalColor;
 	}
 
@@ -77,8 +89,9 @@ public class MyWindowController : MonoBehaviour {
 		recTra.sizeDelta = new Vector2(size.x - hoge.x, size.y - hoge.y);
 	}
 
-	public void SetPosition(Vector2 localPos) {
-
+	public void MoveTo(Vector2 localPos) {
+		Vector2 v = localPos - (Vector2)recTra.localPosition;
+		recTra.localPosition += (Vector3)v;
 	}
 
 	public void Translate(Vector2 vec) {
@@ -91,11 +104,35 @@ public class MyWindowController : MonoBehaviour {
 		if (!canExpand)
 			return;
 		Vector2 foo = new Vector2 (vec.x * expandDir.x, vec.y * expandDir.y);
+		Vector2 tmp = parRect.size + recTra.sizeDelta - foo / canvas.x;
+
+		if (tmp.x < menuRT.rect.width + 20f || tmp.y < menuRT.rect.height + 20f) {
+			if (tmp.x < menuRT.rect.width + 20f) {
+				recTra.sizeDelta = new Vector2 (menuRT.rect.width + 25f - parRect.width, recTra.sizeDelta.y + foo.y / canvas.x);
+			}
+			if (tmp.y < menuRT.rect.height + 20f) {
+				recTra.sizeDelta = new Vector2 (recTra.sizeDelta.x + foo.x / canvas.x, menuRT.rect.height + 25f - parRect.height);
+			}
+		} else {
+			recTra.sizeDelta += foo / canvas.x;
+			if (expandDir.x == 0f)
+				vec.x = 0f;
+			if (expandDir.y == 0f)
+				vec.y = 0f;
+			Translate (vec / 2f);
+		}
+	}
+
+	/*
+	public void Expand(Vector2 vec) {
+		if (!canExpand)
+			return;
+		Vector2 foo = new Vector2 (vec.x * expandDir.x, vec.y * expandDir.y);
 		Vector2 hoge = recTra.sizeDelta;
 		Vector2 tmp = recTra.sizeDelta + foo / canvas.x;
 		//Debug.Log ("tmp=" + (tmp + recTra.rect.size * canvas.x));
 		recTra.sizeDelta = tmp;
-		if (recTra.rect.width < 140f || recTra.rect.height < 70f) {
+		if (recTra.rect.width < menuRT.rect.width + 10f || recTra.rect.height < menuRT.rect.height + 10f) {
 			recTra.sizeDelta = hoge;
 		} else {
 			if (expandDir.x == 0f)
@@ -105,23 +142,47 @@ public class MyWindowController : MonoBehaviour {
 			Translate (vec / 2f);
 		}
 	}
+	*/
 
 	public void Destroy() {
 		isDestroyed = true;
+		mwm.CallRemove ();
 	}
 
+	public bool Contains(Vector2 vec) {
+		Vector2 v = ScreenToWindow (vec);
+		Vector2 menuV = v - (Vector2)menuRT.localPosition, frameV = v - (Vector2)frameRT.localPosition;
+		return menuRT.rect.Contains (menuV) || frameRT.rect.Contains (frameV);
+	}
+
+	/*
 	public bool Contains(Vector2 vec) {
 		rect = recTra.rect;
 		rect.size *= canvas.x;
 		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2;
 		return (tmp.x >= 0 && tmp.x <= rect.width && tmp.y >= 0 && tmp.y <= rect.height - 13.1 * canvas.x) || IsInMenu(vec);
 	}
+	*/
 
+	public bool IsInMenu(Vector2 vec) {
+		Vector2 v = ScreenToWindow (vec);
+		Vector2 menuV = v - (Vector2)menuRT.localPosition;
+		return menuRT.rect.Contains (menuV);
+	}
+
+	/*
 	public bool IsInMenu(Vector2 vec) {
 		rect = recTra.rect;
 		rect.size *= canvas.x;
 		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2 - new Vector2(0f, rect.height - 13.1f * canvas.x);
 		return tmp.x >= 0 && tmp.x <= 114.7 * canvas.x && tmp.y >= 0 && tmp.y <= 13.1 * canvas.x;
+	}
+	*/
+
+	public bool IsInWindowManager() {
+		Vector2 v = (Vector2)recTra.localPosition;
+		Vector2 size = recTra.rect.size;
+		return parRect.Contains (v - size / 2f) && parRect.Contains (v + size / 2f) && parRect.Contains (v + new Vector2 (size.x, size.y * -1f) / 2f) && parRect.Contains (v + new Vector2 (size.x * -1f, size.y) / 2f);
 	}
 
 	public bool IsOnSide(Vector2 vec) {

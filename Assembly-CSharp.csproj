@@ -52,6 +52,7 @@
      <Compile Include="Assets\Script\Window\FileSelect\FileNode.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileSelectContent.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileViewController.cs" />
+     <Compile Include="Assets\Script\Window\MenuButton\DestroyButtonController.cs" />
      <Compile Include="Assets\Script\Window\MyWindowContent.cs" />
      <Compile Include="Assets\Script\Window\MyWindowController.cs" />
      <Compile Include="Assets\Script\Window\MyWindowManager.cs" />
