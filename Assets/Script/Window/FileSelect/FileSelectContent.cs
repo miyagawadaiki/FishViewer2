@@ -14,7 +14,7 @@ public class FileSelectContent : MyWindowContent {
 	//[SerializeField]
 	//private RectTransform recTra = null;
 
-	private MyWindowController mwc;
+	//private MyWindowController mwc;
 	private FileInputFieldManager fifm;
 
 	private Vector2 defaultSize = new Vector2 (321f, 294f);
@@ -41,7 +41,7 @@ public class FileSelectContent : MyWindowContent {
 	}
 
 	public override void OnLeftClick(Vector2 pos) {
-
+		mwc.AppearMenu ();
 	}
 
 	public override void OnRightClick(Vector2 pos) {

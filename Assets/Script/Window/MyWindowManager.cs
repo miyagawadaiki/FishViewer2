@@ -12,6 +12,7 @@ public class MyWindowManager : MonoBehaviour {
 	private RectTransform recTra;
 
 	private Vector2 start;
+	private Vector2 expandDir = new Vector2();
 	private bool isMoveMode, isExpMode, multiSelect, removeFlag;
 	private float canvasScale;
 
@@ -52,7 +53,7 @@ public class MyWindowManager : MonoBehaviour {
 		}
 
 		if (Input.GetMouseButtonDown (1)) {
-
+			OnMouseRightDown ();
 		} else if (Input.GetMouseButton (1)) {
 
 		} else if (Input.GetMouseButtonUp (1)) {
@@ -77,7 +78,7 @@ public class MyWindowManager : MonoBehaviour {
 		// MyWindowManagerに新規Windowを追加
 		GameObject obj = Instantiate (windowObj, this.transform) as GameObject;
 		RectTransform wrt = obj.GetComponent<RectTransform>();
-		wrt.position = new Vector3 (wrt.rect.width / 2 + windowList.Count * 20f + 10f, recTra.rect.height - wrt.rect.height / 2 - windowList.Count * 20f - 10f, 0f) * canvasScale;
+		//wrt.position = new Vector3 (wrt.rect.width / 2 + windowList.Count * 20f + 10f, recTra.rect.height - wrt.rect.height / 2 - windowList.Count * 20f - 10f, 0f) * canvasScale;
 		MyWindowController mwc = obj.GetComponent<MyWindowController> ();
 		windowList.Add (mwc);
 
@@ -139,16 +140,52 @@ public class MyWindowManager : MonoBehaviour {
 				Debug.Log ("Translate");
 				isMoveMode = true;
 				start = (Vector2)Input.mousePosition;
-			} else if (clicked.IsOnSide(pos)) {
+			} else {
 				Debug.Log ("Expand");
 				isExpMode = true;
 				start = (Vector2)Input.mousePosition;
+
+				if (clicked.IsOnLeftSide (pos))
+					expandDir.x = -1f;
+				if (clicked.IsOnRightSide (pos))
+					expandDir.x = 1f;
+				if (clicked.IsOnBottomSide (pos))
+					expandDir.y = -1f;
+				if (clicked.IsOnTopSide (pos))
+					expandDir.y = 1f;
 			}
 
-			//clicked.content.OnLeftClick (pos);
+			clicked.content.OnLeftClick (pos);
 		}
 	}
 
+
+	// 右クリック時の操作
+	void OnMouseRightDown() {
+		int max = -1;
+		MyWindowController clicked = null;
+		Vector2 pos = Input.mousePosition;
+		foreach (MyWindowController mwc in windowList) {
+			if (!multiSelect && this.GetComponent<RectTransform>().rect.Contains (pos / canvasScale - this.GetComponent<RectTransform>().rect.size / 2)) {
+				Debug.Log ("in window");
+				mwc.SetNormalMode ();
+			}
+
+			if (mwc.Contains(pos)) {
+				if (mwc.GetSiblingIndex () > max) {
+					clicked = mwc;
+					max = mwc.GetSiblingIndex ();
+				}
+			}
+		}
+
+		if(clicked != null) {
+			clicked.SetAsLastSibling ();
+			clicked.SetSelectMode ();
+
+			clicked.content.OnRightClick (pos);
+		}
+	}
 
 	// 左ドラッグ時の動作
 	void OnMouseLeftDrag() {
@@ -164,9 +201,9 @@ public class MyWindowManager : MonoBehaviour {
 		} else if(isExpMode) {
 			foreach (MyWindowController mwc in windowList) {
 				if (mwc.isSelected) {
-					mwc.Expand (now - start);
+					mwc.Expand (now - start, expandDir);
 					if (!mwc.IsInWindowManager ())
-						mwc.Expand (start - now);
+						mwc.Expand (start - now, expandDir);
 				}
 			}
 		}
@@ -187,6 +224,13 @@ public class MyWindowManager : MonoBehaviour {
 	void OnMouseLeftUp() {
 		isMoveMode = false;
 		isExpMode = false;
+		expandDir = new Vector2 ();
+	}
+
+
+
+	public int Count() {
+		return windowList.Count;
 	}
 
 	public enum ContentType {

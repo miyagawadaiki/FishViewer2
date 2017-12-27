@@ -20,13 +20,14 @@ public class MyWindowController : MonoBehaviour {
 	[SerializeField]
 	private RectTransform frameRT = null;
 
-	private MyWindowManager mwm;
 	private RectTransform recTra, parRecTra;
 	private Vector2 canvas;
 	private Rect rect, parRect;
-	private Vector2 expandDir;
+	//private Vector2 expandDir;
 
 	[System.NonSerialized]
+	public MyWindowManager mwm;
+	//[System.NonSerialized]
 	public bool isSelected = false;
 	[System.NonSerialized]
 	public bool isDestroyed = false;
@@ -36,12 +37,13 @@ public class MyWindowController : MonoBehaviour {
 	public bool canExpand = true;
 
 	void Awake() {
-		SetNormalMode ();
 		mwm = this.GetComponentInParent<MyWindowManager> ();
 		recTra = this.GetComponent<RectTransform> ();
 		parRecTra = this.transform.parent.gameObject.GetComponent<RectTransform> ();
 		rect = recTra.rect;
 		parRect = parRecTra.rect;
+		menuImg.color = new Color (selectedColor.r, selectedColor.g, selectedColor.b, 0.4f);
+		SetNormalMode ();
 	}
 
 	// Use this for initialization
@@ -64,7 +66,7 @@ public class MyWindowController : MonoBehaviour {
 		if (isSelected)
 			return;
 		isSelected = true;
-		menuImg.color = selectedColor;
+		//menuImg.color = new Color (selectedColor.r, selectedColor.g, selectedColor.b, 0.5f);
 		frameImg.color = selectedColor;
 	}
 
@@ -72,8 +74,17 @@ public class MyWindowController : MonoBehaviour {
 		if (!isSelected)
 			return;
 		isSelected = false;
-		menuImg.color = normalColor;
+		//menuImg.color = new Color (normalColor.r, normalColor.g, normalColor.b, 0.5f);
 		frameImg.color = normalColor;
+		HideMenu ();
+	}
+
+	public void AppearMenu() {
+		menuImg.gameObject.SetActive (true);
+	}
+
+	public void HideMenu() {
+		menuImg.gameObject.SetActive (false);
 	}
 
 	public int GetSiblingIndex() {
@@ -100,31 +111,7 @@ public class MyWindowController : MonoBehaviour {
 		recTra.position += (Vector3)vec;
 	}
 
-	public void Expand(Vector2 vec) {
-		if (!canExpand)
-			return;
-		Vector2 foo = new Vector2 (vec.x * expandDir.x, vec.y * expandDir.y);
-		Vector2 tmp = parRect.size + recTra.sizeDelta - foo / canvas.x;
-
-		if (tmp.x < menuRT.rect.width + 20f || tmp.y < menuRT.rect.height + 20f) {
-			if (tmp.x < menuRT.rect.width + 20f) {
-				recTra.sizeDelta = new Vector2 (menuRT.rect.width + 25f - parRect.width, recTra.sizeDelta.y + foo.y / canvas.x);
-			}
-			if (tmp.y < menuRT.rect.height + 20f) {
-				recTra.sizeDelta = new Vector2 (recTra.sizeDelta.x + foo.x / canvas.x, menuRT.rect.height + 25f - parRect.height);
-			}
-		} else {
-			recTra.sizeDelta += foo / canvas.x;
-			if (expandDir.x == 0f)
-				vec.x = 0f;
-			if (expandDir.y == 0f)
-				vec.y = 0f;
-			Translate (vec / 2f);
-		}
-	}
-
-	/*
-	public void Expand(Vector2 vec) {
+	public void Expand(Vector2 vec, Vector2 expandDir) {
 		if (!canExpand)
 			return;
 		Vector2 foo = new Vector2 (vec.x * expandDir.x, vec.y * expandDir.y);
@@ -132,7 +119,7 @@ public class MyWindowController : MonoBehaviour {
 		Vector2 tmp = recTra.sizeDelta + foo / canvas.x;
 		//Debug.Log ("tmp=" + (tmp + recTra.rect.size * canvas.x));
 		recTra.sizeDelta = tmp;
-		if (recTra.rect.width < menuRT.rect.width + 10f || recTra.rect.height < menuRT.rect.height + 10f) {
+		if (recTra.rect.width < menuRT.rect.width + 20f || recTra.rect.height < menuRT.rect.width + 20f) {
 			recTra.sizeDelta = hoge;
 		} else {
 			if (expandDir.x == 0f)
@@ -142,7 +129,6 @@ public class MyWindowController : MonoBehaviour {
 			Translate (vec / 2f);
 		}
 	}
-	*/
 
 	public void Destroy() {
 		isDestroyed = true;
@@ -186,41 +172,40 @@ public class MyWindowController : MonoBehaviour {
 	}
 
 	public bool IsOnSide(Vector2 vec) {
-		Vector2 v = ScreenToWindow (vec);
-		expandDir = new Vector2 ();
-		bool a = IsOnLeftSide (v);
-		bool b = IsOnBottomSide (v);
-		bool c = IsOnRightSide (v);
-		bool d = IsOnTopSide (v);
+		//expandDir = new Vector2 ();
+		bool a = IsOnLeftSide (vec);
+		bool b = IsOnBottomSide (vec);
+		bool c = IsOnRightSide (vec);
+		bool d = IsOnTopSide (vec);
 		return a || b || c || d;
 	}
 
 	public bool IsOnLeftSide(Vector2 vec) {
+		Vector2 v = ScreenToWindow (vec);
 		Rect r = new Rect (recTra.rect.x, recTra.rect.y, 20f, recTra.rect.height);
-		if (r.Contains (vec))
-			expandDir.x = -1f;
-		return r.Contains (vec);
+		//if (r.Contains (v)) expandDir.x = -1f;
+		return r.Contains (v);
 	}
 
 	public bool IsOnBottomSide(Vector2 vec) {
+		Vector2 v = ScreenToWindow (vec);
 		Rect r = new Rect(recTra.rect.x, recTra.rect.y, recTra.rect.width, 20f);
-		if (r.Contains (vec))
-			expandDir.y = -1f;
-		return r.Contains (vec);
+		//if (r.Contains (v)) expandDir.y = -1f;
+		return r.Contains (v);
 	}
 
 	public bool IsOnRightSide(Vector2 vec) {
+		Vector2 v = ScreenToWindow (vec);
 		Rect r = new Rect(recTra.rect.width / 2 - 20f, recTra.rect.y, 20f, recTra.rect.height);
-		if (r.Contains (vec))
-			expandDir.x = 1f;
-		return r.Contains (vec);
+		//if (r.Contains (v)) expandDir.x = 1f;
+		return r.Contains (v);
 	}
 
 	public bool IsOnTopSide(Vector2 vec) {
+		Vector2 v = ScreenToWindow (vec);
 		Rect r = new Rect(recTra.rect.x, recTra.rect.height / 2 - 20f, recTra.rect.width, 20f);
-		if (r.Contains (vec))
-			expandDir.y = 1f;
-		return r.Contains (vec);
+		//if (r.Contains (v)) expandDir.y = 1f;
+		return r.Contains (v);
 	}
 
 	public Vector2 ScreenToWindow(Vector2 vec) {
