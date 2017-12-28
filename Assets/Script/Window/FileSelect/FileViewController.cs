@@ -32,12 +32,17 @@ public class FileViewController : MonoBehaviour {
 		}
 	}
 
+
+	// ScrollViewの表示を更新する
 	void UpdateView() {
+		// contentの中身を空にする
 		foreach (Transform transform in content.transform)
 			Destroy (transform.gameObject);
 
+		// セパレータを設定
 		char[] separator = { '/', '\\' };
 
+		// フォルダを読み込んでcontentに追加
 		string[] folders = Directory.GetDirectories (fifMan.GetPath ());
 		foreach (string name in folders) {
 			string[] tmp = name.Split (separator);
@@ -50,6 +55,7 @@ public class FileViewController : MonoBehaviour {
 			fn.nameIf = nameIf;
 		}
 
+		// ファイルを読み込んでcontentに追加
 		string[] files;
 		if(fifMan.key == ProjectData.FileKey.Read)
 			files = Directory.GetFiles (fifMan.GetPath (), "*-fv.csv");

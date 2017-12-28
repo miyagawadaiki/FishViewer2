@@ -14,10 +14,12 @@ public class FileSelectContent : MyWindowContent {
 	//[SerializeField]
 	//private RectTransform recTra = null;
 
+	public Button doneButton;
+
 	//private MyWindowController mwc;
 	private FileInputFieldManager fifm;
 
-	private Vector2 defaultSize = new Vector2 (321f, 294f);
+	//private Vector2 defaultSize = new Vector2 (321f, 294f);
 
 	// Use this for initialization
 	void Start () {
@@ -27,8 +29,11 @@ public class FileSelectContent : MyWindowContent {
 		mwc.SetSize (defaultSize);
 		mwc.MoveTo (new Vector2 (0f, 0f));
 
+		key = (FileKey)System.Enum.Parse (typeof(FileKey), typeName);
 		fifm = this.GetComponent<FileInputFieldManager> ();
 		fifm.key = key;
+
+		doneButton.onClick.AddListener (() => mwc.Destroy ());
 	}
 	
 	// Update is called once per frame

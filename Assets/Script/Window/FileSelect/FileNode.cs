@@ -31,10 +31,13 @@ public class FileNode : MonoBehaviour {
 		
 	}
 
+
+	// FileNodeにフォルダかどうかと名前を与える
 	public void Set(bool b, string name) {
 		isFolder = b;
 		text.text = name;
 
+		// アイコンを切り替える
 		if (isFolder) {
 			file.SetActive (false);
 			folder.SetActive (true);
@@ -44,10 +47,14 @@ public class FileNode : MonoBehaviour {
 		}
 	}
 
+
+	// 名前を返す
 	public string GetName() {
 		return text.text;
 	}
 
+
+	// 押されたときの処理
 	public void Excute() {
 		if (isFolder) {
 			fifMan.GoNext (GetName ());

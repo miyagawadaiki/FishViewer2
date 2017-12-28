@@ -72,7 +72,7 @@ public class MyWindowManager : MonoBehaviour {
 
 
 	// WindowにContentを指定して追加する
-	public void AddWindow(ContentType type) {
+	public void AddWindow(ContentType content, string type) {
 		Debug.Log ("Add window");
 
 		// MyWindowManagerに新規Windowを追加
@@ -83,14 +83,20 @@ public class MyWindowManager : MonoBehaviour {
 		windowList.Add (mwc);
 
 		// 追加したWindowにContentを設定する
-		Instantiate(Resources.Load (System.Enum.GetName (typeof(ContentType), type) + "Content"), obj.transform);
-		//contentObj.transform.SetAsFirstSibling ();
+		GameObject contentObj = Instantiate(Resources.Load (System.Enum.GetName (typeof(ContentType), content) + "Content"), obj.transform) as GameObject;
+		contentObj.GetComponent<MyWindowContent>().typeName = type;
 		//mwc.content = contentObj.GetComponent<MyWindowContent> ();
 	}
 
 
+
 	public void AddWindow(string name) {
-		AddWindow ((ContentType)System.Enum.Parse (typeof(ContentType), name));
+		char[] sep = { '/' };
+		string[] tmp = name.Split (sep);
+		if (tmp.Length == 1)
+			AddWindow ((ContentType)System.Enum.Parse (typeof(ContentType), name), "");
+		else
+			AddWindow ((ContentType)System.Enum.Parse (typeof(ContentType), tmp[0]), tmp[1]);
 	}
 
 
@@ -235,6 +241,7 @@ public class MyWindowManager : MonoBehaviour {
 
 	public enum ContentType {
 		FileSelect,
+		FileRead,
 		Sample,
 	}
 }

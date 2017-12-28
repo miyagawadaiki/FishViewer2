@@ -37,5 +37,9 @@ namespace ProjectData {
 			}
 			return names [1, (int)key];
 		}
+
+		public static string GetNameWithPath(FileKey key) {
+			return GetPath (key) + "/" + GetName (key);
+		}
 	}
 }

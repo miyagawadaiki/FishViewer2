@@ -48,6 +48,8 @@
   <ItemGroup>
      <Compile Include="Assets\Script\MenuBar\MenuBarController.cs" />
      <Compile Include="Assets\Script\ProjectData.cs" />
+     <Compile Include="Assets\Script\Simulation\DataBase.cs" />
+     <Compile Include="Assets\Script\Window\FileRead\FileReadContent.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileInputFieldManager.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileNode.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileSelectContent.cs" />

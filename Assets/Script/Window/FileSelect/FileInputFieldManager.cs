@@ -35,6 +35,8 @@ public class FileInputFieldManager : MonoBehaviour {
 		
 	}
 
+
+	// リストにパスを分けて登録する
 	public void SetPath(string path) {
 		address.Clear ();
 		string[] tmp = path.Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
@@ -42,6 +44,8 @@ public class FileInputFieldManager : MonoBehaviour {
 			address.Add (s);
 	}
 
+
+	// 編集終了時の処理　書き込まれたパスを登録する
 	public void EndEdit() {
 		string buf = "";
 		for (int i = 0; i < viewIndex; i++)
@@ -54,6 +58,8 @@ public class FileInputFieldManager : MonoBehaviour {
 		SetPath (buf);
 	}
 
+
+	// パスを文字列で取得
 	public string GetPath() {
 		string path = address [0];
 		for (int i = 1; i < address.Count; i++)
@@ -62,6 +68,8 @@ public class FileInputFieldManager : MonoBehaviour {
 		return path;
 	}
 
+
+	// Text渡し用に字数を制限してパスを文字列化する
 	public string GetPath(int limit) {
 		if (address [address.Count - 1].Length > limit) {
 			viewIndex = address.Count - 1;
@@ -94,21 +102,29 @@ public class FileInputFieldManager : MonoBehaviour {
 		}
 	}
 
+
+	// ファイル名を取得する
 	public string GetName() {
 		return nameIf.text;
 	}
 
+
+	// フォルダ構造を1つ戻る
 	public void GoBack() {
 		nextName = address [address.Count - 1];
 		address.RemoveAt (address.Count - 1);
 		pathIf.text = GetPath (pathIf.characterLimit);
 	}
 
+
+	// 指定したフォルダに進む
 	public void GoNext(string name) {
 		address.Add (name);
 		pathIf.text = GetPath (pathIf.characterLimit);
 	}
 
+
+	// 以前にいたフォルダに戻る
 	public void GoNext() {
 		if (nextName == null)
 			return;

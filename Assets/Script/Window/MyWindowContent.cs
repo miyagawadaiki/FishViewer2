@@ -5,6 +5,8 @@ using UnityEngine;
 public abstract class MyWindowContent : MonoBehaviour {
 
 	public MyWindowController mwc;
+	public string typeName;
+	public Vector2 defaultSize;
 
 	// Use this for initialization
 	void Start () {
