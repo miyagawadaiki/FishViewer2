@@ -16,6 +16,8 @@ public class FileReadContent : MyWindowContent {
 	private Transform content = null;
 	[SerializeField]
 	private GameObject nodeObj = null;
+	[SerializeField]
+	private Button doneButton = null;
 
 	private bool addListerFlag = false;
 	private StreamReader sr;
@@ -32,6 +34,8 @@ public class FileReadContent : MyWindowContent {
 		button.onClick.AddListener (() => this.GetComponentInParent<MyWindowManager> ().AddWindow ("FileSelect/Read"));
 		button.onClick.AddListener (() => CallAddListener());
 
+		doneButton.onClick.AddListener (() => mwc.Destroy ());
+		doneButton.onClick.AddListener (() => DataBase.SetDataBase ());
 		//UpdateContent ();
 	}
 	
