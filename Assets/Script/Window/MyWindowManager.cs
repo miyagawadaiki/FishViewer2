@@ -242,6 +242,9 @@ public class MyWindowManager : MonoBehaviour {
 	public enum ContentType {
 		FileSelect,
 		FileRead,
+		SingleGraph,
+		MultiEvenGraph,
+		MultiVariousGraph,
 		Sample,
 	}
 }

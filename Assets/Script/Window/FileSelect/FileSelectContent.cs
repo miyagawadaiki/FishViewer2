@@ -45,6 +45,7 @@ public class FileSelectContent : MyWindowContent {
 		FileName.Set (key, fifm.GetPath (), fifm.GetName ());
 	}
 
+	/*
 	public override void OnLeftClick(Vector2 pos) {
 		mwc.AppearMenu ();
 	}
@@ -64,4 +65,5 @@ public class FileSelectContent : MyWindowContent {
 	public override void OnWheelChange(float value) {
 
 	}
+	*/
 }

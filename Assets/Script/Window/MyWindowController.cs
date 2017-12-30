@@ -53,6 +53,8 @@ public class MyWindowController : MonoBehaviour {
 
 		canvas = (Vector2)GameObject.Find ("Canvas").transform.localScale;
 
+		Instantiate (Resources.Load ("Menubar/Destroy") as GameObject, menuArea.transform);
+
 		//Button destroy = this.GetComponentInChildren<Button> ();
 		//destroy.onClick.AddListener (() => this.GetComponentInParent<MyWindowManager> ().CallRemove ());
 	}
@@ -96,13 +98,18 @@ public class MyWindowController : MonoBehaviour {
 	}
 
 	public void SetSize(Vector2 size) {
-		Vector2 hoge = this.transform.parent.gameObject.GetComponent<RectTransform> ().rect.size;
-		recTra.sizeDelta = new Vector2(size.x - hoge.x, size.y - hoge.y);
+		//Vector2 hoge = this.transform.parent.gameObject.GetComponent<RectTransform> ().rect.size;
+		//recTra.sizeDelta = new Vector2(size.x - hoge.x, size.y - hoge.y);
+		recTra.sizeDelta = size;
 	}
 
-	public void MoveTo(Vector2 localPos) {
-		Vector2 v = localPos - (Vector2)recTra.localPosition;
-		recTra.localPosition += (Vector3)v;
+	public void MoveTo(Vector2 ratePos) {
+		Debug.Log ("screen=" + new Vector2 (Screen.width, Screen.height) + " rect.size=" + rect.size);
+		Vector2 tmp = (new Vector2 (Screen.width, Screen.height) - rect.size) / 2f;
+		Debug.Log ("tmp=" + tmp + " ratePos=" + ratePos);
+		recTra.localPosition = new Vector2 (tmp.x * ratePos.x, tmp.y * ratePos.y);
+		//Vector2 v = localPos - (Vector2)recTra.localPosition;
+		//recTra.localPosition += (Vector3)v;
 	}
 
 	public void Translate(Vector2 vec) {
@@ -168,7 +175,7 @@ public class MyWindowController : MonoBehaviour {
 	public bool IsInWindowManager() {
 		Vector2 v = (Vector2)recTra.localPosition;
 		Vector2 size = recTra.rect.size;
-		return parRect.Contains (v - size / 2f) && parRect.Contains (v + size / 2f) && parRect.Contains (v + new Vector2 (size.x, size.y * -1f) / 2f) && parRect.Contains (v + new Vector2 (size.x * -1f, size.y) / 2f);
+		return parRect.Contains (v - size / 2f) && parRect.Contains (v + size / 2f);// && parRect.Contains (v + new Vector2 (size.x, size.y * -1f) / 2f) && parRect.Contains (v + new Vector2 (size.x * -1f, size.y) / 2f);
 	}
 
 	public bool IsOnSide(Vector2 vec) {

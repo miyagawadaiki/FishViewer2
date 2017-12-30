@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class MyWindowContent : MonoBehaviour {
+public class MyWindowContent : MonoBehaviour {
 
 	public MyWindowController mwc;
 	public string typeName;
@@ -10,7 +10,10 @@ public abstract class MyWindowContent : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		/*
+		mwc = this.GetComponentInParent<MyWindowController> (); 
+		 */
+
 	}
 	
 	// Update is called once per frame
@@ -20,13 +23,23 @@ public abstract class MyWindowContent : MonoBehaviour {
 
 	//public abstract MyWindowContent Clone ();
 
-	public abstract void OnLeftClick (Vector2 pos);
+	public virtual void OnLeftClick (Vector2 pos) {
+		mwc.AppearMenu ();
+	}
 
-	public abstract void OnRightClick (Vector2 pos);
+	public virtual void OnRightClick (Vector2 pos) {
 
-	public abstract void OnLeftDrag (Vector2 start, Vector2 end);
+	}
 
-	public abstract void OnRightDrag (Vector2 start, Vector2 end);
+	public virtual void OnLeftDrag (Vector2 start, Vector2 end) {
 
-	public abstract void OnWheelChange (float value);
+	}
+
+	public virtual void OnRightDrag (Vector2 start, Vector2 end) {
+
+	}
+
+	public virtual void OnWheelChange (float value) {
+
+	}
 }

@@ -18,7 +18,7 @@ public class MenuBarController : MonoBehaviour {
 	void Start () {
 		rect = this.GetComponent<RectTransform> ().rect;
 		canvasScale = GameObject.Find ("Canvas").transform.localScale.x;
-		outPosition = this.transform.localPosition;
+		outPosition = new Vector2 (0f, Screen.height / 2 + rect.height / 2); //this.transform.localPosition;
 		inPosition = outPosition - new Vector2 (0f, rect.height);
 	}
 	

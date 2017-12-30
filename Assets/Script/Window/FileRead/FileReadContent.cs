@@ -73,6 +73,7 @@ public class FileReadContent : MyWindowContent {
 		GameObject.Find("FileSelectContent(Clone)").GetComponent<FileSelectContent>().doneButton.onClick.AddListener(() => UpdateContent());
 	}
 
+	/*
 	public override void OnLeftClick(Vector2 pos) {
 		mwc.AppearMenu ();
 	}
@@ -92,4 +93,5 @@ public class FileReadContent : MyWindowContent {
 	public override void OnWheelChange(float value) {
 
 	}
+	*/
 }
