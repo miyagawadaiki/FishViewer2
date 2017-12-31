@@ -17,6 +17,14 @@ public class Simulation {
 		}
 	}
 
+	public static void Reset() {
+		step = 0;
+	}
+
+	public static bool IsEnd() {
+		return step >= DataBase.step;
+	}
+
 	public static void Execute(int step) {
 		foreach (GraphManager gm in graphList) {
 			gm.Plot (step);
