@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class MyWindowManager : MonoBehaviour {
 
+	public bool multiSelect;
+
 	[SerializeField]
 	private GameObject windowObj = null;
 
@@ -13,7 +15,7 @@ public class MyWindowManager : MonoBehaviour {
 
 	private Vector2 start;
 	private Vector2 expandDir = new Vector2();
-	private bool isMoveMode, isExpMode, multiSelect, removeFlag;
+	private bool isMoveMode, isExpMode, removeFlag;
 	private float canvasScale;
 
 	void Awake() {
@@ -36,6 +38,7 @@ public class MyWindowManager : MonoBehaviour {
 			Remove ();
 		}
 
+		/*
 		if (Input.GetKeyDown (KeyCode.LeftShift)) {
 			multiSelect = true;
 		} else if (Input.GetKeyUp (KeyCode.LeftShift)) {
@@ -59,6 +62,7 @@ public class MyWindowManager : MonoBehaviour {
 		} else if (Input.GetMouseButtonUp (1)) {
 
 		}
+		*/
 	}
 
 	public void AddWindow() {
@@ -120,7 +124,7 @@ public class MyWindowManager : MonoBehaviour {
 
 
 	// 左クリック時の動作
-	void OnMouseLeftDown() {
+	public void OnMouseLeftDown() {
 		int max = -1;
 		MyWindowController clicked = null;
 		Vector2 pos = Input.mousePosition;
@@ -167,7 +171,7 @@ public class MyWindowManager : MonoBehaviour {
 
 
 	// 右クリック時の操作
-	void OnMouseRightDown() {
+	public void OnMouseRightDown() {
 		int max = -1;
 		MyWindowController clicked = null;
 		Vector2 pos = Input.mousePosition;
@@ -194,7 +198,7 @@ public class MyWindowManager : MonoBehaviour {
 	}
 
 	// 左ドラッグ時の動作
-	void OnMouseLeftDrag() {
+	public void OnMouseLeftDrag() {
 		Vector2 now = (Vector2)Input.mousePosition;
 		if (isMoveMode) {
 			foreach (MyWindowController mwc in windowList) {
@@ -227,7 +231,7 @@ public class MyWindowManager : MonoBehaviour {
 
 
 	// 左ドロップ時の動作
-	void OnMouseLeftUp() {
+	public void OnMouseLeftUp() {
 		isMoveMode = false;
 		isExpMode = false;
 		expandDir = new Vector2 ();

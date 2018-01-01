@@ -28,7 +28,7 @@ public class RectGraphManager : GraphManager {
 	}
 
 	public override void Plot(int step) {
-		Debug.Log ("In RectGraphManager : " + step);
+		//Debug.Log ("In RectGraphManager : " + step);
 		for (int i = 0; i < pointNum; i++) {
 			if (step - markerIdx + i < 0) {
 				points [i].gameObject.SetActive (false);

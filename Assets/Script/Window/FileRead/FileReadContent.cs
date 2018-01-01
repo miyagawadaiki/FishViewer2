@@ -35,8 +35,9 @@ public class FileReadContent : MyWindowContent {
 		button.onClick.AddListener (() => CallAddListener());
 
 		doneButton.onClick.AddListener (() => mwc.Destroy ());
-		doneButton.onClick.AddListener (() => DataBase.SetDataBase ());
-		//UpdateContent ();
+		doneButton.onClick.AddListener (() => Simulation.Init ());
+		//doneButton.onClick.AddListener (() => DataBase.SetDataBase ());
+		UpdateContent ();
 	}
 	
 	// Update is called once per frame

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Simulation {
 
-	public static int step;
+	public static bool isEnabled = false;
+	public static int step = 0;
 
 	private static List<GraphManager> graphList;
 
@@ -15,6 +16,12 @@ public class Simulation {
 		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Graph")) {
 			graphList.Add(obj.GetComponent<GraphManager>());
 		}
+
+		DataBase.SetDataBase ();
+		if (!isEnabled)
+			GameObject.Find ("MyAppManager").GetComponent<MyAppManager>().ActivateSimuPanel();
+		
+		isEnabled = true;
 	}
 
 	public static void Reset() {
@@ -25,19 +32,15 @@ public class Simulation {
 		return step >= DataBase.step;
 	}
 
-	public static void Execute(int step) {
+	public static void Execute() {
 		foreach (GraphManager gm in graphList) {
 			gm.Plot (step);
 		}
 	}
 
-	public static void GoNext() {
-		Execute (step);
-		step++;
-	}
-
-	public static void GoBack() {
-		Execute (step);
-		step--;
+	public static void Execute(int s) {
+		foreach (GraphManager gm in graphList) {
+			gm.Plot (s);
+		}
 	}
 }

@@ -3,48 +3,58 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuBarController : MonoBehaviour {
+public class SimuPanelController : MonoBehaviour {
 
-	public bool isActive = false;
 	public float duration = 0.1f;
 
 	private Vector2 inPosition;
 	private Vector2 outPosition;
 	private AnimationCurve animCurve = AnimationCurve.Linear (0, 0, 1, 1);
-	private bool flag = true;
 	private Rect rect;
-	private float canvasScale;
+	//private float canvasScale;
+
+	public bool isActive = false;
 
 	// Use this for initialization
 	void Start () {
 		rect = this.GetComponent<RectTransform> ().rect;
-		canvasScale = GameObject.Find ("Canvas").transform.localScale.x;
-		outPosition = new Vector2 (0f, Screen.height / 2 + rect.height / 2); //this.transform.localPosition;
-		inPosition = outPosition - new Vector2 (0f, rect.height);
+		//canvasScale = GameObject.Find ("Canvas").transform.localScale.x;
+		outPosition = new Vector2 (0f, Screen.height / 2 + rect.height / 2) * -1f; //this.transform.localPosition;
+		inPosition = outPosition + new Vector2 (0f, rect.height);
+
+		Slide ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		/*
-		if (flag && Input.mousePosition.y > Screen.height - 5f) {
+		if (flag && Input.GetKeyDown(KeyCode.Space)) {
 			SlideIn ();
 			flag = false;
 			return;
-		} else if (!flag && Screen.height - Input.mousePosition.y > rect.height * canvasScale) {
+		} else if (!flag && Input.GetKeyDown(KeyCode.Space)) {
 			SlideOut ();
 			flag = true;
 		}
 		*/
 	}
 
+	public void Slide() {
+		if (!isActive) {
+			SlideIn ();
+			isActive = true;
+		} else {
+			SlideOut ();
+			isActive = false;
+		}
+	}
+
 	public void SlideIn() {
 		StartCoroutine (StartSlidePanel (true));
-		isActive = true;
 	}
 
 	public void SlideOut() {
 		StartCoroutine (StartSlidePanel(false));
-		isActive = false;
 	}
 
 	private IEnumerator StartSlidePanel(bool isSlideIn) {
