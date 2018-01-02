@@ -27,25 +27,22 @@ public class MyAppManager : MonoBehaviour {
 	
 		if (!mbc.isActive && Input.mousePosition.y > Screen.height - 10f) {
 			mbc.SlideIn ();
+			return;
 		}
 
 		if (Simulation.isEnabled && Input.GetKeyDown (KeyCode.Space)) {
 			spc.Slide ();
+			return;
 		}
 
-		if (mbc.isActive || spc.isActive) {
+		if (mbc.isActive) {
 			
-			if (mbc.isActive) {
-				if (!mbc.IsMouseInArea ())
+			if (!mbc.IsMouseInArea ())
 					mbc.SlideOut ();
 				//if (Input.GetMouseButtonDown (0))
 				//	mbc.OnMouseLeftDown ();
-			}
-
-			if (spc.isActive) {
-
-			}
-		} else {
+				
+		} else if (!spc.gameObject.activeSelf || !spc.IsMouseInArea ()) {
 			if (Input.GetKeyDown (KeyCode.LeftShift)) {
 				mwm.multiSelect = true;
 			} else if (Input.GetKeyUp (KeyCode.LeftShift)) {

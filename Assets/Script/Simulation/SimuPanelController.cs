@@ -10,17 +10,21 @@ public class SimuPanelController : MonoBehaviour {
 	private Vector2 inPosition;
 	private Vector2 outPosition;
 	private AnimationCurve animCurve = AnimationCurve.Linear (0, 0, 1, 1);
-	private Rect rect;
+	private RectTransform recTra;
 	//private float canvasScale;
 
 	public bool isActive = false;
 
+	void Awake() {
+		recTra = this.GetComponent<RectTransform> ();
+	}
+
 	// Use this for initialization
 	void Start () {
-		rect = this.GetComponent<RectTransform> ().rect;
+		
 		//canvasScale = GameObject.Find ("Canvas").transform.localScale.x;
-		outPosition = new Vector2 (0f, Screen.height / 2 + rect.height / 2) * -1f; //this.transform.localPosition;
-		inPosition = outPosition + new Vector2 (0f, rect.height);
+		outPosition = new Vector2 (0f, Screen.height / 2 + recTra.rect.height / 2) * -1f; //this.transform.localPosition;
+		inPosition = outPosition + new Vector2 (0f, recTra.rect.height);
 
 		Slide ();
 	}
@@ -72,5 +76,10 @@ public class SimuPanelController : MonoBehaviour {
 			yield return 0;
 		}
 		transform.localPosition = (Vector3)(startPos + moveDistance);
+	}
+
+	public bool IsMouseInArea() {
+		Vector2 vec = (Vector2)Input.mousePosition - inPosition - new Vector2(Screen.width, Screen.height) / 2f;
+		return recTra.rect.Contains (vec);
 	}
 }
