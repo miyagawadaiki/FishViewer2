@@ -33,9 +33,10 @@ public class SimultionController : MonoBehaviour {
 	private Image repEndHandle = null;
 
 	private bool playing, repeating;
-	private float time = 0f, dt, defDt = 0.1f;
+	private float time = 0f, dt, defDt;
 	private int repStartStep, repEndStep;
 	private Color repButtonColor, repOnColor, repOffColor;
+	//private int stepMemo = 0;
 
 	void Awake() {
 		
@@ -59,6 +60,8 @@ public class SimultionController : MonoBehaviour {
 		repButtonColor = repButtonImage.color;
 		repOnColor = repStartHandle.color;
 		repOffColor = backgroundImage.color;
+
+		defDt = DataBase.dt;
 
 		Pause ();
 		RepeatOff ();
@@ -87,6 +90,10 @@ public class SimultionController : MonoBehaviour {
 			return;
 
 		time = 0f;
+
+		if (Simulation.IsEnd()) {
+			Pause ();
+		}
 
 		if (playing) {
 			Debug.Log ("<color=blue>Simulating... step=" + Simulation.step + "</color>");

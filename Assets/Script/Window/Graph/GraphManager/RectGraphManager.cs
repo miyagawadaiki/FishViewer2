@@ -4,24 +4,35 @@ using UnityEngine;
 
 public class RectGraphManager : GraphManager {
 
+	[SerializeField]
 	protected int xType;
 	protected float xMax, xMin;
 
-	void Awake() {
-		
+	protected override void Awake() {
+		base.Awake ();
 	}
 
 	// Use this for initialization
-	void Start () {
+	protected override void Start () {
 		
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	protected override void Update () {
 		
 	}
 
-	public void InitGraph(int fish_, int xType_, int yType_) {
+	public override void Init() {
+		Debug.Log ("<color=green>RectGraphManager.Init()</color>");
+		base.Init ();
+
+		xMax = DataBase.GetMax (xType);
+		xMin = DataBase.GetMin (xType);
+
+		ShowAxis ();
+	}
+
+	public void SetGraph(int fish_, int xType_, int yType_) {
 		fish = fish_;
 		xType = xType_;
 		yType = yType_;
@@ -37,6 +48,11 @@ public class RectGraphManager : GraphManager {
 				points [i].localPosition = GraphToLocal (new Vector2 (DataBase.GetData (step - markerIdx + i, fish, xType), DataBase.GetData (step - markerIdx + i, fish, yType)));
 			}
 		}
+	}
+
+	public override void ShowAxis() {
+		xAxis.Draw (false, GraphToLocal (new Vector2 ()), 1.5f, 0f);
+		yAxis.DrawLineOnly (true, GraphToLocal (new Vector2 ()), 1.5f);
 	}
 
 	public Vector2 GraphToLocal(Vector2 v) {

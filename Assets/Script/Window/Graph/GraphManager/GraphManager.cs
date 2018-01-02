@@ -19,33 +19,45 @@ public class GraphManager : MonoBehaviour {
 	protected GameObject pointObj = null;
 	[SerializeField]
 	protected Color pointColor = Color.white;
+	[SerializeField]
+	protected int fish = 0;
+	[SerializeField]
+	protected int yType = 0;
 
-	protected int fish, yType, pointNum, markerIdx;
+	protected int pointNum, markerIdx;
 	protected float yMax, yMin, xExp = 1f, yExp = 1f;
+	protected GridLineController xAxis, yAxis;
 	protected RectTransform[] points;
 
 	protected RectTransform recTra;
 
-	void Awake() {
+	protected virtual void Awake() {
 		recTra = this.GetComponent<RectTransform> ();
 		pointNum = defaultPointNum;
 		pointObj.GetComponent<Image> ().color = pointColor;
 	}
 
 	// Use this for initialization
-	void Start () {
+	protected virtual void Start () {
 		
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	protected virtual void Update () {
 		
 	}
 
 	public virtual void Init() {
+		Debug.Log ("<color=green>GraphManager.Init() : " + pointNum + "</color>");
+
 		// yType, pointNumが決まっている
 		yMax = DataBase.GetMax (yType);
 		yMin = DataBase.GetMin (yType);
+
+		xAxis = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
+		yAxis = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
+		xAxis.SetAxis ();
+		yAxis.SetAxis ();
 
 		points = new RectTransform[pointNum];
 		markerIdx = (int)(pointNum * markerRate + 0.5f);
@@ -60,7 +72,7 @@ public class GraphManager : MonoBehaviour {
 	}
 
 	public virtual void ShowAxis() {
-
+		
 	}
 
 	public virtual void ShowGrid() {

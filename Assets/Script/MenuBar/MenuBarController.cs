@@ -8,19 +8,24 @@ public class MenuBarController : MonoBehaviour {
 	public bool isActive = false;
 	public float duration = 0.1f;
 
+	private RectTransform panelRecTra = null;
+
 	private Vector2 inPosition;
 	private Vector2 outPosition;
 	private AnimationCurve animCurve = AnimationCurve.Linear (0, 0, 1, 1);
-	private bool flag = true;
-	private Rect rect;
+	private RectTransform recTra;
 	private float canvasScale;
 
 	// Use this for initialization
 	void Start () {
-		rect = this.GetComponent<RectTransform> ().rect;
+		recTra = this.GetComponent<RectTransform> ();
 		canvasScale = GameObject.Find ("Canvas").transform.localScale.x;
-		outPosition = new Vector2 (0f, Screen.height / 2 + rect.height / 2); //this.transform.localPosition;
-		inPosition = outPosition - new Vector2 (0f, rect.height);
+		outPosition = new Vector2 (0f, Screen.height / 2 + recTra.rect.height / 2); //this.transform.localPosition;
+		inPosition = outPosition - new Vector2 (0f, recTra.rect.height);
+
+		foreach (Button button in this.GetComponentsInChildren<Button>()) {
+			button.onClick.AddListener (() => SlideOut ());
+		}
 	}
 	
 	// Update is called once per frame
@@ -62,5 +67,24 @@ public class MenuBarController : MonoBehaviour {
 			yield return 0;
 		}
 		transform.localPosition = (Vector3)(startPos + moveDistance);
+		//if (!isActive)
+		//	isActive = true;
+	}
+
+	public bool IsMouseInArea() {
+		Vector2 vec = (Vector2)Input.mousePosition - inPosition - new Vector2(Screen.width, Screen.height) / 2f;
+		if (!recTra.rect.Contains (vec))
+			return false;
+
+		if (panelRecTra != null) {
+			vec = Input.mousePosition - panelRecTra.position;
+			return panelRecTra.rect.Contains (vec);
+		} else {
+			return true;
+		}
+	}
+
+	public void OnMouseLeftDown() {
+		SlideOut ();
 	}
 }

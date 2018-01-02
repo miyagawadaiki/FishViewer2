@@ -25,7 +25,7 @@ public class MyAppManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-		if (!mbc.isActive && Input.mousePosition.y > Screen.height - 5f) {
+		if (!mbc.isActive && Input.mousePosition.y > Screen.height - 10f) {
 			mbc.SlideIn ();
 		}
 
@@ -36,7 +36,10 @@ public class MyAppManager : MonoBehaviour {
 		if (mbc.isActive || spc.isActive) {
 			
 			if (mbc.isActive) {
-
+				if (!mbc.IsMouseInArea ())
+					mbc.SlideOut ();
+				//if (Input.GetMouseButtonDown (0))
+				//	mbc.OnMouseLeftDown ();
 			}
 
 			if (spc.isActive) {
