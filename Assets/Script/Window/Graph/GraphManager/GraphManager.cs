@@ -35,6 +35,8 @@ public class GraphManager : MonoBehaviour {
 	//[SerializeField]
 	public int yType = 0;
 
+	protected GraphContent gc;
+
 	protected int markerIdx;
 	protected float yMax, yMin, xExp = 1f, yExp = 1f;
 	protected GridLineController xAxis, yAxis;
@@ -47,6 +49,7 @@ public class GraphManager : MonoBehaviour {
 		recTra = this.GetComponent<RectTransform> ();
 		//pointNum = defaultPointNum;
 		//pointObj.GetComponent<Image> ().color = pointColor;
+		gc = this.GetComponentInParent<GraphContent>();
 	}
 
 	// Use this for initialization
@@ -71,6 +74,8 @@ public class GraphManager : MonoBehaviour {
 		
 		xAxis = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
 		yAxis = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
+		xAxis.gameObject.name = "x-axis";
+		yAxis.gameObject.name = "y-axis";
 		xAxis.SetAxis ();
 		yAxis.SetAxis ();
 

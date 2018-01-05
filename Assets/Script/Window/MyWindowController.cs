@@ -116,6 +116,25 @@ public class MyWindowController : MonoBehaviour {
 		if (!canMove)
 			return;
 		recTra.position += (Vector3)vec;
+
+		TranslateIntoWindowManager ();
+	}
+
+	public void TranslateIntoWindowManager() {
+		Vector2 v = (Vector2)recTra.localPosition;
+		Vector2 size = recTra.rect.size;
+		Vector2 tmp = new Vector2 ();
+		if ((v + size / 2f).x > parRect.width / 2f)
+			tmp += new Vector2 (parRect.width / 2f - (v + size / 2f).x, 0f);
+		if ((v + size / 2f).y > parRect.height / 2f)
+			tmp += new Vector2 (0f, parRect.height / 2f - (v + size / 2f).y);
+
+		if ((v - size / 2f).x < -parRect.width / 2f)
+			tmp += new Vector2 (-parRect.width / 2f - (v - size / 2f).x, 0f);
+		if ((v - size / 2f).y < -parRect.height / 2f)
+			tmp += new Vector2 (0f, -parRect.height / 2f - (v - size / 2f).y);
+
+		recTra.position += (Vector3)tmp;
 	}
 
 	public void Expand(Vector2 vec, Vector2 expandDir) {
@@ -135,6 +154,46 @@ public class MyWindowController : MonoBehaviour {
 				vec.y = 0f;
 			Translate (vec / 2f);
 		}
+
+
+		TranslateIntoWindowManager ();
+	}
+
+	public void SquareExpand(Vector2 vec, Vector2 expandDir) {
+		if (!canExpand)
+			return;
+		Vector2 tmp = recTra.rect.size - new Vector2 (1f, 1f) * Mathf.Sqrt (recTra.rect.size.sqrMagnitude / 2f);
+		recTra.sizeDelta -= tmp;
+
+		Vector2 foo = new Vector2 (vec.x > 0 ? 1f : -1f, vec.y > 0 ? 1f : -1f);
+		float len = Mathf.Sqrt (vec.sqrMagnitude / 2f);
+		Vector2 square = new Vector2(foo.x * expandDir.x, foo.y * expandDir.y) * len;
+		recTra.sizeDelta += square;
+
+		if (recTra.rect.width < menuRT.rect.width + 20f) {
+			recTra.sizeDelta = new Vector2 (menuRT.rect.width + 20f, menuRT.rect.width + 20f);
+		} else {
+			if (expandDir.x == 0f)
+				foo.x = 0f;
+			if (expandDir.y == 0f)
+				foo.y = 0f;
+			Translate (foo * len / 2f);
+		}
+		TranslateIntoWindowManager ();
+		/*
+		Vector2 foo = new Vector2 (vec.x * expandDir.x, vec.y * expandDir.y);
+		Vector2 hoge = recTra.sizeDelta;
+		//Debug.Log ("tmp=" + (tmp + recTra.rect.size * canvas.x));
+		recTra.sizeDelta = tmp;
+		if (recTra.rect.width < menuRT.rect.width + 20f || recTra.rect.height < menuRT.rect.width + 20f) {
+			recTra.sizeDelta = hoge;
+		} else {
+			if (expandDir.x == 0f)
+				vec.x = 0f;
+			if (expandDir.y == 0f)
+				vec.y = 0f;
+			Translate (vec / 2f);
+		*/
 	}
 
 	public void Destroy() {

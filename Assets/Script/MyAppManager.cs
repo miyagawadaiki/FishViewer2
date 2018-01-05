@@ -43,10 +43,16 @@ public class MyAppManager : MonoBehaviour {
 				//	mbc.OnMouseLeftDown ();
 				
 		} else if (!spc.gameObject.activeSelf || !spc.IsMouseInArea ()) {
-			if (Input.GetKeyDown (KeyCode.LeftShift)) {
+			if (Input.GetKeyDown (KeyCode.LeftControl)) {
 				mwm.multiSelect = true;
-			} else if (Input.GetKeyUp (KeyCode.LeftShift)) {
+			} else if (Input.GetKeyUp (KeyCode.LeftControl)) {
 				mwm.multiSelect = false;
+			}
+
+			if (Input.GetKeyDown (KeyCode.LeftShift)) {
+				mwm.squareExpand = true;
+			} else if (Input.GetKeyUp (KeyCode.LeftShift)) {
+				mwm.squareExpand = false;
 			}
 
 			if (Input.GetMouseButtonDown (0)) {

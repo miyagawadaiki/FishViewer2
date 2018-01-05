@@ -37,4 +37,9 @@ public class SliderWithText : MonoBehaviour {
 	public void UpdateText (float value) {
 		text.text = value + "";
 	}
+
+	public void SetValue(float value) {
+		slider.value = value;
+		UpdateText (value);
+	}
 }

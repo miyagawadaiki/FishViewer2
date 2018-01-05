@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class GridLineController : MonoBehaviour {
 
-	private bool isAxis = false;
+	[SerializeField]
+	private GameObject textObj = null;
 	
 	private RectTransform viewRecTra, lineRecTra, textRecTra;
 	private Image image;
@@ -14,9 +15,10 @@ public class GridLineController : MonoBehaviour {
 	void Awake() {
 		viewRecTra = this.transform.parent.GetComponent<RectTransform> ();
 		lineRecTra = this.GetComponent<RectTransform> ();
-		textRecTra = this.GetComponentInChildren<RectTransform> ();
+		textRecTra = textObj.GetComponent<RectTransform> ();
+		Debug.Log ("textRectra.gameObject = " + textRecTra.gameObject.name);
 		image = this.GetComponent<Image> ();
-		text = this.GetComponentInChildren<Text> ();
+		text = textObj.GetComponent<Text> ();
 	}
 
 	// Use this for initialization
@@ -30,6 +32,7 @@ public class GridLineController : MonoBehaviour {
 	}
 
 	public void Draw(bool isVertical, Vector2 localPos, float bold, float value) {
+		Debug.Log ("localPos = " + localPos);
 		text.gameObject.SetActive (true);
 		if (isVertical) {
 			lineRecTra.anchorMin = new Vector2 (0.5f, 0f);
@@ -65,6 +68,7 @@ public class GridLineController : MonoBehaviour {
 			//lineRecTra.sizeDelta = new Vector2 (viewRecTra.rect.width, bold);
 			lineRecTra.localPosition = new Vector2 (0f, localPos.y);
 			textRecTra.localPosition = new Vector2 (localPos.x, 0f);
+
 		}
 	}
 

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class MyWindowManager : MonoBehaviour {
 
-	public bool multiSelect;
+	public bool multiSelect, squareExpand;
 
 	[SerializeField]
 	private GameObject windowObj = null;
@@ -211,16 +211,22 @@ public class MyWindowManager : MonoBehaviour {
 			foreach (MyWindowController mwc in windowList) {
 				if (mwc.isSelected) {
 					mwc.Translate (now - start);
-					if (!mwc.IsInWindowManager ())
-						mwc.Translate (start - now);
+					//if (!mwc.IsInWindowManager ())
+					//	mwc.Translate (start - now);
 				}
 			}
 		} else if(isExpMode) {
 			foreach (MyWindowController mwc in windowList) {
 				if (mwc.isSelected) {
-					mwc.Expand (now - start, expandDir);
-					if (!mwc.IsInWindowManager ())
-						mwc.Expand (start - now, expandDir);
+					if (squareExpand) {
+						mwc.SquareExpand (now - start, expandDir);
+						//if (!mwc.IsInWindowManager ())
+						//	mwc.Expand (now - start, expandDir);
+					} else {
+						mwc.Expand (now - start, expandDir);
+						//if (!mwc.IsInWindowManager ())
+						//	mwc.Expand (start - now, expandDir);
+					}
 				}
 			}
 		}

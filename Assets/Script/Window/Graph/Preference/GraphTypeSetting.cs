@@ -11,14 +11,14 @@ public class GraphTypeSetting : Setting {
 
 	void Awake() {
 		graphType = elements [0].gameObject.GetComponent<Dropdown> ();
-		ss = this.GetComponentInChildren<SourceSetting> ();
+		ss = this.transform.parent.GetComponentInChildren<SourceSetting> ();
 
 		graphType.onValueChanged.AddListener (i => CoverFish (i));
 	}
 
 	// Use this for initialization
 	void Start () {
-
+		
 	}
 	
 	// Update is called once per frame
@@ -29,7 +29,15 @@ public class GraphTypeSetting : Setting {
 	public void CoverFish (int i) {
 		if (i == 1)
 			ss.CoverElement (1);
+		else
+			ss.DiscoverElement ();
 	}
+
+	/*
+	public override void SetMemoData() {
+		graphType.value = (int)gc.mGraphType;
+	}
+	*/
 
 	public GraphType GetGraphType() {
 		return (GraphType)graphType.value;

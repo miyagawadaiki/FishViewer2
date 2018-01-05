@@ -22,7 +22,7 @@ public class SourceSetting : Setting {
 		for(int i=1;i<=DataBase.fish;i++) {
 			fish.options.Add(new Dropdown.OptionData { text = "fish : " + i });
 		}
-		fish.value = 1;	fish.value = 0;
+		fish.value = 1; fish.value = 0;
 
 		if (type == GraphContentType.MultiEven)
 			CoverElement (0);
@@ -41,6 +41,14 @@ public class SourceSetting : Setting {
 	void Update () {
 		
 	}
+
+	/*
+	public override void SetMemoData() {
+		fish.value = gc.mFish;
+		xType.value = gc.mXType;
+		yType.value = gc.mYType;
+	}
+	*/
 
 	public override string GetData() {
 		string[] tags = DataBase.GetTags ();

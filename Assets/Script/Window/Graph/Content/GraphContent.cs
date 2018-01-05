@@ -8,6 +8,20 @@ public class GraphContent : MyWindowContent {
 	//[SerializeField]
 	//private GameObject settingButton = null;
 
+	/*
+	[System.NonSerialized]
+	public GraphType mGraphType = GraphType.Rect;
+	[System.NonSerialized]
+	public int mFish = 0, mXType = 0, mYType = 1, mPointNum = 20, mPointColorNum = 0;
+	[System.NonSerialized]
+	public float mMarkerRate = 1f, mPlotSize = 10f;
+	[System.NonSerialized]
+	public bool mUseColorGrad = false, mUseSizeGrad = false, mUseAutoSize = false;
+	*/
+
+	//[System.NonSerialized]
+	//public GraphManager memo = null;
+
 	// Use this for initialization
 	public virtual void Start () {
 		mwc = this.GetComponentInParent<MyWindowController> ();

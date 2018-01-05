@@ -62,7 +62,20 @@ public class RectGraphManager : GraphManager {
 		useAutoSize = int.Parse (tmp [9]) > 0 ? true : false;
 
 		Init ();
-	}
+
+		/*
+		gc.mFish = int.Parse (tmp [0]);
+		gc.mXType = int.Parse (tmp [1]);
+		gc.mYType = int.Parse (tmp [2]);
+		gc.mPointNum = int.Parse (tmp [3]);
+		gc.mMarkerRate = float.Parse (tmp [4]);
+		gc.mPointColorNum = int.Parse (tmp [5]);
+		gc.mUseColorGrad = int.Parse (tmp [6]) > 0 ? true : false;
+		gc.mUseSizeGrad = int.Parse (tmp [7]) > 0 ? true : false;
+		gc.mPlotSize = float.Parse (tmp [8]);
+		gc.mUseAutoSize = int.Parse (tmp [9]) > 0 ? true : false;
+		*/
+}
 
 	/*
 	public void SetGraph(int fish_, int xType_, int yType_) {
@@ -86,8 +99,8 @@ public class RectGraphManager : GraphManager {
 
 	public override void ShowAxis() {
 		base.ShowAxis ();
-		xAxis.Draw (false, GraphToLocal (new Vector2 ()), 1.5f, 0f);
-		yAxis.DrawLineOnly (true, GraphToLocal (new Vector2 ()), 1.5f);
+		xAxis.Draw (false, GraphToLocal (new Vector2 (0f, 0f)), 1.5f, 0f);
+		yAxis.DrawLineOnly (true, GraphToLocal (new Vector2 (0f, 0f)), 1.5f);
 	}
 
 	public Vector2 GraphToLocal(Vector2 v) {

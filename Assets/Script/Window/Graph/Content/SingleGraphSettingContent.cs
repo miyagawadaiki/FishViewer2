@@ -21,10 +21,12 @@ public class SingleGraphSettingContent : MyWindowContent {
 	void Awake() {
 		//settings = this.GetComponentsInChildren<Setting> ();
 
+		/*
 		foreach (Setting s in this.GetComponentsInChildren<Setting> ()) {
 			s.type = GraphContentType.Single;
 			s.gc = sgc;
 		}
+		*/
 	}
 
 	// Use this for initialization
@@ -32,6 +34,7 @@ public class SingleGraphSettingContent : MyWindowContent {
 		mwc = this.GetComponentInParent<MyWindowController> ();
 		mwc.SetSize (defaultSize);
 		mwc.MoveTo (new Vector2 ());
+		mwc.canExpand = false;
 
 		doneButton.onClick.AddListener (() => mwc.Destroy ());
 	}
@@ -43,6 +46,12 @@ public class SingleGraphSettingContent : MyWindowContent {
 
 	public void RegisterGraphContent (SingleGraphContent sgc) {
 		this.sgc = sgc;
+
+		foreach (Setting s in this.GetComponentsInChildren<Setting> ()) {
+			s.type = GraphContentType.Single;
+			s.gc = sgc;
+			//s.SetMemoData ();
+		}
 	}
 
 	public void UpdateGraphContent() {
