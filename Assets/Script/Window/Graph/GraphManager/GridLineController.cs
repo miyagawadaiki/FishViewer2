@@ -72,6 +72,10 @@ public class GridLineController : MonoBehaviour {
 		Draw (true, localPos, 0f, value);
 	}
 
+	public void Hide() {
+		DrawLineOnly (true, new Vector2 (), 0f);
+	}
+
 	public void SetAxis() {
 		image.color = Color.black;
 		text.color = Color.black;

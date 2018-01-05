@@ -53,6 +53,7 @@
      <Compile Include="Assets\Script\Simulation\SimuPanelController.cs" />
      <Compile Include="Assets\Script\Simulation\Simulation.cs" />
      <Compile Include="Assets\Script\Simulation\SimultionController.cs" />
+     <Compile Include="Assets\Script\SliderWithText.cs" />
      <Compile Include="Assets\Script\Window\FileRead\FileReadContent.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileInputFieldManager.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileNode.cs" />
@@ -60,9 +61,14 @@
      <Compile Include="Assets\Script\Window\FileSelect\FileViewController.cs" />
      <Compile Include="Assets\Script\Window\Graph\Content\GraphContent.cs" />
      <Compile Include="Assets\Script\Window\Graph\Content\SingleGraphContent.cs" />
+     <Compile Include="Assets\Script\Window\Graph\Content\SingleGraphSettingContent.cs" />
      <Compile Include="Assets\Script\Window\Graph\GraphManager\GraphManager.cs" />
      <Compile Include="Assets\Script\Window\Graph\GraphManager\GridLineController.cs" />
      <Compile Include="Assets\Script\Window\Graph\GraphManager\RectGraphManager.cs" />
+     <Compile Include="Assets\Script\Window\Graph\Preference\GraphTypeSetting.cs" />
+     <Compile Include="Assets\Script\Window\Graph\Preference\PointerSetting.cs" />
+     <Compile Include="Assets\Script\Window\Graph\Preference\Setting.cs" />
+     <Compile Include="Assets\Script\Window\Graph\Preference\SourceSetting.cs" />
      <Compile Include="Assets\Script\Window\MenuButton\DestroyButtonController.cs" />
      <Compile Include="Assets\Script\Window\MyWindowContent.cs" />
      <Compile Include="Assets\Script\Window\MyWindowController.cs" />

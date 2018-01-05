@@ -52,6 +52,13 @@ public class DataBase {
 		for (int i = 0; i < step; i++) {
 			SetData (i, sr.ReadLine ());
 		}
+
+		for (int i = 0; i < tag; i++) {
+			if (min [i] > 0f)
+				min [i] = 0f;
+			if (max [i] < 0f)
+				max [i] = 0f;
+		}
 	}
 
 	private static void SetData(int step, int fish, int tag, float value) {

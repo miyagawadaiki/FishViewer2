@@ -16,10 +16,14 @@ public class Simulation {
 
 		DataBase.SetDataBase ();
 
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("GraphContent")) {
+			obj.GetComponent<GraphContent> ().Init ();
+		}
+
 		graphList = new List<GraphManager> ();
 		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Graph")) {
 			GraphManager gm = obj.GetComponent<GraphManager>();
-			gm.Init ();
+			//gm.Init ();
 			graphList.Add (gm);
 		}
 
@@ -27,6 +31,19 @@ public class Simulation {
 			GameObject.Find ("MyAppManager").GetComponent<MyAppManager>().ActivateSimuPanel();
 		
 		isEnabled = true;
+	}
+
+	public static void Register(GraphManager gm) {
+		graphList.Add (gm);
+	}
+
+	public static void Register(GraphManager[] gmArray) {
+		foreach (GraphManager gm in gmArray)
+			graphList.Add (gm);
+	}
+
+	public static void Remove(GraphManager gm) {
+		graphList.Remove (gm);
 	}
 
 	public static void Reset() {

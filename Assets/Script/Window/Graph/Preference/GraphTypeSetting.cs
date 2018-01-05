@@ -1,0 +1,41 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class GraphTypeSetting : Setting {
+
+	//[SerializeField]
+	private Dropdown graphType;
+	private SourceSetting ss;
+
+	void Awake() {
+		graphType = elements [0].gameObject.GetComponent<Dropdown> ();
+		ss = this.GetComponentInChildren<SourceSetting> ();
+
+		graphType.onValueChanged.AddListener (i => CoverFish (i));
+	}
+
+	// Use this for initialization
+	void Start () {
+
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
+
+	public void CoverFish (int i) {
+		if (i == 1)
+			ss.CoverElement (1);
+	}
+
+	public GraphType GetGraphType() {
+		return (GraphType)graphType.value;
+	}
+
+	public override string GetData() {
+		return graphType.value + ",";
+	}
+}

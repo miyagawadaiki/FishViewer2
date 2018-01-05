@@ -10,6 +10,7 @@ public class RectGraphManager : GraphManager {
 
 	protected override void Awake() {
 		base.Awake ();
+		//type = GraphType.Rect;
 	}
 
 	// Use this for initialization
@@ -29,14 +30,47 @@ public class RectGraphManager : GraphManager {
 		xMax = DataBase.GetMax (xType);
 		xMin = DataBase.GetMin (xType);
 
-		ShowAxis ();
+		//ShowAxis ();
 	}
 
+	public override void Set(string values) {
+		char[] separator = { ',' };
+		string[] tmp = values.Split (separator);
+
+		/* 
+		 * fish(0)
+		 * xType(1)
+		 * yType(2)
+		 * pointNum(3)
+		 * markerRate(4)
+		 * pointColor(5)
+		 * useColorGrad(6)
+		 * useSizeGrad(7)
+		 * sizeValue(8)
+		 * useAutoSize(9)
+		 */
+
+		fish = int.Parse (tmp [0]);
+		xType = int.Parse (tmp [1]);
+		yType = int.Parse (tmp [2]);
+		pointNum = int.Parse (tmp [3]);
+		markerRate = float.Parse (tmp [4]);
+		pointColorNum = int.Parse (tmp [5]);
+		useColorGrad = int.Parse (tmp [6]) > 0 ? true : false;
+		useSizeGrad = int.Parse (tmp [7]) > 0 ? true : false;
+		plotSize = float.Parse (tmp [8]);
+		useAutoSize = int.Parse (tmp [9]) > 0 ? true : false;
+
+		Init ();
+	}
+
+	/*
 	public void SetGraph(int fish_, int xType_, int yType_) {
 		fish = fish_;
 		xType = xType_;
 		yType = yType_;
 	}
+	*/
 
 	public override void Plot(int step) {
 		//Debug.Log ("In RectGraphManager : " + step);
@@ -51,6 +85,7 @@ public class RectGraphManager : GraphManager {
 	}
 
 	public override void ShowAxis() {
+		base.ShowAxis ();
 		xAxis.Draw (false, GraphToLocal (new Vector2 ()), 1.5f, 0f);
 		yAxis.DrawLineOnly (true, GraphToLocal (new Vector2 ()), 1.5f);
 	}

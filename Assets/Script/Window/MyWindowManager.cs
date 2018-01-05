@@ -87,7 +87,7 @@ public class MyWindowManager : MonoBehaviour {
 		windowList.Add (mwc);
 
 		// 追加したWindowにContentを設定する
-		GameObject contentObj = Instantiate(Resources.Load (System.Enum.GetName (typeof(ContentType), content) + "Content"), obj.transform) as GameObject;
+		GameObject contentObj = Instantiate(Resources.Load ("Content/" + System.Enum.GetName (typeof(ContentType), content) + "Content"), obj.transform) as GameObject;
 		contentObj.GetComponent<MyWindowContent>().typeName = type;
 		//mwc.content = contentObj.GetComponent<MyWindowContent> ();
 	}
@@ -104,6 +104,12 @@ public class MyWindowManager : MonoBehaviour {
 	}
 
 
+
+	public MyWindowController GetLastWindowController() {
+		return windowList [windowList.Count - 1];
+	}
+
+
 	// Remove()をCallする（次のUpdate()のときにRemove()を実行させる）
 	public void CallRemove() {
 		removeFlag = true;
@@ -115,6 +121,7 @@ public class MyWindowManager : MonoBehaviour {
 		for (int i = 0;i<windowList.Count;i++) {
 			if (windowList[i].isDestroyed) {
 				MyWindowController mwc = windowList [i];
+				Debug.Log ("<color=green>Remove : " + mwc.name + "</color>");
 				windowList.RemoveAt (i);
 				Destroy (mwc.gameObject, 0.1f);
 			}
@@ -249,6 +256,7 @@ public class MyWindowManager : MonoBehaviour {
 		SingleGraph,
 		MultiEvenGraph,
 		MultiVariousGraph,
+		SingleGraphSetting,
 		Sample,
 	}
 }
