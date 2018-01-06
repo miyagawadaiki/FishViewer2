@@ -18,7 +18,8 @@ public class GraphTypeSetting : Setting {
 
 	// Use this for initialization
 	void Start () {
-		
+		if (gc.memo != null)
+			graphType.value = (int)gc.memo.graphType;
 	}
 	
 	// Update is called once per frame

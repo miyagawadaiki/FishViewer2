@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GraphManager : MonoBehaviour {
 
-	//public GraphType type;
+	public GraphType graphType;
 
 	[SerializeField]
 	protected Transform view = null;
@@ -15,8 +15,8 @@ public class GraphManager : MonoBehaviour {
 	protected GameObject gridLineObj = null;
 	//[SerializeField]
 	public int pointNum = 50;
-	[SerializeField, Range(0,1)]
-	public float markerRate = 1f;
+	//[SerializeField, Range(0,1)]
+	//public float markerRate = 1f;
 	[SerializeField]
 	protected GameObject pointObj = null;
 	//[SerializeField]
@@ -45,6 +45,7 @@ public class GraphManager : MonoBehaviour {
 	protected GridLineController xAxis, yAxis;
 	protected RectTransform[] points;
 	//protected Color pointColor;
+	protected float markerRate = 0.5f;
 
 	protected RectTransform recTra;
 
@@ -129,7 +130,21 @@ public class GraphManager : MonoBehaviour {
 	}
 
 	public virtual void Set(string values) {
+		char[] separator = { ',' };
+		string[] tmp = values.Split (separator);
 
+		fish = int.Parse (tmp [0]);
+		xType = int.Parse (tmp [1]);
+		yType = int.Parse (tmp [2]);
+		pointNum = int.Parse (tmp [3]);
+		//markerRate = float.Parse (tmp [4]);
+		pointColorNum = int.Parse (tmp [4]);
+		useColorGrad = int.Parse (tmp [5]) > 0 ? true : false;
+		useSizeGrad = int.Parse (tmp [6]) > 0 ? true : false;
+		plotSize = float.Parse (tmp [7]);
+		useAutoSize = int.Parse (tmp [8]) > 0 ? true : false;
+
+		//Init ();
 	}
 
 	public virtual void Plot(int step) {

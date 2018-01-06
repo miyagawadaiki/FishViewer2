@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SingleGraphContent : GraphContent {
 
-	private GraphType graphType = GraphType.Rect;
-	private GraphManager graphMan;
+	//private GraphType graphType = GraphType.Rect;
+	public GraphManager graphMan;
 
 	void Awake() {
 		
@@ -33,19 +33,21 @@ public class SingleGraphContent : GraphContent {
 	}
 
 	public void Set(GraphType gt, string parameters) {
-		if (graphMan == null || graphType != gt) {
-			if (graphMan != null)
+		if (graphMan == null || graphMan.graphType != gt) {
+			if (graphMan != null) {
+				Simulation.Remove (graphMan);
 				Destroy (graphMan.gameObject);
+			}
 			GameObject obj = Instantiate (Resources.Load ("GraphManager/" + System.Enum.GetName (typeof(GraphType), gt) + "GraphManager"), this.transform) as GameObject;
 			graphMan = obj.GetComponent<GraphManager> ();
-			//memo = graphMan;
+			memo = graphMan;
 			Simulation.Register (graphMan);
 		}
-		graphType = gt;
+		//graphType = gt;
 
 		//Init ();
 		graphMan.Set (parameters);
-
+		graphMan.Init ();
 		//
 		ShowAxis ();
 		//

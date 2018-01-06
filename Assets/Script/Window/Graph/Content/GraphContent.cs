@@ -19,8 +19,8 @@ public class GraphContent : MyWindowContent {
 	public bool mUseColorGrad = false, mUseSizeGrad = false, mUseAutoSize = false;
 	*/
 
-	//[System.NonSerialized]
-	//public GraphManager memo = null;
+	[System.NonSerialized]
+	public GraphManager memo = null;
 
 	// Use this for initialization
 	public virtual void Start () {

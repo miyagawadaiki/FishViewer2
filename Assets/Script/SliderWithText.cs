@@ -13,20 +13,23 @@ public class SliderWithText : MonoBehaviour {
 	[SerializeField]
 	private float maxValue = 1f;
 	[SerializeField]
-	private bool wholeNumbers = false;
+	private int digit = 0;
 	[SerializeField]
 	private int fontSize = 14;
 
-	// Use this for initialization
-	void Start () {
+	void Awake() {
 		slider.minValue = minValue;
 		slider.maxValue = maxValue;
-		slider.wholeNumbers = wholeNumbers;
 
 		text.fontSize = fontSize;
 		text.text = slider.value + "";
 
 		slider.onValueChanged.AddListener (f => UpdateText (f));
+	}
+
+	// Use this for initialization
+	void Start () {
+		
 	}
 	
 	// Update is called once per frame
@@ -35,7 +38,9 @@ public class SliderWithText : MonoBehaviour {
 	}
 
 	public void UpdateText (float value) {
-		text.text = value + "";
+		float a = Mathf.Pow (10f, digit);
+		slider.value = (int)((value / a) + 0.5f) * a;
+		text.text = slider.value + "";
 	}
 
 	public void SetValue(float value) {

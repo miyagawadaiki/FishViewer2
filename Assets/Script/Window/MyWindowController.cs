@@ -104,9 +104,9 @@ public class MyWindowController : MonoBehaviour {
 	}
 
 	public void MoveTo(Vector2 ratePos) {
-		Debug.Log ("screen=" + new Vector2 (Screen.width, Screen.height) + " rect.size=" + rect.size);
+		//Debug.Log ("screen=" + new Vector2 (Screen.width, Screen.height) + " rect.size=" + rect.size);
 		Vector2 tmp = (new Vector2 (Screen.width, Screen.height) - rect.size) / 2f;
-		Debug.Log ("tmp=" + tmp + " ratePos=" + ratePos);
+		//Debug.Log ("tmp=" + tmp + " ratePos=" + ratePos);
 		recTra.localPosition = new Vector2 (tmp.x * ratePos.x, tmp.y * ratePos.y);
 		//Vector2 v = localPos - (Vector2)recTra.localPosition;
 		//recTra.localPosition += (Vector3)v;

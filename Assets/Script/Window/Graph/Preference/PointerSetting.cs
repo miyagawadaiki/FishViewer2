@@ -7,28 +7,36 @@ public class PointerSetting : Setting {
 
 	private Dropdown color;
 	private Toggle colorGrad, sizeGrad, autoSize;
-	private InputField sizeValue, pointNum;
-	private SliderWithText markerPos;
+	private InputField sizeValue;
+	private SliderWithText pointNum;
 
 	// Use this for initialization
 	void Start () {
-		pointNum = elements [0].gameObject.GetComponent<InputField> ();
+		pointNum = elements [0].gameObject.GetComponent<SliderWithText> ();
 
-		markerPos = elements [1].gameObject.GetComponent<SliderWithText> ();
-
-		color = elements [2].gameObject.GetComponent<Dropdown> ();
+		color = elements [1].gameObject.GetComponent<Dropdown> ();
 		color.value = 1; color.value = 0;
 
-		colorGrad = elements [3].gameObject.GetComponent<Toggle> ();
+		colorGrad = elements [2].gameObject.GetComponent<Toggle> ();
 
-		sizeGrad = elements [4].gameObject.GetComponent<Toggle> ();
+		sizeGrad = elements [3].gameObject.GetComponent<Toggle> ();
 
-		sizeValue = elements [5].gameObject.GetComponent<InputField> ();
+		sizeValue = elements [4].gameObject.GetComponent<InputField> ();
 
-		autoSize = elements [6].gameObject.GetComponent<Toggle> ();
+		autoSize = elements [5].gameObject.GetComponent<Toggle> ();
 
 		if (type == GraphContentType.MultiEven)
 			CoverElement (1);
+
+		if (gc.memo != null) {
+			pointNum.slider.value = (float)gc.memo.pointNum;
+			pointNum.text.text = gc.memo.pointNum + "";
+			color.value = gc.memo.pointColorNum;
+			colorGrad.isOn = gc.memo.useColorGrad;
+			sizeGrad.isOn = gc.memo.useSizeGrad;
+			sizeValue.text = gc.memo.plotSize + "";
+			autoSize.isOn = gc.memo.useAutoSize;
+		}
 
 		/*
 		for (int i = 0; i < ProjectData.ColorList.Count(); i++) {
@@ -61,7 +69,7 @@ public class PointerSetting : Setting {
 	*/
 
 	public override string GetData() {
-		string s = pointNum.text + "," + markerPos.slider.value + "," + color.value + "," + (colorGrad.isOn ? "1" : "0") + "," + (sizeGrad.isOn ? "1" : "0") + "," + sizeValue.text + "," + (autoSize.isOn ? "1" : "0") + ",";
+		string s = (int)pointNum.slider.value + "," + color.value + "," + (colorGrad.isOn ? "1" : "0") + "," + (sizeGrad.isOn ? "1" : "0") + "," + sizeValue.text + "," + (autoSize.isOn ? "1" : "0") + ",";
 		return s;
 	}
 }

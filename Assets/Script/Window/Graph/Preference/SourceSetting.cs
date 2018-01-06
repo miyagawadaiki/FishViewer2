@@ -35,6 +35,13 @@ public class SourceSetting : Setting {
 		}
 		xType.value = 1;	xType.value = 0;
 		yType.value = 1;
+
+
+		if (gc.memo != null) {
+			fish.value = gc.memo.fish;
+			xType.value = gc.memo.xType;
+			yType.value = gc.memo.yType;
+		}
 	}
 	
 	// Update is called once per frame

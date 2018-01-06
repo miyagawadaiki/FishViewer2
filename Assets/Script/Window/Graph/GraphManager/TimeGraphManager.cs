@@ -6,6 +6,7 @@ public class TimeGraphManager : GraphManager {
 
 	protected override void Awake() {
 		base.Awake ();
+		graphType = GraphType.Time;
 	}
 
 	// Use this for initialization
@@ -23,10 +24,11 @@ public class TimeGraphManager : GraphManager {
 		base.Init ();
 
 		points [markerIdx].sizeDelta *= 1.5f;
-		xMin = (float)(DataBase.step - markerIdx);
-		xMax = (float)(DataBase.step + (pointNum - markerIdx));
+		xMin = (float)(Simulation.step - markerIdx);
+		xMax = (float)(Simulation.step + (pointNum - markerIdx));
 	}
 
+	/*
 	public override void Set(string values) {
 		char[] separator = { ',' };
 		string[] tmp = values.Split (separator);
@@ -42,7 +44,7 @@ public class TimeGraphManager : GraphManager {
 		 * useSizeGrad(7)
 		 * sizeValue(8)
 		 * useAutoSize(9)
-		 */
+		 
 
 		fish = int.Parse (tmp [0]);
 		//xType = int.Parse (tmp [1]);
@@ -57,6 +59,7 @@ public class TimeGraphManager : GraphManager {
 
 		Init ();
 	}
+	*/
 
 	/*
 	public void SetGraph(int fish_, int xType_, int yType_) {
@@ -76,6 +79,8 @@ public class TimeGraphManager : GraphManager {
 			} else {
 				points [i].gameObject.SetActive (true);
 				points [i].localPosition = GraphToLocal (new Vector2 (step - markerIdx + i, DataBase.GetData (step - markerIdx + i, fish, yType)));
+				if (!recTra.rect.Contains (points [i].localPosition))
+					points [i].gameObject.SetActive (false);
 			}
 		}
 	}
@@ -90,8 +95,15 @@ public class TimeGraphManager : GraphManager {
 
 	public override void ShowAxis() {
 		base.ShowAxis ();
-		xAxis.Draw (false, GraphToLocal (new Vector2 (Simulation.step, 0f)), 1.5f, 0f);
-		yAxis.DrawLineOnly (true, GraphToLocal (new Vector2 (Simulation.step, 0f)), 1.5f);
+		Vector2 origin = new Vector2 (Simulation.step, 0f);
+		if(yMin <= origin.y && yMax >= origin.y)
+			xAxis.Draw (false, GraphToLocal (origin), 1.5f, 0f);
+		else
+			xAxis.Hide ();
+		if(xMin <= origin.x && xMax >= origin.x)
+			yAxis.DrawLineOnly (true, GraphToLocal (origin), 1.5f);
+		else
+			yAxis.Hide ();
 	}
 
 	public Vector2 GraphToLocal(Vector2 v) {
