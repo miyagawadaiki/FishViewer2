@@ -80,16 +80,33 @@ public class TimeGraphManager : GraphManager {
 		}
 	}
 
+	public override void Translate(Vector2 start, Vector2 end) {
+		Vector2 tmp = LocalToGraph (end) - LocalToGraph (start);
+		yMax -= tmp.y;
+		yMin -= tmp.y;
+
+		ShowAxis ();
+	}
+
 	public override void ShowAxis() {
 		base.ShowAxis ();
-		xAxis.Draw (false, GraphToLocal (new Vector2 (DataBase.step, 0f)), 1.5f, 0f);
-		yAxis.DrawLineOnly (true, GraphToLocal (new Vector2 (DataBase.step, 0f)), 1.5f);
+		xAxis.Draw (false, GraphToLocal (new Vector2 (Simulation.step, 0f)), 1.5f, 0f);
+		yAxis.DrawLineOnly (true, GraphToLocal (new Vector2 (Simulation.step, 0f)), 1.5f);
 	}
 
 	public Vector2 GraphToLocal(Vector2 v) {
 		Vector2 ret = new Vector2 (
 			xExp * recTra.rect.width / (xMax - xMin) * (v.x - (xMax + xMin) / 2f),
 			yExp * recTra.rect.height / (yMax - yMin) * (v.y - (yMax + yMin) / 2f));
+
+		return ret;
+	}
+
+	public Vector2 LocalToGraph(Vector2 v) {
+		Vector2 ret = new Vector2 (
+			(xMax - xMin) / (xExp * recTra.rect.width) * v.x,
+			(yMax - yMin) / (yExp * recTra.rect.height) * v.y);
+		ret += new Vector2 ((xMax + xMin) / 2f, (yMax + yMin) / 2f);
 
 		return ret;
 	}

@@ -13,9 +13,9 @@ public class MyWindowManager : MonoBehaviour {
 	private List<MyWindowController> windowList;
 	private RectTransform recTra;
 
-	private Vector2 start;
+	private Vector2 leftStart, rightStart;
 	private Vector2 expandDir = new Vector2();
-	private bool isMoveMode, isExpMode, removeFlag;
+	private bool isMoveMode, removeFlag;	// , isExpMode
 	private float canvasScale;
 
 	void Awake() {
@@ -156,11 +156,11 @@ public class MyWindowManager : MonoBehaviour {
 			if (clicked.IsInMenu (pos)) {
 				Debug.Log ("Translate");
 				isMoveMode = true;
-				start = (Vector2)Input.mousePosition;
+				leftStart = (Vector2)Input.mousePosition;
 			} else {
 				Debug.Log ("Expand");
-				isExpMode = true;
-				start = (Vector2)Input.mousePosition;
+				//isExpMode = true;
+				leftStart = (Vector2)Input.mousePosition;
 
 				if (clicked.IsOnLeftSide (pos))
 					expandDir.x = -1f;
@@ -200,6 +200,8 @@ public class MyWindowManager : MonoBehaviour {
 			clicked.SetAsLastSibling ();
 			clicked.SetSelectMode ();
 
+			rightStart = (Vector2)Input.mousePosition;
+
 			clicked.content.OnRightClick (pos);
 		}
 	}
@@ -210,48 +212,57 @@ public class MyWindowManager : MonoBehaviour {
 		if (isMoveMode) {
 			foreach (MyWindowController mwc in windowList) {
 				if (mwc.isSelected) {
-					mwc.Translate (now - start);
+					mwc.Translate (now - leftStart);
 					//if (!mwc.IsInWindowManager ())
 					//	mwc.Translate (start - now);
 
-					mwc.content.OnTranslate (now - start);
+					mwc.content.OnTranslate (now - leftStart);
 				}
 			}
-		} else if(isExpMode) {
+		} else if (!expandDir.Equals (new Vector2 ())) {
 			foreach (MyWindowController mwc in windowList) {
 				if (mwc.isSelected) {
 					if (squareExpand) {
-						mwc.SquareExpand (now - start, expandDir);
+						mwc.SquareExpand (now - leftStart, expandDir);
 						//if (!mwc.IsInWindowManager ())
 						//	mwc.Expand (now - start, expandDir);
 					} else {
-						mwc.Expand (now - start, expandDir);
+						mwc.Expand (now - leftStart, expandDir);
 						//if (!mwc.IsInWindowManager ())
 						//	mwc.Expand (start - now, expandDir);
 					}
 
-					if(!expandDir.Equals(new Vector2()))
-						mwc.content.OnExpand (now - start, expandDir);
+					if (!expandDir.Equals (new Vector2 ()))
+						mwc.content.OnExpand (now - leftStart, expandDir);
+				}
+			}
+		} else {
+			foreach (MyWindowController mwc in windowList) {
+				if (mwc.isSelected) {
+					mwc.content.OnLeftDrag (leftStart, now);
 				}
 			}
 		}
 
-		/*
+		leftStart = now;
+	}
+
+	public void OnMouseRightDrag() {
+		Vector2 now = (Vector2)Input.mousePosition;
 		foreach (MyWindowController mwc in windowList) {
 			if (mwc.isSelected) {
-				mwc.content.OnLeftDrag (start, now);
+				mwc.content.OnRightDrag (rightStart, now);
 			}
 		}
-		*/
 
-		start = now;
+		rightStart = now;
 	}
 
 
 	// 左ドロップ時の動作
 	public void OnMouseLeftUp() {
 		isMoveMode = false;
-		isExpMode = false;
+		//isExpMode = false;
 		expandDir = new Vector2 ();
 	}
 

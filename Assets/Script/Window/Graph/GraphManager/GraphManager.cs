@@ -136,6 +136,15 @@ public class GraphManager : MonoBehaviour {
 		Debug.Log ("In GraphManager : " + step);
 	}
 
+	public virtual void Translate(Vector2 start, Vector2 end) {
+
+	}
+
+	public virtual void Expand(float expand) {
+		xExp += expand;
+		yExp += expand;
+	}
+
 	public virtual void ShowAxis() {
 		
 	}

@@ -32,7 +32,7 @@ public class GridLineController : MonoBehaviour {
 	}
 
 	public void Draw(bool isVertical, Vector2 localPos, float bold, float value) {
-		Debug.Log ("localPos = " + localPos);
+		//Debug.Log ("localPos = " + localPos);
 		text.gameObject.SetActive (true);
 		if (isVertical) {
 			lineRecTra.anchorMin = new Vector2 (0.5f, 0f);

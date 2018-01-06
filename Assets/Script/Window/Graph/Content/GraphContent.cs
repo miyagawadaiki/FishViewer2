@@ -70,11 +70,18 @@ public class GraphContent : MyWindowContent {
 
 	}
 
+	public virtual void Translate(Vector2 start, Vector2 end) {
+		
+	}
+
+	public virtual void Expand(float expand) {
+
+	}
+
 	public override void OnExpand(Vector2 vec, Vector2 expandDir) {
 		ShowAxis ();
 	}
-
-	/*
+		
 	public override void OnLeftClick(Vector2 pos) {
 		mwc.AppearMenu ();
 	}
@@ -88,13 +95,12 @@ public class GraphContent : MyWindowContent {
 	}
 
 	public override void OnRightDrag(Vector2 start, Vector2 end) {
-
+		Translate (start, end);
 	}
 
 	public override void OnWheelChange(float value) {
-
+		Expand (value);
 	}
-	*/
 }
 
 public enum GraphContentType {

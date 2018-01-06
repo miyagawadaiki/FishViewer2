@@ -22,10 +22,10 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 929
-  m_MinSize: {x: 911, y: 442}
-  m_MaxSize: {x: 22006, y: 14021}
+  m_MinSize: {x: 917, y: 421}
+  m_MaxSize: {x: 22012, y: 14042}
   vertical: 0
-  controlID: 619
+  controlID: 4978
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -122,10 +122,10 @@ MonoBehaviour:
     y: 0
     width: 809
     height: 929
-  m_MinSize: {x: 202, y: 442}
-  m_MaxSize: {x: 4002, y: 8042}
+  m_MinSize: {x: 202, y: 421}
+  m_MaxSize: {x: 4002, y: 8021}
   vertical: 1
-  controlID: 620
+  controlID: 4735
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,8 +144,8 @@ MonoBehaviour:
     y: 0
     width: 809
     height: 437
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 5}
   m_Panes:
   - {fileID: 5}
@@ -380,7 +380,7 @@ MonoBehaviour:
     height: 908
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 
+    m_SelectedIDs: f0250000
     m_LastClickedID: 0
     m_ExpandedIDs: dcfbffff00000000
     m_RenameOverlay:
@@ -425,10 +425,10 @@ MonoBehaviour:
     y: 0
     width: 431
     height: 929
-  m_MinSize: {x: 230, y: 371}
-  m_MaxSize: {x: 10000, y: 14021}
+  m_MinSize: {x: 234, y: 392}
+  m_MaxSize: {x: 10004, y: 14042}
   vertical: 1
-  controlID: 728
+  controlID: 4790
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -491,18 +491,18 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Resources/GraphManager
+    - Assets/Prefab/GraphManager
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Resources/GraphManager
+  - Assets/Prefab/GraphManager
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Daiki\Desktop\Unity\FishViewer_2
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 48}
-    m_SelectedIDs: 5a260000
-    m_LastClickedID: 9818
+    m_SelectedIDs: 5e250000
+    m_LastClickedID: 9566
     m_ExpandedIDs: 00000000d42400004e250000d6250000e0250000e62500003c2600009a26000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -556,9 +556,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: f0250000
+    m_LastClickedInstanceID: 9712
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: 0e250000422e000000000000de3ffdffe82b0000c0f1fbffec2b0000489ef9ff1a250000ca25000094250000be260000e817ffff6e73feff9e7bffffec2400004425000058270000dce4fcffc4c3fbff6214f8ff6e2800008825fcff96550000e6250000c62500002a25000020250000d62dffff60260000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -655,8 +655,8 @@ MonoBehaviour:
     y: 0
     width: 399
     height: 929
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 277, y: 71}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -689,7 +689,7 @@ MonoBehaviour:
     y: 102
     width: 397
     height: 908
-  m_ScrollPosition: {x: 0, y: 0}
+  m_ScrollPosition: {x: 0, y: 120}
   m_InspectorMode: 0
   m_PreviewResizer:
     m_CachedPref: 189

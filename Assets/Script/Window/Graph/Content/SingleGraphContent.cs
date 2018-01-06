@@ -54,6 +54,18 @@ public class SingleGraphContent : GraphContent {
 		//mGraphType = gt;
 	}
 
+	public override void Translate(Vector2 start, Vector2 end) {
+		if (graphMan == null)
+			return;
+		graphMan.Translate (start, end);
+	}
+
+	public override void Expand(float expand) {
+		if (graphMan == null)
+			return;
+		graphMan.Expand (expand);
+	}
+
 	public override void RemoveGraphManager() {
 		Simulation.Remove (graphMan);
 	}

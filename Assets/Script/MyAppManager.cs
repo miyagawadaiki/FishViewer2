@@ -68,7 +68,7 @@ public class MyAppManager : MonoBehaviour {
 			if (Input.GetMouseButtonDown (1)) {
 				mwm.OnMouseRightDown ();
 			} else if (Input.GetMouseButton (1)) {
-
+				mwm.OnMouseRightDrag ();
 			} else if (Input.GetMouseButtonUp (1)) {
 
 			}

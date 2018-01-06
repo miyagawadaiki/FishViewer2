@@ -81,6 +81,17 @@ public class PolarGraphManager : GraphManager {
 		}
 	}
 
+	public override void Translate(Vector2 start, Vector2 end) {
+		Vector2 tmp = LocalToRectGraph (end) - LocalToRectGraph(start);
+		//Debug.Log ("tmp = " + tmp);
+		xMax -= tmp.x;
+		xMin -= tmp.x;
+		yMax -= tmp.y;
+		yMin -= tmp.y;
+
+		ShowAxis ();
+	}
+
 	public override void ShowAxis() {
 		base.ShowAxis ();
 		xAxis.Draw (false, GraphToLocal (new Vector2 (0f, 0f)), 1.5f, 0f);
@@ -92,6 +103,15 @@ public class PolarGraphManager : GraphManager {
 		Vector2 ret = new Vector2 (
 			xExp * recTra.rect.width / (xMax - xMin) * (vv.x - (xMax + xMin) / 2f),
 			yExp * recTra.rect.height / (yMax - yMin) * (vv.y - (yMax + yMin) / 2f));
+
+		return ret;
+	}
+
+	public Vector2 LocalToRectGraph(Vector2 v) {
+		Vector2 ret = new Vector2 (
+			(xMax - xMin) / (xExp * recTra.rect.width) * v.x,
+			(yMax - yMin) / (yExp * recTra.rect.height) * v.y);
+		ret += new Vector2 ((xMax + xMin) / 2f, (yMax + yMin) / 2f);
 
 		return ret;
 	}
