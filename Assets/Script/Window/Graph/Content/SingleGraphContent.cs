@@ -36,7 +36,7 @@ public class SingleGraphContent : GraphContent {
 		if (graphMan == null || graphType != gt) {
 			if (graphMan != null)
 				Destroy (graphMan.gameObject);
-			GameObject obj = Instantiate (Resources.Load ("GraphManager/" + System.Enum.GetName (typeof(GraphType), graphType) + "GraphManager"), this.transform) as GameObject;
+			GameObject obj = Instantiate (Resources.Load ("GraphManager/" + System.Enum.GetName (typeof(GraphType), gt) + "GraphManager"), this.transform) as GameObject;
 			graphMan = obj.GetComponent<GraphManager> ();
 			//memo = graphMan;
 			Simulation.Register (graphMan);

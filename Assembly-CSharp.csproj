@@ -64,7 +64,9 @@
      <Compile Include="Assets\Script\Window\Graph\Content\SingleGraphSettingContent.cs" />
      <Compile Include="Assets\Script\Window\Graph\GraphManager\GraphManager.cs" />
      <Compile Include="Assets\Script\Window\Graph\GraphManager\GridLineController.cs" />
+     <Compile Include="Assets\Script\Window\Graph\GraphManager\PolarGraphManager.cs" />
      <Compile Include="Assets\Script\Window\Graph\GraphManager\RectGraphManager.cs" />
+     <Compile Include="Assets\Script\Window\Graph\GraphManager\TimeGraphManager.cs" />
      <Compile Include="Assets\Script\Window\Graph\Preference\GraphTypeSetting.cs" />
      <Compile Include="Assets\Script\Window\Graph\Preference\PointerSetting.cs" />
      <Compile Include="Assets\Script\Window\Graph\Preference\Setting.cs" />

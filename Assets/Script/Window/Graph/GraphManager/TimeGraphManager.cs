@@ -2,31 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RectGraphManager : GraphManager {
+public class TimeGraphManager : GraphManager {
 
 	protected override void Awake() {
 		base.Awake ();
-		//type = GraphType.Rect;
 	}
 
 	// Use this for initialization
 	protected override void Start () {
-		
+
 	}
-	
+
 	// Update is called once per frame
 	protected override void Update () {
-		
+
 	}
 
 	public override void Init() {
-		Debug.Log ("<color=green>RectGraphManager.Init()</color>");
+		Debug.Log ("<color=green>TimeGraphManager.Init()</color>");
 		base.Init ();
 
-		xMax = DataBase.GetMax (xType);
-		xMin = DataBase.GetMin (xType);
-
-		//ShowAxis ();
+		points [markerIdx].sizeDelta *= 1.5f;
+		xMin = (float)(0 - markerIdx);
+		xMax = (float)(0 + (pointNum - markerIdx));
 	}
 
 	public override void Set(string values) {
@@ -47,7 +45,7 @@ public class RectGraphManager : GraphManager {
 		 */
 
 		fish = int.Parse (tmp [0]);
-		xType = int.Parse (tmp [1]);
+		//xType = int.Parse (tmp [1]);
 		yType = int.Parse (tmp [2]);
 		pointNum = int.Parse (tmp [3]);
 		markerRate = float.Parse (tmp [4]);
@@ -58,20 +56,7 @@ public class RectGraphManager : GraphManager {
 		useAutoSize = int.Parse (tmp [9]) > 0 ? true : false;
 
 		Init ();
-
-		/*
-		gc.mFish = int.Parse (tmp [0]);
-		gc.mXType = int.Parse (tmp [1]);
-		gc.mYType = int.Parse (tmp [2]);
-		gc.mPointNum = int.Parse (tmp [3]);
-		gc.mMarkerRate = float.Parse (tmp [4]);
-		gc.mPointColorNum = int.Parse (tmp [5]);
-		gc.mUseColorGrad = int.Parse (tmp [6]) > 0 ? true : false;
-		gc.mUseSizeGrad = int.Parse (tmp [7]) > 0 ? true : false;
-		gc.mPlotSize = float.Parse (tmp [8]);
-		gc.mUseAutoSize = int.Parse (tmp [9]) > 0 ? true : false;
-		*/
-}
+	}
 
 	/*
 	public void SetGraph(int fish_, int xType_, int yType_) {
@@ -82,13 +67,15 @@ public class RectGraphManager : GraphManager {
 	*/
 
 	public override void Plot(int step) {
+		xMin = (float)(step - markerIdx);
+		xMax = (float)(step + (pointNum - markerIdx));
 		//Debug.Log ("In RectGraphManager : " + step);
 		for (int i = 0; i < pointNum; i++) {
-			if (step - markerIdx + i < 0) {
+			if (step - markerIdx + i < 0 || step - markerIdx + i >= DataBase.step) {
 				points [i].gameObject.SetActive (false);
 			} else {
 				points [i].gameObject.SetActive (true);
-				points [i].localPosition = GraphToLocal (new Vector2 (DataBase.GetData (step - markerIdx + i, fish, xType), DataBase.GetData (step - markerIdx + i, fish, yType)));
+				points [i].localPosition = GraphToLocal (new Vector2 (step - markerIdx + i, DataBase.GetData (step - markerIdx + i, fish, yType)));
 			}
 		}
 	}
@@ -101,9 +88,9 @@ public class RectGraphManager : GraphManager {
 
 	public Vector2 GraphToLocal(Vector2 v) {
 		Vector2 ret = new Vector2 (
-			              xExp * recTra.rect.width / (xMax - xMin) * (v.x - (xMax + xMin) / 2f),
-			              yExp * recTra.rect.height / (yMax - yMin) * (v.y - (yMax + yMin) / 2f));
-		
+			xExp * recTra.rect.width / (xMax - xMin) * (v.x - (xMax + xMin) / 2f),
+			yExp * recTra.rect.height / (yMax - yMin) * (v.y - (yMax + yMin) / 2f));
+
 		return ret;
 	}
 }

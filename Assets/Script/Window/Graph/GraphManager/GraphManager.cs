@@ -14,7 +14,7 @@ public class GraphManager : MonoBehaviour {
 	[SerializeField]
 	protected GameObject gridLineObj = null;
 	//[SerializeField]
-	public int pointNum = 10;
+	public int pointNum = 50;
 	[SerializeField, Range(0,1)]
 	public float markerRate = 1f;
 	[SerializeField]
@@ -33,12 +33,15 @@ public class GraphManager : MonoBehaviour {
 	//[SerializeField]
 	public int fish = 0;
 	//[SerializeField]
-	public int yType = 0;
+	public int xType = 0;
+
+	public int yType = 1;
 
 	protected GraphContent gc;
 
 	protected int markerIdx;
 	protected float yMax, yMin, xExp = 1f, yExp = 1f;
+	protected float xMax, xMin;
 	protected GridLineController xAxis, yAxis;
 	protected RectTransform[] points;
 	//protected Color pointColor;
@@ -83,12 +86,13 @@ public class GraphManager : MonoBehaviour {
 			Destroy (t.gameObject);
 		
 		points = new RectTransform[pointNum];
-		markerIdx = (int)(pointNum * markerRate + 0.5f);
+		markerIdx = (int)((pointNum - 1) * markerRate + 0.5f);
 		//pointColor = ProjectData.ColorList.colors[pointColorNum];
 		for (int i = 0; i < pointNum; i++) {
 			GameObject obj = Instantiate (pointObj, plot);
 			points [i] = obj.GetComponent<RectTransform> ();
 			points [i].GetComponent<Image> ().color = ProjectData.ColorList.colors[pointColorNum];
+			points [i].gameObject.SetActive (false);
 		}
 
 		if (useColorGrad) {

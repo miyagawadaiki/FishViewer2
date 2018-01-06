@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RectGraphManager : GraphManager {
+public class PolarGraphManager : GraphManager {
 
 	protected override void Awake() {
 		base.Awake ();
-		//type = GraphType.Rect;
 	}
 
 	// Use this for initialization
@@ -20,11 +19,13 @@ public class RectGraphManager : GraphManager {
 	}
 
 	public override void Init() {
-		Debug.Log ("<color=green>RectGraphManager.Init()</color>");
+		Debug.Log ("<color=green>PolarGraphManager.Init()</color>");
 		base.Init ();
 
 		xMax = DataBase.GetMax (xType);
-		xMin = DataBase.GetMin (xType);
+		xMin = -xMax;
+		yMax = xMax;
+		yMin = -xMax;
 
 		//ShowAxis ();
 	}
@@ -58,20 +59,7 @@ public class RectGraphManager : GraphManager {
 		useAutoSize = int.Parse (tmp [9]) > 0 ? true : false;
 
 		Init ();
-
-		/*
-		gc.mFish = int.Parse (tmp [0]);
-		gc.mXType = int.Parse (tmp [1]);
-		gc.mYType = int.Parse (tmp [2]);
-		gc.mPointNum = int.Parse (tmp [3]);
-		gc.mMarkerRate = float.Parse (tmp [4]);
-		gc.mPointColorNum = int.Parse (tmp [5]);
-		gc.mUseColorGrad = int.Parse (tmp [6]) > 0 ? true : false;
-		gc.mUseSizeGrad = int.Parse (tmp [7]) > 0 ? true : false;
-		gc.mPlotSize = float.Parse (tmp [8]);
-		gc.mUseAutoSize = int.Parse (tmp [9]) > 0 ? true : false;
-		*/
-}
+	}
 
 	/*
 	public void SetGraph(int fish_, int xType_, int yType_) {
@@ -100,10 +88,11 @@ public class RectGraphManager : GraphManager {
 	}
 
 	public Vector2 GraphToLocal(Vector2 v) {
+		Vector2 vv = new Vector2 (Mathf.Cos (v.y), Mathf.Sin (v.y)) * v.x;
 		Vector2 ret = new Vector2 (
-			              xExp * recTra.rect.width / (xMax - xMin) * (v.x - (xMax + xMin) / 2f),
-			              yExp * recTra.rect.height / (yMax - yMin) * (v.y - (yMax + yMin) / 2f));
-		
+			xExp * recTra.rect.width / (xMax - xMin) * (vv.x - (xMax + xMin) / 2f),
+			yExp * recTra.rect.height / (yMax - yMin) * (vv.y - (yMax + yMin) / 2f));
+
 		return ret;
 	}
 }
