@@ -23,6 +23,14 @@ public class MyWindowContent : MonoBehaviour {
 
 	//public abstract MyWindowContent Clone ();
 
+	public virtual void OnTranslate(Vector2 vec) {
+
+	}
+
+	public virtual void OnExpand(Vector2 vec, Vector2 expandDir) {
+
+	}
+
 	public virtual void OnLeftClick (Vector2 pos) {
 		mwc.AppearMenu ();
 	}

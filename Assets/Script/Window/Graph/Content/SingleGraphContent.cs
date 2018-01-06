@@ -59,12 +59,20 @@ public class SingleGraphContent : GraphContent {
 	}
 
 	public override void ShowAxis() {
+		if (graphMan == null)
+			return;
 		graphMan.ShowAxis ();
 	}
 
 	public override void ShowGrid() {
 
 	}
+
+	/*
+	public override void OnExpand(Vector2 vec) {
+		ShowAxis ();
+	}
+	*/
 
 	void OnDestroy() {
 		RemoveGraphManager ();

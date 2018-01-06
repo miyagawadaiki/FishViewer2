@@ -213,6 +213,8 @@ public class MyWindowManager : MonoBehaviour {
 					mwc.Translate (now - start);
 					//if (!mwc.IsInWindowManager ())
 					//	mwc.Translate (start - now);
+
+					mwc.content.OnTranslate (now - start);
 				}
 			}
 		} else if(isExpMode) {
@@ -227,6 +229,9 @@ public class MyWindowManager : MonoBehaviour {
 						//if (!mwc.IsInWindowManager ())
 						//	mwc.Expand (start - now, expandDir);
 					}
+
+					if(!expandDir.Equals(new Vector2()))
+						mwc.content.OnExpand (now - start, expandDir);
 				}
 			}
 		}

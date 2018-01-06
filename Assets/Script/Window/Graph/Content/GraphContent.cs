@@ -70,6 +70,10 @@ public class GraphContent : MyWindowContent {
 
 	}
 
+	public override void OnExpand(Vector2 vec, Vector2 expandDir) {
+		ShowAxis ();
+	}
+
 	/*
 	public override void OnLeftClick(Vector2 pos) {
 		mwc.AppearMenu ();

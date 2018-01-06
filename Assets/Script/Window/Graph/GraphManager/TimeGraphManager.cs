@@ -23,8 +23,8 @@ public class TimeGraphManager : GraphManager {
 		base.Init ();
 
 		points [markerIdx].sizeDelta *= 1.5f;
-		xMin = (float)(0 - markerIdx);
-		xMax = (float)(0 + (pointNum - markerIdx));
+		xMin = (float)(DataBase.step - markerIdx);
+		xMax = (float)(DataBase.step + (pointNum - markerIdx));
 	}
 
 	public override void Set(string values) {
@@ -82,8 +82,8 @@ public class TimeGraphManager : GraphManager {
 
 	public override void ShowAxis() {
 		base.ShowAxis ();
-		xAxis.Draw (false, GraphToLocal (new Vector2 (0f, 0f)), 1.5f, 0f);
-		yAxis.DrawLineOnly (true, GraphToLocal (new Vector2 (0f, 0f)), 1.5f);
+		xAxis.Draw (false, GraphToLocal (new Vector2 (DataBase.step, 0f)), 1.5f, 0f);
+		yAxis.DrawLineOnly (true, GraphToLocal (new Vector2 (DataBase.step, 0f)), 1.5f);
 	}
 
 	public Vector2 GraphToLocal(Vector2 v) {
