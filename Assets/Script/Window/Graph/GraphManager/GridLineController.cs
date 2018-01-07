@@ -50,6 +50,9 @@ public class GridLineController : MonoBehaviour {
 			textRecTra.localPosition = new Vector2 (localPos.x, 0f);
 		}
 		text.text = value + "";
+
+		//if (!viewRecTra.rect.Contains (lineRecTra.localPosition))
+			//Hide ();
 	}
 
 	public void DrawLineOnly(bool isVertical, Vector2 localPos, float bold) {
@@ -70,6 +73,9 @@ public class GridLineController : MonoBehaviour {
 			textRecTra.localPosition = new Vector2 (localPos.x, 0f);
 
 		}
+
+		//if (!viewRecTra.rect.Contains (lineRecTra.localPosition))
+			//Hide ();
 	}
 
 	public void DrawTextOnly(Vector2 localPos, float value) {

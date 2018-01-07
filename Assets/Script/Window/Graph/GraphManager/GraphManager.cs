@@ -49,6 +49,11 @@ public class GraphManager : MonoBehaviour {
 
 	protected RectTransform recTra;
 
+	protected float[] gridDiv = { 0.1f, 0.2f, 1f, 2f, 5f, 10f, 20f, 50f, 100f, 200f, 500f };
+
+
+
+
 	protected virtual void Awake() {
 		recTra = this.GetComponent<RectTransform> ();
 		//pointNum = defaultPointNum;

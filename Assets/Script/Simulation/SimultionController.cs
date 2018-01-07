@@ -31,12 +31,14 @@ public class SimultionController : MonoBehaviour {
 	private Image repEndFill = null;
 	[SerializeField]
 	private Image repEndHandle = null;
+	[SerializeField]
+	private Text fileName = null;
 
 	private bool playing, repeating;
 	private float time = 0f, dt, defDt;
 	private int repStartStep, repEndStep;
 	private Color repButtonColor, repOnColor, repOffColor;
-	//private int stepMemo = 0;
+	private bool firstFlag = true;
 
 	void Awake() {
 		
@@ -44,6 +46,10 @@ public class SimultionController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Init ();
+	}
+
+	public void Init() {
 		stepSlider.maxValue = (float)DataBase.step;
 		stepSlider.minValue = 0f;
 		stepSlider.value = 0f;
@@ -57,9 +63,14 @@ public class SimultionController : MonoBehaviour {
 		speedSlider.minValue = 1f;
 		speedSlider.value = 10f;
 
-		repButtonColor = repButtonImage.color;
-		repOnColor = repStartHandle.color;
-		repOffColor = backgroundImage.color;
+		if (firstFlag) {
+			repButtonColor = repButtonImage.color;
+			repOnColor = repStartHandle.color;
+			repOffColor = backgroundImage.color;
+			firstFlag = false;
+		}
+
+		fileName.text = ProjectData.FileName.GetName (ProjectData.FileKey.Read);
 
 		defDt = DataBase.dt;
 

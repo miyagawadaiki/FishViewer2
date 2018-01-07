@@ -28,7 +28,9 @@ public class Simulation {
 		}
 
 		if (!isEnabled)
-			GameObject.Find ("MyAppManager").GetComponent<MyAppManager>().ActivateSimuPanel();
+			GameObject.Find ("MyAppManager").GetComponent<MyAppManager> ().ActivateSimuPanel ();
+		
+		GameObject.Find ("SimuPanel").GetComponent<SimultionController> ().Init ();
 		
 		isEnabled = true;
 	}
