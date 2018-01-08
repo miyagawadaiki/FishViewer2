@@ -72,6 +72,10 @@ public class MyAppManager : MonoBehaviour {
 			} else if (Input.GetMouseButtonUp (1)) {
 
 			}
+
+			if (Input.GetAxis ("Mouse ScrollWheel") != 0f) {
+				mwm.OnWheelChange (Input.GetAxis ("Mouse ScrollWheel"));
+			}
 		}
 	}
 

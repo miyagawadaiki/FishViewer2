@@ -94,11 +94,11 @@ public class PolarGraphManager : GraphManager {
 		yMax -= tmp.y;
 		yMin -= tmp.y;
 
-		ShowAxis ();
+		SetAxis ();
 	}
 
-	public override void ShowAxis() {
-		base.ShowAxis ();
+	public override void SetAxis() {
+		base.SetAxis ();
 		Vector2 origin = new Vector2 ();
 		if(yMin <= origin.y && yMax >= origin.y)
 			xAxis.Draw (false, GraphToLocal (origin), 1.5f, 0f);

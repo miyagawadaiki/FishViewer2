@@ -21,6 +21,8 @@ public class GraphContent : MyWindowContent {
 
 	[System.NonSerialized]
 	public GraphManager memo = null;
+	[System.NonSerialized]
+	public ViewMode viewMode = ViewMode.ShowAxis;
 
 	// Use this for initialization
 	public virtual void Start () {
@@ -33,7 +35,11 @@ public class GraphContent : MyWindowContent {
 		//mwc.MoveTo (topLeft + new Vector2 (10f * num + 10f, - 10f * num - 10f));
 		mwc.MoveTo(new Vector2(0.1f * num - 1f, 1f - 0.1f * num));
 
-		GameObject obj = Instantiate (Resources.Load("Menubar/Setting") as GameObject, mwc.menuArea.transform);
+		GameObject obj = Instantiate (Resources.Load ("Menubar/Grid") as GameObject, mwc.menuArea.transform);
+		obj.GetComponent<GridButtonController> ().gc = this;
+		obj.GetComponent<Button>().onClick.AddListener(() => ChangeGridMode());
+
+		obj = Instantiate (Resources.Load("Menubar/Setting") as GameObject, mwc.menuArea.transform);
 		obj.GetComponent<Button> ().onClick.AddListener (() => OpenSettingWindow ());
 	}
 	
@@ -54,19 +60,41 @@ public class GraphContent : MyWindowContent {
 
 	}
 
-	public virtual void ShowAxis() {
+	public void ChangeGridMode() {
+		switch (viewMode) {
+		case ViewMode.ShowAxis:
+			viewMode = ViewMode.ShowGrid;
+			break;
+		case ViewMode.ShowGrid:
+			viewMode = ViewMode.Hide;
+			break;
+		case ViewMode.Hide:
+			viewMode = ViewMode.ShowAxis;
+			break;
+		default:
+			break;
+		}
+
+		ShowView ();
+	}
+
+	public virtual void ShowView() {
 
 	}
 
-	public virtual void ShowGrid() {
+	public virtual void SetAxis() {
 
 	}
 
-	public virtual void ShowGridCompletely() {
+	public virtual void SetGrid() {
 
 	}
 
-	public virtual void HideGrid() {
+	public virtual void SetGridCompletely() {
+
+	}
+
+	public virtual void HideView() {
 
 	}
 
@@ -79,7 +107,7 @@ public class GraphContent : MyWindowContent {
 	}
 
 	public override void OnExpand(Vector2 vec, Vector2 expandDir) {
-		ShowAxis ();
+		ShowView();
 	}
 		
 	public override void OnLeftClick(Vector2 pos) {
@@ -107,4 +135,10 @@ public enum GraphContentType {
 	Single,
 	MultiEven,
 	MultiVarious
+}
+
+public enum ViewMode {
+	ShowAxis,
+	ShowGrid,
+	Hide,
 }

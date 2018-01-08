@@ -106,20 +106,56 @@ public class RectGraphManager : GraphManager {
 		yMax -= tmp.y;
 		yMin -= tmp.y;
 
-		ShowAxis ();
+		//SetAxis ();
 	}
 
-	public override void ShowAxis() {
-		base.ShowAxis ();
+	public override void SetAxis() {
+		base.SetAxis ();
 		Vector2 origin = new Vector2 ();
-		if (yMin <= origin.y && yMax >= origin.y)
-			xAxis.Draw (false, GraphToLocal (origin), 1.5f, 0f);
+		if (xMin <= origin.x && xMax >= origin.x)
+			xAxis.DrawLineOnly (true, GraphToLocal (origin), 1.5f);
 		else
 			xAxis.Hide ();
-		if (xMin <= origin.x && xMax >= origin.x)
-			yAxis.DrawLineOnly (true, GraphToLocal (origin), 1.5f);
+		if (yMin <= origin.y && yMax >= origin.y)
+			yAxis.Draw (false, GraphToLocal (origin), 1.5f, 0f);
 		else
 			yAxis.Hide ();
+	}
+
+	public override void SetGrid() {
+		base.SetGrid ();
+		//SetAxis ();
+
+		int i;
+		for (i = 0; i < gridNum; i++) {
+			Vector2 v = new Vector2 ((i + 1) * xGridValue, 0f);
+			if (xMin <= v.x && xMax >= v.x)
+				xGrids [i].Draw (true, GraphToLocal (v), 1f, v.x);
+			else
+				xGrids [i].Hide ();
+		}
+		for (; i < gridNum * 2; i++) {
+			Vector2 v = new Vector2 ((i - gridNum + 1) * xGridValue * -1f, 0f);
+			if (xMin <= v.x && xMax >= v.x)
+				xGrids [i].Draw (true, GraphToLocal (v), 1f, v.x);
+			else
+				xGrids [i].Hide ();
+		}
+
+		for (i = 0; i < gridNum; i++) {
+			Vector2 v = new Vector2 (0f, (i + 1) * yGridValue);
+			if (yMin <= v.y || yMax >= v.y)
+				yGrids [i].Draw (false, GraphToLocal (v), 1f, v.y);
+			else
+				yGrids [i].Hide ();
+		}
+		for (; i < gridNum * 2; i++) {
+			Vector2 v = new Vector2 (0f, (i - gridNum + 1) * yGridValue * -1f);
+			if (yMin <= v.y || yMax >= v.y)
+				yGrids [i].Draw (false, GraphToLocal (v), 1f, v.y);
+			else
+				yGrids [i].Hide ();
+		}
 	}
 
 	public Vector2 GraphToLocal(Vector2 v) {

@@ -48,9 +48,9 @@ public class SingleGraphContent : GraphContent {
 		//Init ();
 		graphMan.Set (parameters);
 		graphMan.Init ();
-		//
-		ShowAxis ();
-		//
+
+		//SetAxis ();
+		ShowView();
 
 
 		//mGraphType = gt;
@@ -60,26 +60,53 @@ public class SingleGraphContent : GraphContent {
 		if (graphMan == null)
 			return;
 		graphMan.Translate (start, end);
+		ShowView ();
 	}
 
 	public override void Expand(float expand) {
 		if (graphMan == null)
 			return;
 		graphMan.Expand (expand);
+		ShowView ();
 	}
 
 	public override void RemoveGraphManager() {
 		Simulation.Remove (graphMan);
 	}
 
-	public override void ShowAxis() {
-		if (graphMan == null)
-			return;
-		graphMan.ShowAxis ();
+	public override void ShowView() {
+		switch(viewMode) {
+		case ViewMode.ShowAxis:
+			SetAxis ();
+			break;
+		case ViewMode.ShowGrid:
+			SetAxis ();
+			SetGrid ();
+			break;
+		case ViewMode.Hide:
+			HideView ();
+			break;
+		default:
+			break;
+		}
 	}
 
-	public override void ShowGrid() {
+	public override void SetAxis() {
+		if (graphMan == null)
+			return;
+		graphMan.SetAxis ();
+	}
 
+	public override void SetGrid() {
+		if (graphMan == null)
+			return;
+		graphMan.SetGrid ();
+	}
+
+	public override void HideView() {
+		if (graphMan == null)
+			return;
+		graphMan.HideView ();
 	}
 
 	/*

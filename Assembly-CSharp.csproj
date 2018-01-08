@@ -72,6 +72,7 @@
      <Compile Include="Assets\Script\Window\Graph\Preference\Setting.cs" />
      <Compile Include="Assets\Script\Window\Graph\Preference\SourceSetting.cs" />
      <Compile Include="Assets\Script\Window\MenuButton\DestroyButtonController.cs" />
+     <Compile Include="Assets\Script\Window\MenuButton\GridButtonController.cs" />
      <Compile Include="Assets\Script\Window\MyWindowContent.cs" />
      <Compile Include="Assets\Script\Window\MyWindowController.cs" />
      <Compile Include="Assets\Script\Window\MyWindowManager.cs" />

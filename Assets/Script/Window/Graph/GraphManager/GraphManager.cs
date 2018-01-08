@@ -37,6 +37,8 @@ public class GraphManager : MonoBehaviour {
 
 	public int yType = 1;
 
+	//public bool showAxis, showGrid;
+
 	protected GraphContent gc;
 
 	protected int markerIdx;
@@ -50,6 +52,9 @@ public class GraphManager : MonoBehaviour {
 	protected RectTransform recTra;
 
 	protected float[] gridDiv = { 0.1f, 0.2f, 1f, 2f, 5f, 10f, 20f, 50f, 100f, 200f, 500f };
+	protected float xGridValue = 0.1f, yGridValue = 0.1f;
+	protected GridLineController[] xGrids, yGrids;
+	protected int gridNum = 5;
 
 
 
@@ -131,7 +136,13 @@ public class GraphManager : MonoBehaviour {
 			}
 		}
 
-		HideGrid ();
+		xGrids = new GridLineController[gridNum * 2];
+		yGrids = new GridLineController[gridNum * 2];
+		for (int i = 0; i < gridNum * 2; i++) {
+			xGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
+			yGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
+		}
+		HideView ();
 	}
 
 	public virtual void Set(string values) {
@@ -165,19 +176,46 @@ public class GraphManager : MonoBehaviour {
 		yExp += expand;
 	}
 
-	public virtual void ShowAxis() {
+	/*
+	public virtual void ShowView() {
+		if (!showAxis && !showGrid) {
+			HideGrid ();
+			return;
+		}
+
+		if (showAxis)
+			SetAxis ();
+		if (showGrid)
+			SetGrid ();
+	*/
+
+	public virtual void SetAxis() {
 		
 	}
 
-	public virtual void ShowGrid() {
+	public virtual void SetGrid() {
+		float xRange = xMax - xMin;
+		for (int i = 0; i < gridDiv.Length; i++) {
+			if (xRange / gridDiv [i] < (float)gridNum * 2f)
+				break;
+			xGridValue = gridDiv [i];
+		}
+
+		float yRange = yMax - yMin;
+		for (int i = 0; i < gridDiv.Length; i++) {
+			if (yRange / gridDiv [i] < (float)gridNum * 2f)
+				break;
+			yGridValue = gridDiv [i];
+		}
+
+		Debug.Log ("gridValue=" + new Vector2 (xGridValue, yGridValue));
+	}
+
+	public virtual void SetGridCompletely() {
 		
 	}
 
-	public virtual void ShowGridCompletely() {
-		
-	}
-
-	public virtual void HideGrid() {
+	public virtual void HideView() {
 		foreach (Transform t in view) {
 			t.gameObject.GetComponent<GridLineController> ().Hide ();
 		}

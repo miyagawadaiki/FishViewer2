@@ -266,6 +266,14 @@ public class MyWindowManager : MonoBehaviour {
 		expandDir = new Vector2 ();
 	}
 
+	public void OnWheelChange(float value) {
+		foreach (MyWindowController mwc in windowList) {
+			if (mwc.isSelected) {
+				mwc.content.OnWheelChange(value);
+			}
+		}
+	}
+
 
 
 	public int Count() {

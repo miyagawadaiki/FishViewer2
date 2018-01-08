@@ -31,7 +31,7 @@ public class GridLineController : MonoBehaviour {
 		
 	}
 
-	public void Draw(bool isVertical, Vector2 localPos, float bold, float value) {
+	public virtual void Draw(bool isVertical, Vector2 localPos, float bold, float value) {
 		//Debug.Log ("localPos = " + localPos);
 		text.gameObject.SetActive (true);
 		if (isVertical) {
@@ -55,7 +55,7 @@ public class GridLineController : MonoBehaviour {
 			//Hide ();
 	}
 
-	public void DrawLineOnly(bool isVertical, Vector2 localPos, float bold) {
+	public virtual void DrawLineOnly(bool isVertical, Vector2 localPos, float bold) {
 		text.gameObject.SetActive (false);
 		if (isVertical) {
 			lineRecTra.anchorMin = new Vector2 (0.5f, 0f);
@@ -78,15 +78,15 @@ public class GridLineController : MonoBehaviour {
 			//Hide ();
 	}
 
-	public void DrawTextOnly(Vector2 localPos, float value) {
+	public virtual void DrawTextOnly(Vector2 localPos, float value) {
 		Draw (true, localPos, 0f, value);
 	}
 
-	public void Hide() {
+	public virtual void Hide() {
 		DrawLineOnly (true, new Vector2 (), 0f);
 	}
 
-	public void SetAxis() {
+	public virtual void SetAxis() {
 		image.color = Color.black;
 		text.color = Color.black;
 	}
