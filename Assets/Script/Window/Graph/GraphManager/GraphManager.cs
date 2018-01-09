@@ -8,9 +8,9 @@ public class GraphManager : MonoBehaviour {
 	public GraphType graphType;
 
 	[SerializeField]
-	protected Transform view = null;
+	protected RectTransform view = null;
 	[SerializeField]
-	protected Transform plot = null;
+	protected RectTransform plot = null;
 	[SerializeField]
 	protected GameObject gridLineObj = null;
 	//[SerializeField]
@@ -44,7 +44,7 @@ public class GraphManager : MonoBehaviour {
 	protected int markerIdx;
 	protected float yMax, yMin, xExp = 1f, yExp = 1f;
 	protected float xMax, xMin;
-	protected GridLineController xAxis, yAxis;
+	//protected GridLineController xAxis, yAxis;
 	protected RectTransform[] points;
 	//protected Color pointColor;
 	protected float markerRate = 0.5f;
@@ -54,7 +54,8 @@ public class GraphManager : MonoBehaviour {
 	protected float[] gridDiv = { 0.1f, 0.2f, 1f, 2f, 5f, 10f, 20f, 50f, 100f, 200f, 500f };
 	protected float xGridValue = 0.1f, yGridValue = 0.1f;
 	protected GridLineController[] xGrids, yGrids;
-	protected int gridNum = 5;
+	protected int gridNum = 11, xPosSt, xNegSt, yPosSt, yNegSt, xAxisIdx, yAxisIdx;
+	protected int[] xGridIdxs, yGridIdxs;
 
 
 
@@ -85,13 +86,15 @@ public class GraphManager : MonoBehaviour {
 
 		foreach (Transform t in view)
 			Destroy (t.gameObject);
-		
+
+		/*
 		xAxis = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
 		yAxis = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
 		xAxis.gameObject.name = "x-axis";
 		yAxis.gameObject.name = "y-axis";
 		xAxis.SetAxis ();
 		yAxis.SetAxis ();
+		*/
 
 		foreach (Transform t in plot)
 			Destroy (t.gameObject);
@@ -136,12 +139,14 @@ public class GraphManager : MonoBehaviour {
 			}
 		}
 
-		xGrids = new GridLineController[gridNum * 2];
-		yGrids = new GridLineController[gridNum * 2];
-		for (int i = 0; i < gridNum * 2; i++) {
+		xGrids = new GridLineController[gridNum];
+		yGrids = new GridLineController[gridNum];
+		for (int i = 0; i < gridNum; i++) {
 			xGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
 			yGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
 		}
+		xGridIdxs = new int[gridNum];
+		yGridIdxs = new int[gridNum];
 		HideView ();
 	}
 
@@ -173,7 +178,12 @@ public class GraphManager : MonoBehaviour {
 
 	public virtual void Expand(float expand) {
 		xExp += expand;
+		if (xExp < 1f)
+			xExp = 1f;
+				
 		yExp += expand;
+		if (yExp < 1f)
+			yExp = 1f;
 	}
 
 	/*
@@ -189,29 +199,15 @@ public class GraphManager : MonoBehaviour {
 			SetGrid ();
 	*/
 
-	public virtual void SetAxis() {
+	public virtual void SetGrid() {
 		
 	}
 
-	public virtual void SetGrid() {
-		float xRange = xMax - xMin;
-		for (int i = 0; i < gridDiv.Length; i++) {
-			if (xRange / gridDiv [i] < (float)gridNum * 2f)
-				break;
-			xGridValue = gridDiv [i];
-		}
-
-		float yRange = yMax - yMin;
-		for (int i = 0; i < gridDiv.Length; i++) {
-			if (yRange / gridDiv [i] < (float)gridNum * 2f)
-				break;
-			yGridValue = gridDiv [i];
-		}
-
-		Debug.Log ("gridValue=" + new Vector2 (xGridValue, yGridValue));
+	public virtual void ShowAxis() {
+		
 	}
 
-	public virtual void SetGridCompletely() {
+	public virtual void ShowGrid() {
 		
 	}
 

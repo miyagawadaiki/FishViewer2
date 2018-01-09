@@ -82,15 +82,15 @@ public class GraphContent : MyWindowContent {
 
 	}
 
-	public virtual void SetAxis() {
-
-	}
-
 	public virtual void SetGrid() {
 
 	}
 
-	public virtual void SetGridCompletely() {
+	public virtual void ShowAxis() {
+
+	}
+
+	public virtual void ShowGrid() {
 
 	}
 

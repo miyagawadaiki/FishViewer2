@@ -75,13 +75,14 @@ public class SingleGraphContent : GraphContent {
 	}
 
 	public override void ShowView() {
+		SetGrid ();
+
 		switch(viewMode) {
 		case ViewMode.ShowAxis:
-			SetAxis ();
+			ShowAxis ();
 			break;
 		case ViewMode.ShowGrid:
-			SetAxis ();
-			SetGrid ();
+			ShowGrid ();
 			break;
 		case ViewMode.Hide:
 			HideView ();
@@ -91,16 +92,22 @@ public class SingleGraphContent : GraphContent {
 		}
 	}
 
-	public override void SetAxis() {
-		if (graphMan == null)
-			return;
-		graphMan.SetAxis ();
-	}
-
 	public override void SetGrid() {
 		if (graphMan == null)
 			return;
 		graphMan.SetGrid ();
+	}
+
+	public override void ShowAxis() {
+		if (graphMan == null)
+			return;
+		graphMan.ShowAxis ();
+	}
+
+	public override void ShowGrid() {
+		if (graphMan == null)
+			return;
+		graphMan.ShowGrid ();
 	}
 
 	public override void HideView() {
