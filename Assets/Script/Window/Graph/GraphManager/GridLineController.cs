@@ -6,26 +6,22 @@ using UnityEngine.UI;
 public class GridLineController : MonoBehaviour {
 
 	[SerializeField]
-	private GameObject textObj = null;
-	
-	private RectTransform viewRecTra, lineRecTra, textRecTra;
-	private Image image;
-	private Text text;
-	private Color defColor;
+	protected GameObject textObj = null;
 
-
-
+	protected RectTransform viewRecTra, lineRecTra, textRecTra;
+	protected Image image;
+	protected Text text;
+	protected Color defColor;
 
 	public bool isAxis, isVertical;
 	public Vector2 localPos;
 	public float value;
 
 
-	void Awake() {
+	protected virtual void Awake() {
 		viewRecTra = this.transform.parent.GetComponent<RectTransform> ();
 		lineRecTra = this.GetComponent<RectTransform> ();
 		textRecTra = textObj.GetComponent<RectTransform> ();
-		Debug.Log ("textRectra.gameObject = " + textRecTra.gameObject.name);
 		image = this.GetComponent<Image> ();
 		text = textObj.GetComponent<Text> ();
 		defColor = image.color;
@@ -45,6 +41,14 @@ public class GridLineController : MonoBehaviour {
 		this.isVertical = isVertical;
 		this.localPos = localPos;
 		this.value = value;
+	}
+
+	public virtual void SetCircle(Vector2 localZero, float localRadius, float angle, float value) {
+
+	}
+
+	public virtual void SetAngle(Vector2 localZero) {
+
 	}
 
 	public virtual void Draw(bool drawLine, bool showText) {
@@ -102,7 +106,7 @@ public class GridLineController : MonoBehaviour {
 
 
 
-
+	/*
 	public virtual void Draw(bool isVertical, Vector2 localPos, float bold, float value) {
 		//Debug.Log ("localPos = " + localPos);
 		if (isVertical && (localPos.x < viewRecTra.rect.width / -2f || localPos.x > viewRecTra.rect.width / 2f)) {
@@ -181,7 +185,7 @@ public class GridLineController : MonoBehaviour {
 	public virtual void Hide() {
 		DrawLineOnly (true, new Vector2 (), 0f);
 	}
-	*/
+
 
 	public virtual void SetAxis() {
 		image.color = Color.black;
@@ -192,4 +196,5 @@ public class GridLineController : MonoBehaviour {
 		image.color = defColor;
 		text.color = defColor;
 	}
+	*/
 }

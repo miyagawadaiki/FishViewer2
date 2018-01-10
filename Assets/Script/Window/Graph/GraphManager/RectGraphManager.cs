@@ -26,63 +26,16 @@ public class RectGraphManager : GraphManager {
 		xMax = DataBase.GetMax (xType);
 		xMin = DataBase.GetMin (xType);
 
-		//ShowAxis ();
+		xGrids = new GridLineController[gridNum];
+		yGrids = new GridLineController[gridNum];
+		for (int i = 0; i < gridNum; i++) {
+			xGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
+			yGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
+		}
+
+		HideView ();
 	}
-
-	/*
-	public override void Set(string values) {
-		char[] separator = { ',' };
-		string[] tmp = values.Split (separator);
-
-		/* 
-		 * fish(0)
-		 * xType(1)
-		 * yType(2)
-		 * pointNum(3)
-		 * markerRate(4)
-		 * pointColor(5)
-		 * useColorGrad(6)
-		 * useSizeGrad(7)
-		 * sizeValue(8)
-		 * useAutoSize(9)
-		 
-
-		fish = int.Parse (tmp [0]);
-		xType = int.Parse (tmp [1]);
-		yType = int.Parse (tmp [2]);
-		pointNum = int.Parse (tmp [3]);
-		markerRate = float.Parse (tmp [4]);
-		pointColorNum = int.Parse (tmp [5]);
-		useColorGrad = int.Parse (tmp [6]) > 0 ? true : false;
-		useSizeGrad = int.Parse (tmp [7]) > 0 ? true : false;
-		plotSize = float.Parse (tmp [8]);
-		useAutoSize = int.Parse (tmp [9]) > 0 ? true : false;
-
-		Init ();
-
-		/*
-		gc.mFish = int.Parse (tmp [0]);
-		gc.mXType = int.Parse (tmp [1]);
-		gc.mYType = int.Parse (tmp [2]);
-		gc.mPointNum = int.Parse (tmp [3]);
-		gc.mMarkerRate = float.Parse (tmp [4]);
-		gc.mPointColorNum = int.Parse (tmp [5]);
-		gc.mUseColorGrad = int.Parse (tmp [6]) > 0 ? true : false;
-		gc.mUseSizeGrad = int.Parse (tmp [7]) > 0 ? true : false;
-		gc.mPlotSize = float.Parse (tmp [8]);
-		gc.mUseAutoSize = int.Parse (tmp [9]) > 0 ? true : false;
-
-	}
-	*/
-
-	/*
-	public void SetGraph(int fish_, int xType_, int yType_) {
-		fish = fish_;
-		xType = xType_;
-		yType = yType_;
-	}
-	*/
-
+		
 	public override void Plot(int step) {
 		//Debug.Log ("In RectGraphManager : " + step);
 		for (int i = 0; i < pointNum; i++) {
@@ -96,30 +49,6 @@ public class RectGraphManager : GraphManager {
 			}
 		}
 	}
-
-	/*
-	public override void Translate(Vector2 start, Vector2 end) {
-		//Debug.Log ("vec = " + vec);
-
-
-		//SetAxis ();
-	}
-	*/
-
-	/*
-	public override void SetAxis() {
-		base.SetAxis ();
-		Vector2 origin = new Vector2 ();
-		//if (xMin <= origin.x && xMax >= origin.x)
-			xAxis.DrawLineOnly (true, GraphToLocal (origin), 1.5f);
-		//else
-		//	xAxis.Hide ();
-		//if (yMin <= origin.y && yMax >= origin.y)
-			yAxis.Draw (false, GraphToLocal (origin), 1.5f, 0f);
-		//else
-		//	yAxis.Hide ();
-	}
-	*/
 
 	public override void SetGrid() {
 		base.SetGrid ();
@@ -155,11 +84,6 @@ public class RectGraphManager : GraphManager {
 			else
 				yGrids [i].Hide ();
 		}
-		/*
-		Vector2 v = new Vector2 (xGridIdxs [xAxisIdx] * xGridValue, yGridIdxs [yAxisIdx] * yGridValue);
-		xGrids [xAxisIdx].Draw (true, GraphToLocal (v), 1.5f, v.x);
-		yGrids [yAxisIdx].DrawLineOnly (false, GraphToLocal (v), 1.5f);
-		*/
 	}
 
 	public override void ShowGrid() {
@@ -170,62 +94,8 @@ public class RectGraphManager : GraphManager {
 			else
 				yGrids [i].Draw (true, true);
 		}
-		/*
-		Vector2 v = new Vector2 (xGridIdxs [xAxisIdx] * xGridValue, yGridIdxs [yAxisIdx] * yGridValue);
-		for(int i=0;i<gridNum;i++) {
-			if (xGridIdxs [i] < 10000)
-				xGrids [i].Draw (true, GraphToLocal (new Vector2 (xGridIdxs [i] * xGridValue, v.y)), 1f, xGridIdxs [i] * xGridValue);
-			if (yGridIdxs [i] < 10000)
-				yGrids [i].Draw (false, GraphToLocal (new Vector2 (v.x, yGridIdxs [i] * yGridValue)), 1f, yGridIdxs [i] * yGridValue);
-		}
-
-		ShowAxis ();
-		*/
 	}
-
-	/*
-	public override void SetGrid() {
-		base.SetGrid ();
-		//SetAxis ();
-
-
-
-
-		float xMax_ = xMax / xExp, xMin_ = xMin / xExp;
-		int i;
-		for (i = 0; i < gridNum; i++) {
-			Vector2 v = new Vector2 ((i + xPosSt + 1) * xGridValue, 0f);
-			if (xMin <= v.x && xMax >= v.x)
-				xGrids [i].Draw (true, GraphToLocal (v), 1f, v.x);
-			else
-				xGrids [i].Hide ();
-		}
-		for (; i < gridNum * 2; i++) {
-			Vector2 v = new Vector2 ((i + xNegSt - gridNum + 1) * xGridValue * -1f, 0f);
-			if (xMin <= v.x && xMax >= v.x)
-				xGrids [i].Draw (true, GraphToLocal (v), 1f, v.x);
-			else
-				xGrids [i].Hide ();
-		}
-
-		for (i = 0; i < gridNum; i++) {
-			Vector2 v = new Vector2 (0f, (i + yPosSt + 1) * yGridValue);
-			if (yMin <= v.y || yMax >= v.y)
-				yGrids [i].Draw (false, GraphToLocal (v), 1f, v.y);
-			else
-				yGrids [i].Hide ();
-		}
-		for (; i < gridNum * 2; i++) {
-			Vector2 v = new Vector2 (0f, (i + yNegSt - gridNum + 1) * yGridValue * -1f);
-			if (yMin <= v.y || yMax >= v.y)
-				yGrids [i].Draw (false, GraphToLocal (v), 1f, v.y);
-			else
-				yGrids [i].Hide ();
-		}
-
-	}
-	*/
-
+		
 	public override Vector2 GraphToLocal (Vector2 v) {
 		return base.RectGraphToLocal (v);
 	}
@@ -233,16 +103,4 @@ public class RectGraphManager : GraphManager {
 	public override Vector2 LocalToGraph (Vector2 v) {
 		return base.LocalToRectGraph (v);
 	}
-
-	/*
-	public override Vector2 RectGraphToLocal(Vector2 v) {
-		
-	}
-	*/
-
-	/*
-	public override Vector2 LocalToRectGraph(Vector2 v) {
-		
-	}
-	*/
 }

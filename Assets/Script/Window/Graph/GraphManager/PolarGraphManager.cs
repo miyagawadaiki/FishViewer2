@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PolarGraphManager : GraphManager {
 
+	[SerializeField]
+	private GameObject angleLineObj = null;
+
+	private AngleLineController alc;
+
 	protected override void Awake() {
 		base.Awake ();
 		graphType = GraphType.Polar;
@@ -28,49 +33,15 @@ public class PolarGraphManager : GraphManager {
 		yMax = xMax;
 		yMin = -xMax;
 
-		//ShowAxis ();
+		xGrids = new GridLineController[gridNum];
+		for (int i = 0; i < gridNum; i++) {
+			xGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
+		}
+
+		alc = Instantiate (angleLineObj, view).GetComponent<AngleLineController> ();
+
+		HideView ();
 	}
-
-	/*
-	public override void Set(string values) {
-		char[] separator = { ',' };
-		string[] tmp = values.Split (separator);
-
-		/* 
-		 * fish(0)
-		 * xType(1)
-		 * yType(2)
-		 * pointNum(3)
-		 * markerRate(4)
-		 * pointColor(5)
-		 * useColorGrad(6)
-		 * useSizeGrad(7)
-		 * sizeValue(8)
-		 * useAutoSize(9)
-		 
-
-		fish = int.Parse (tmp [0]);
-		xType = int.Parse (tmp [1]);
-		yType = int.Parse (tmp [2]);
-		pointNum = int.Parse (tmp [3]);
-		markerRate = float.Parse (tmp [4]);
-		pointColorNum = int.Parse (tmp [5]);
-		useColorGrad = int.Parse (tmp [6]) > 0 ? true : false;
-		useSizeGrad = int.Parse (tmp [7]) > 0 ? true : false;
-		plotSize = float.Parse (tmp [8]);
-		useAutoSize = int.Parse (tmp [9]) > 0 ? true : false;
-
-		Init ();
-	}
-	*/
-
-	/*
-	public void SetGraph(int fish_, int xType_, int yType_) {
-		fish = fish_;
-		xType = xType_;
-		yType = yType_;
-	}
-	*/
 
 	public override void Plot(int step) {
 		//Debug.Log ("In RectGraphManager : " + step);
@@ -86,39 +57,63 @@ public class PolarGraphManager : GraphManager {
 		}
 	}
 
-	/*
-	public override void Translate(Vector2 start, Vector2 end) {
-		Vector2 tmp = LocalToRectGraph (end) - LocalToRectGraph(start);
-		//Debug.Log ("tmp = " + tmp);
-		xMax -= tmp.x;
-		xMin -= tmp.x;
-		yMax -= tmp.y;
-		yMin -= tmp.y;
-
-		//SetAxis ();
-	}
-	*/
-
 	public override void SetGrid() {
-		base.SetGrid ();
+		Vector2 minVec = LocalToRectGraph (recTra.rect.size / -2f), maxVec = LocalToRectGraph(recTra.rect.size / 2f);
+		float range = (maxVec - minVec).magnitude;
+		for (int i = 0; i < gridDiv.Length; i++) {
+			xGridValue = gridDiv [i];
+			if (range / gridDiv [i] <= (float)gridNum - 1)
+				break;
+		}
 
+		Vector2 localZero = RectGraphToLocal (new Vector2 ());
+		int startIdx = 0;
+		if (localZero.x < recTra.rect.width / -2f || localZero.x > recTra.rect.width / 2f ||
+		    localZero.y < recTra.rect.height / -2f || localZero.y > recTra.rect.height / 2f) {
+			float dist;
+			if (localZero.x < 0 && localZero.y < 0)
+				dist = LocalToRectGraph (recTra.rect.size / -2f).magnitude;
+			else if (localZero.x > 0 && localZero.y > 0)
+				dist = LocalToRectGraph (recTra.rect.size / 2f).magnitude;
+			else if (localZero.x < 0 && localZero.y > 0)
+				dist = LocalToRectGraph (new Vector2 (recTra.rect.width / -2f, recTra.rect.height / 2f)).magnitude;
+			else
+				dist = LocalToRectGraph (new Vector2 (recTra.rect.width / 2f, recTra.rect.height / -2f)).magnitude;
+			startIdx = (int)(dist / xGridValue);
+		}
 
+		for (int i = 0; i < gridNum; i++) {
+			float rad = RectGraphToLocal (new Vector2 ((i + 1 + startIdx) * xGridValue, 0f)).x - RectGraphToLocal (new Vector2 ()).x;
+			float angle;
+			if (localZero.Equals (new Vector2 ()))
+				angle = 0f;
+			else {
+				angle = Mathf.Acos (localZero.x * -1f / localZero.magnitude) * (localZero.y * -1f > 0f ? 1f : -1f);
+				Debug.Log ("angle = " + angle);
+			}
+			xGrids [i].SetCircle (localZero, rad, angle, (i + 1 + startIdx) * xGridValue);
+		}
+
+		alc.SetAngle (localZero);
 	}
 
-	/*
-	public override void SetAxis() {
-		base.SetAxis ();
-		Vector2 origin = new Vector2 ();
-		//if(yMin <= origin.y && yMax >= origin.y)
-			xAxis.Draw (false, GraphToLocal (origin), 1.5f, 0f);
-		//else
-		//	xAxis.Hide ();
-		//if(xMin <= origin.x && xMax >= origin.x)
-			yAxis.DrawLineOnly (true, GraphToLocal (origin), 1.5f);
-		//else
-		//	yAxis.Hide ();
+	public override void ShowAxis () {
+		for (int i = 0; i < gridNum; i++) {
+			xGrids [i].Hide ();
+		}
+
+		alc.isAxis = true;
+		alc.Draw (false, false);
 	}
-	*/
+
+	public override void ShowGrid () {
+		for (int i = 0; i < gridNum; i++) {
+			xGrids [i].Draw (true, true);
+		}
+
+		alc.isAxis = false;
+		alc.Draw (false, false);
+	}
 
 	public override Vector2 GraphToLocal(Vector2 v) {
 		Vector2 vv = new Vector2 (Mathf.Cos (v.y), Mathf.Sin (v.y)) * v.x;
@@ -131,15 +126,4 @@ public class PolarGraphManager : GraphManager {
 		float r = vv.magnitude;
 		return new Vector2 (r, Mathf.Acos (vv.x / r));
 	}
-
-	/*
-	public Vector2 LocalToRectGraph(Vector2 v) {
-		Vector2 ret = new Vector2 (
-			(xMax - xMin) / (xExp * recTra.rect.width) * v.x,
-			(yMax - yMin) / (yExp * recTra.rect.height) * v.y);
-		ret += new Vector2 ((xMax + xMin) / 2f, (yMax + yMin) / 2f);
-
-		return ret;
-	}
-	*/
 }

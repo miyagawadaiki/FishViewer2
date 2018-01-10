@@ -266,9 +266,11 @@ public class MyWindowManager : MonoBehaviour {
 		expandDir = new Vector2 ();
 	}
 
+
+	// ホイール操作時の動作
 	public void OnWheelChange(float value) {
 		foreach (MyWindowController mwc in windowList) {
-			if (mwc.isSelected) {
+			if (mwc.isSelected && mwc.Contains(Input.mousePosition)) {
 				mwc.content.OnWheelChange(value);
 			}
 		}

@@ -172,12 +172,12 @@ public class SimulationController : MonoBehaviour {
 	}
 
 	public void GoNext() {
-		Simulation.Execute ();
 		Simulation.step++;
+		Simulation.Execute ();
 	}
 
 	public void GoBack() {
-		Simulation.Execute ();
 		Simulation.step--;
+		Simulation.Execute ();
 	}
 }

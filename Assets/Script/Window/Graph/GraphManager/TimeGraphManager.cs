@@ -23,52 +23,20 @@ public class TimeGraphManager : GraphManager {
 		Debug.Log ("<color=green>TimeGraphManager.Init()</color>");
 		base.Init ();
 
-		points [markerIdx].sizeDelta *= 1.5f;
+		points [markerIdx].sizeDelta *= 2f;
 		xMin = (float)(Simulation.step - markerIdx);
 		xMax = (float)(Simulation.step + (pointNum - markerIdx));
+
+		xGrids = new GridLineController[1];
+		xGrids[0] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
+		yGrids = new GridLineController[gridNum];
+		for (int i = 0; i < gridNum; i++) {
+			yGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
+		}
+
+		HideView ();
 	}
-
-	/*
-	public override void Set(string values) {
-		char[] separator = { ',' };
-		string[] tmp = values.Split (separator);
-
-		/* 
-		 * fish(0)
-		 * xType(1)
-		 * yType(2)
-		 * pointNum(3)
-		 * markerRate(4)
-		 * pointColor(5)
-		 * useColorGrad(6)
-		 * useSizeGrad(7)
-		 * sizeValue(8)
-		 * useAutoSize(9)
-		 
-
-		fish = int.Parse (tmp [0]);
-		//xType = int.Parse (tmp [1]);
-		yType = int.Parse (tmp [2]);
-		pointNum = int.Parse (tmp [3]);
-		markerRate = float.Parse (tmp [4]);
-		pointColorNum = int.Parse (tmp [5]);
-		useColorGrad = int.Parse (tmp [6]) > 0 ? true : false;
-		useSizeGrad = int.Parse (tmp [7]) > 0 ? true : false;
-		plotSize = float.Parse (tmp [8]);
-		useAutoSize = int.Parse (tmp [9]) > 0 ? true : false;
-
-		Init ();
-	}
-	*/
-
-	/*
-	public void SetGraph(int fish_, int xType_, int yType_) {
-		fish = fish_;
-		xType = xType_;
-		yType = yType_;
-	}
-	*/
-
+		
 	public override void Plot(int step) {
 		xMin = (float)(step - markerIdx);
 		xMax = (float)(step + (pointNum - markerIdx));
@@ -115,8 +83,6 @@ public class TimeGraphManager : GraphManager {
 
 		xGrids [0].Set (true, GraphToLocal (new Vector2 (Simulation.step, (float)yAxisValue * yGridValue)), Simulation.step);
 		xGrids [0].isAxis = true;
-		for (int i = 1; i < gridNum; i++)
-			xGrids [i].Hide ();
 	}
 
 	public override void ShowAxis() {
@@ -138,21 +104,6 @@ public class TimeGraphManager : GraphManager {
 		xGrids [0].Draw (true, false);
 	}
 
-	/*
-	public override void SetAxis() {
-		base.SetAxis ();
-		Vector2 origin = new Vector2 (Simulation.step, 0f);
-		//if(yMin <= origin.y && yMax >= origin.y)
-			xAxis.Draw (false, GraphToLocal (origin), 1.5f, 0f);
-		//else
-		//	xAxis.Hide ();
-		//if(xMin <= origin.x && xMax >= origin.x)
-			yAxis.DrawLineOnly (true, GraphToLocal (origin), 1.5f);
-		//else
-		//	yAxis.Hide ();
-	}
-	*/
-
 	public override Vector2 GraphToLocal (Vector2 v)
 	{
 		return base.RectGraphToLocal (v);
@@ -161,23 +112,4 @@ public class TimeGraphManager : GraphManager {
 	public override Vector2 LocalToGraph (Vector2 v) {
 		return base.LocalToRectGraph (v);
 	}
-
-	/*
-	public Vector2 GraphToLocal(Vector2 v) {
-		Vector2 ret = new Vector2 (
-			xExp * recTra.rect.width / (xMax - xMin) * (v.x - (xMax + xMin) / 2f),
-			yExp * recTra.rect.height / (yMax - yMin) * (v.y - (yMax + yMin) / 2f));
-
-		return ret;
-	}
-
-	public Vector2 LocalToGraph(Vector2 v) {
-		Vector2 ret = new Vector2 (
-			(xMax - xMin) / (xExp * recTra.rect.width) * v.x,
-			(yMax - yMin) / (yExp * recTra.rect.height) * v.y);
-		ret += new Vector2 ((xMax + xMin) / 2f, (yMax + yMin) / 2f);
-
-		return ret;
-	}
-	*/
 }

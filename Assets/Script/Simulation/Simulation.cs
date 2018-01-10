@@ -11,8 +11,8 @@ public class Simulation {
 	private static int memo = 0;
 
 	public static void Init() {
-		step = 0;
-		memo = -1;
+		step = -1;
+		memo = -2;
 
 		DataBase.SetDataBase ();
 
@@ -49,7 +49,7 @@ public class Simulation {
 	}
 
 	public static void Reset() {
-		step = 0;
+		step = -1;
 	}
 
 	public static bool IsEnd() {

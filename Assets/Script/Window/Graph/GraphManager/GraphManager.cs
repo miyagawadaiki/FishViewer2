@@ -139,15 +139,16 @@ public class GraphManager : MonoBehaviour {
 			}
 		}
 
+		/*
 		xGrids = new GridLineController[gridNum];
 		yGrids = new GridLineController[gridNum];
 		for (int i = 0; i < gridNum; i++) {
 			xGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
 			yGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
 		}
-		//xGridIdxs = new int[gridNum];
-		//yGridIdxs = new int[gridNum];
+
 		HideView ();
+		*/
 	}
 
 	public virtual void Set(string values) {
