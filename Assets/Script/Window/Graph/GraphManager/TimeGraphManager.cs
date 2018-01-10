@@ -112,4 +112,8 @@ public class TimeGraphManager : GraphManager {
 	public override Vector2 LocalToGraph (Vector2 v) {
 		return base.LocalToRectGraph (v);
 	}
+
+	public override string GetTypeText() {
+		return "Time-" + DataBase.GetTags () [yType];
+	}
 }

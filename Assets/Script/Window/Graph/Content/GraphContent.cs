@@ -18,6 +18,8 @@ public class GraphContent : MyWindowContent {
 	[System.NonSerialized]
 	public bool mUseColorGrad = false, mUseSizeGrad = false, mUseAutoSize = false;
 	*/
+	[SerializeField]
+	protected Text graphTitleText = null;
 
 	[System.NonSerialized]
 	public GraphManager memo = null;
@@ -128,6 +130,10 @@ public class GraphContent : MyWindowContent {
 
 	public override void OnWheelChange(float value) {
 		Expand (value);
+	}
+
+	public virtual string GetTitle() {
+		return "";
 	}
 }
 

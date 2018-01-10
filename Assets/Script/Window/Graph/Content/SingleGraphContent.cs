@@ -24,6 +24,9 @@ public class SingleGraphContent : GraphContent {
 
 	public override void Init() {
 		graphMan.Init ();
+		graphTitleText.text = GetTitle ();
+
+		ShowView();
 		//graphMan.ShowAxis ();
 	}
 
@@ -47,13 +50,11 @@ public class SingleGraphContent : GraphContent {
 
 		//Init ();
 		graphMan.Set (parameters);
-		graphMan.Init ();
+		//graphMan.Init ();
 
 		//SetAxis ();
-		ShowView();
 
-
-		//mGraphType = gt;
+		Init ();
 	}
 
 	public override void Translate(Vector2 start, Vector2 end) {
@@ -114,6 +115,10 @@ public class SingleGraphContent : GraphContent {
 		if (graphMan == null)
 			return;
 		graphMan.HideView ();
+	}
+
+	public override string GetTitle () {
+		return graphMan.GetFishText () + ", " + graphMan.GetTypeText ();
 	}
 
 	/*

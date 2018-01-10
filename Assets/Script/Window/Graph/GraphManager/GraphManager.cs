@@ -281,6 +281,14 @@ public class GraphManager : MonoBehaviour {
 	public virtual Vector2 LocalToGraph(Vector2 v) {
 		return new Vector2 ();
 	}
+
+	public string GetFishText() {
+		return "fish" + fish;
+	}
+
+	public virtual string GetTypeText() {
+		return DataBase.GetTags () [xType] + "-" + DataBase.GetTags () [yType];
+	}
 }
 
 public enum GraphType {
