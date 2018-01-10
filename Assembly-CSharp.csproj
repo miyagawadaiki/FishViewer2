@@ -52,7 +52,7 @@
      <Compile Include="Assets\Script\Simulation\DataBase.cs" />
      <Compile Include="Assets\Script\Simulation\SimuPanelController.cs" />
      <Compile Include="Assets\Script\Simulation\Simulation.cs" />
-     <Compile Include="Assets\Script\Simulation\SimultionController.cs" />
+     <Compile Include="Assets\Script\Simulation\SimulationController.cs" />
      <Compile Include="Assets\Script\SliderWithText.cs" />
      <Compile Include="Assets\Script\Window\FileRead\FileReadContent.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileInputFieldManager.cs" />

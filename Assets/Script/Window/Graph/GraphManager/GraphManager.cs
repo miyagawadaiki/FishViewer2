@@ -51,11 +51,11 @@ public class GraphManager : MonoBehaviour {
 
 	protected RectTransform recTra;
 
-	protected float[] gridDiv = { 0.1f, 0.2f, 1f, 2f, 5f, 10f, 20f, 50f, 100f, 200f, 500f };
+	protected float[] gridDiv = { 0.1f, 0.2f, 0.5f, 1f, 2f, 5f, 10f, 20f, 50f, 100f, 200f, 500f };
 	protected float xGridValue = 0.1f, yGridValue = 0.1f;
 	protected GridLineController[] xGrids, yGrids;
-	protected int gridNum = 11, xPosSt, xNegSt, yPosSt, yNegSt, xAxisIdx, yAxisIdx;
-	protected int[] xGridIdxs, yGridIdxs;
+	protected int gridNum = 11, xAxisValue, yAxisValue;//xPosSt, xNegSt, yPosSt, yNegSt, xAxisIdx, yAxisIdx;
+	//protected int[] xGridIdxs, yGridIdxs;
 
 
 
@@ -145,8 +145,8 @@ public class GraphManager : MonoBehaviour {
 			xGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
 			yGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
 		}
-		xGridIdxs = new int[gridNum];
-		yGridIdxs = new int[gridNum];
+		//xGridIdxs = new int[gridNum];
+		//yGridIdxs = new int[gridNum];
 		HideView ();
 	}
 
@@ -173,7 +173,12 @@ public class GraphManager : MonoBehaviour {
 	}
 
 	public virtual void Translate(Vector2 start, Vector2 end) {
-
+		Vector2 tmp = LocalToRectGraph (end) - LocalToRectGraph(start);
+		//Debug.Log ("tmp = " + tmp);
+		xMax -= tmp.x;
+		xMin -= tmp.x;
+		yMax -= tmp.y;
+		yMin -= tmp.y;
 	}
 
 	public virtual void Expand(float expand) {
@@ -200,6 +205,40 @@ public class GraphManager : MonoBehaviour {
 	*/
 
 	public virtual void SetGrid() {
+		float xMax_ = LocalToRectGraph(new Vector2(view.rect.width / 2f, 0f)).x, xMin_ = LocalToGraph(new Vector2(view.rect.width / -2f, 0f)).x;
+		float xRange = (xMax_ - xMin_);
+		for (int i = 0; i < gridDiv.Length; i++) {
+			xGridValue = gridDiv [i];
+			if (xRange / gridDiv [i] <= (float)gridNum - 1)
+				break;
+		}
+
+		//float yMax_ = yMax / yExp, yMin_ = yMin / yExp;
+		float yMax_ = LocalToRectGraph(new Vector2(0f, view.rect.height / 2f)).y, yMin_ = LocalToGraph(new Vector2(0f, view.rect.height / -2f)).y;
+		float yRange = (yMax_ - yMin_);
+		for (int i = 0; i < gridDiv.Length; i++) {
+			yGridValue = gridDiv [i];
+			if (yRange / gridDiv [i] <= (float)gridNum - 1)
+				break;
+		}
+
+		//int xAxisValue;
+		if (xMax_ * xMin_ <= 0f)
+			xAxisValue = 0;
+		//else if (xMax_ * xMax_ < xMin_ * xMin_)
+		else if (xMax_ < 0)
+			//xAxisValue = (int)(xMax_ / xGridValue) + (xMax_ < 0 ? -1 : 0);
+			xAxisValue = (int)(xMax_ / xGridValue) - 1;
+		else
+			xAxisValue = (int)(xMin_ / xGridValue) + 1;//+ (xMin_ > 0 ? 1 : 0);
+
+		//int yAxisValue;
+		if (yMax_ * yMin_ <= 0f)
+			yAxisValue = 0;
+		else if (yMax_ * yMax_ < yMin_ * yMin_)
+			yAxisValue = (int)(yMax_ / yGridValue) + (yMax_ < 0 ? -1 : 0);
+		else
+			yAxisValue = (int)(yMin_ / yGridValue) + (yMin_ > 0 ? 1 : 0);
 		
 	}
 
@@ -215,6 +254,31 @@ public class GraphManager : MonoBehaviour {
 		foreach (Transform t in view) {
 			t.gameObject.GetComponent<GridLineController> ().Hide ();
 		}
+	}
+
+	public virtual Vector2 RectGraphToLocal(Vector2 v) {
+		Vector2 ret = new Vector2 (
+			xExp * recTra.rect.width / (xMax - xMin) * (v.x - (xMax + xMin) / 2f),
+			yExp * recTra.rect.height / (yMax - yMin) * (v.y - (yMax + yMin) / 2f));
+
+		return ret;
+	}
+
+	public virtual Vector2 GraphToLocal(Vector2 v) {
+		return new Vector2 ();
+	}
+
+	public virtual Vector2 LocalToRectGraph(Vector2 v) {
+		Vector2 ret = new Vector2 (
+			(xMax - xMin) / (xExp * recTra.rect.width) * v.x,
+			(yMax - yMin) / (yExp * recTra.rect.height) * v.y);
+		ret += new Vector2 ((xMax + xMin) / 2f, (yMax + yMin) / 2f);
+
+		return ret;
+	}
+
+	public virtual Vector2 LocalToGraph(Vector2 v) {
+		return new Vector2 ();
 	}
 }
 

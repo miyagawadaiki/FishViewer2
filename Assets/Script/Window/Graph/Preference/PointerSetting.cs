@@ -15,7 +15,7 @@ public class PointerSetting : Setting {
 		pointNum = elements [0].gameObject.GetComponent<SliderWithText> ();
 
 		color = elements [1].gameObject.GetComponent<Dropdown> ();
-		color.value = 1; color.value = 0;
+		color.value = 1;
 
 		colorGrad = elements [2].gameObject.GetComponent<Toggle> ();
 
@@ -36,6 +36,13 @@ public class PointerSetting : Setting {
 			sizeGrad.isOn = gc.memo.useSizeGrad;
 			sizeValue.text = gc.memo.plotSize + "";
 			autoSize.isOn = gc.memo.useAutoSize;
+		} else {
+			pointNum.SetValue (50f);
+			color.value = 0;
+			colorGrad.isOn = true;
+			sizeGrad.isOn = false;
+			sizeValue.text = "10";
+			autoSize.isOn = false;
 		}
 
 		/*

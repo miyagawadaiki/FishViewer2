@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SimultionController : MonoBehaviour {
+public class SimulationController : MonoBehaviour {
 
 	[SerializeField]
 	private Slider stepSlider = null;

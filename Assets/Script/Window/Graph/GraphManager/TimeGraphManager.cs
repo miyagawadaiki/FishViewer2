@@ -84,7 +84,7 @@ public class TimeGraphManager : GraphManager {
 			}
 		}
 	}
-
+		
 	public override void Translate(Vector2 start, Vector2 end) {
 		Vector2 tmp = LocalToGraph (end) - LocalToGraph (start);
 		yMax -= tmp.y;
@@ -93,61 +93,19 @@ public class TimeGraphManager : GraphManager {
 		//SetAxis ();
 	}
 
+	public override void Expand (float expand) {
+		yExp += expand;
+		if (yExp < 1f)
+			yExp = 1f;
+	}
+
 	public override void SetGrid() {
-		/*
-		//float xMax_ = xMax / xExp, xMin_ = xMin / xExp;
-		float xMax_ = LocalToGraph(new Vector2(view.rect.width / 2f, 0f)).x, xMin_ = LocalToGraph(new Vector2(view.rect.width / -2f, 0f)).x;
-		float xRange = (xMax_ - xMin_);
-		for (int i = 0; i < gridDiv.Length; i++) {
-			if (xRange / gridDiv [i] < (float)gridNum - 1)
-				break;
-			xGridValue = gridDiv [i];
-		}
-		*/
+		base.SetGrid ();
 
-		//float yMax_ = yMax / yExp, yMin_ = yMin / yExp;
-		float yMax_ = LocalToGraph(new Vector2(0f, view.rect.height / 2f)).y, yMin_ = LocalToGraph(new Vector2(0f, view.rect.height / -2f)).y;
-		float yRange = (yMax_ - yMin_);
-		for (int i = 0; i < gridDiv.Length; i++) {
-			if (yRange / gridDiv [i] < (float)gridNum - 1)
-				break;
-			yGridValue = gridDiv [i];
-		}
+		float yMax_ = LocalToRectGraph(new Vector2(0f, view.rect.height / 2f)).y, yMin_ = LocalToGraph(new Vector2(0f, view.rect.height / -2f)).y;
 
-		/*
-		int xAxisValue;
-		if (xMax_ * xMin_ <= 0f)
-			xAxisValue = 0;
-		//else if (xMax_ * xMax_ < xMin_ * xMin_)
-		else if (xMax_ < 0)
-			//xAxisValue = (int)(xMax_ / xGridValue) + (xMax_ < 0 ? -1 : 0);
-			xAxisValue = (int)(xMax_ / xGridValue) - 1;
-		else
-			xAxisValue = (int)(xMin_ / xGridValue) + 1;//+ (xMin_ > 0 ? 1 : 0);
-		*/
-
-		int yAxisValue;
-		if (yMax_ * yMin_ <= 0f)
-			yAxisValue = 0;
-		else if (yMax_ * yMax_ < yMin_ * yMin_)
-			yAxisValue = (int)(yMax_ / yGridValue) + (yMax_ < 0 ? -1 : 0);
-		else
-			yAxisValue = (int)(yMin_ / yGridValue) + (yMin_ > 0 ? 1 : 0);
-
-		//Debug.Log ("AxisVlue = " + new Vector2 (xAxisValue, yAxisValue));
-
-
-		//int xStart = (int)(xMin_ / xGridValue) + (xMin_ > 0 ? 1 : 0);
 		int yStart = (int)(yMin_ / yGridValue) + (yMin_ > 0 ? 1 : 0);
 		for (int i = 0; i < gridNum; i++) {
-			/*
-			xGrids [i].Set (true, GraphToLocal(new Vector2 ((xStart + i) * xGridValue, (float)yAxisValue * yGridValue)), (xStart + i) * xGridValue);
-			if (xStart + i == xAxisValue)
-				xGrids [i].isAxis = true;
-			else
-				xGrids [i].isAxis = false;
-			*/
-
 			yGrids [i].Set (false, GraphToLocal(new Vector2 (Simulation.step, (yStart + i) * yGridValue)), (yStart + i) * yGridValue);
 			if (yStart + i == yAxisValue)
 				yGrids [i].isAxis = true;
@@ -195,6 +153,16 @@ public class TimeGraphManager : GraphManager {
 	}
 	*/
 
+	public override Vector2 GraphToLocal (Vector2 v)
+	{
+		return base.RectGraphToLocal (v);
+	}
+
+	public override Vector2 LocalToGraph (Vector2 v) {
+		return base.LocalToRectGraph (v);
+	}
+
+	/*
 	public Vector2 GraphToLocal(Vector2 v) {
 		Vector2 ret = new Vector2 (
 			xExp * recTra.rect.width / (xMax - xMin) * (v.x - (xMax + xMin) / 2f),
@@ -211,4 +179,5 @@ public class TimeGraphManager : GraphManager {
 
 		return ret;
 	}
+	*/
 }
