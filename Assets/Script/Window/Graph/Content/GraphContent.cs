@@ -81,7 +81,21 @@ public class GraphContent : MyWindowContent {
 	}
 
 	public virtual void ShowView() {
+		SetGrid ();
 
+		switch(viewMode) {
+		case ViewMode.ShowAxis:
+			ShowAxis ();
+			break;
+		case ViewMode.ShowGrid:
+			ShowGrid ();
+			break;
+		case ViewMode.Hide:
+			HideView ();
+			break;
+		default:
+			break;
+		}
 	}
 
 	public virtual void SetGrid() {

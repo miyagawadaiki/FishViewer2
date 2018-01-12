@@ -74,25 +74,7 @@ public class SingleGraphContent : GraphContent {
 	public override void RemoveGraphManager() {
 		Simulation.Remove (graphMan);
 	}
-
-	public override void ShowView() {
-		SetGrid ();
-
-		switch(viewMode) {
-		case ViewMode.ShowAxis:
-			ShowAxis ();
-			break;
-		case ViewMode.ShowGrid:
-			ShowGrid ();
-			break;
-		case ViewMode.Hide:
-			HideView ();
-			break;
-		default:
-			break;
-		}
-	}
-
+		
 	public override void SetGrid() {
 		if (graphMan == null)
 			return;

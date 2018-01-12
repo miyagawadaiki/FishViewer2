@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class MyWindowManager : MonoBehaviour {
 
-	public bool multiSelect, squareExpand;
+	public bool multiSelect, squareExpand, isDraging;
 
 	[SerializeField]
 	private GameObject windowObj = null;
@@ -15,7 +15,7 @@ public class MyWindowManager : MonoBehaviour {
 
 	private Vector2 leftStart, rightStart;
 	private Vector2 expandDir = new Vector2();
-	private bool isMoveMode, removeFlag;	// , isExpMode
+	private bool isMoveMode, isExpMode, removeFlag;
 	private float canvasScale;
 
 	void Awake() {
@@ -37,32 +37,6 @@ public class MyWindowManager : MonoBehaviour {
 		if (removeFlag) {
 			Remove ();
 		}
-
-		/*
-		if (Input.GetKeyDown (KeyCode.LeftShift)) {
-			multiSelect = true;
-		} else if (Input.GetKeyUp (KeyCode.LeftShift)) {
-			multiSelect = false;
-		}
-
-		if (Input.GetMouseButtonDown (0)) {
-			Debug.Log ("Down");
-			OnMouseLeftDown ();
-		} else if (Input.GetMouseButton (0)) {
-			Debug.Log ("Drag");
-			OnMouseLeftDrag ();
-		} else if(Input.GetMouseButtonUp(0)) {
-			OnMouseLeftUp ();
-		}
-
-		if (Input.GetMouseButtonDown (1)) {
-			OnMouseRightDown ();
-		} else if (Input.GetMouseButton (1)) {
-
-		} else if (Input.GetMouseButtonUp (1)) {
-
-		}
-		*/
 	}
 
 	public void AddWindow() {
@@ -153,24 +127,27 @@ public class MyWindowManager : MonoBehaviour {
 			clicked.SetAsLastSibling ();
 			clicked.SetSelectMode ();
 
-			if (clicked.IsInMenu (pos)) {
-				Debug.Log ("Translate");
-				isMoveMode = true;
-				leftStart = (Vector2)Input.mousePosition;
-			} else {
-				Debug.Log ("Expand");
-				//isExpMode = true;
-				leftStart = (Vector2)Input.mousePosition;
+			leftStart = (Vector2)Input.mousePosition;
 
-				if (clicked.IsOnLeftSide (pos))
-					expandDir.x = -1f;
-				if (clicked.IsOnRightSide (pos))
-					expandDir.x = 1f;
-				if (clicked.IsOnBottomSide (pos))
-					expandDir.y = -1f;
-				if (clicked.IsOnTopSide (pos))
-					expandDir.y = 1f;
+			/*
+			if (clicked.IsOnLeftSide (pos))
+				expandDir.x = -1f;
+			if (clicked.IsOnRightSide (pos))
+				expandDir.x = 1f;
+			if (clicked.IsOnBottomSide (pos))
+				expandDir.y = -1f;
+			if (clicked.IsOnTopSide (pos))
+				expandDir.y = 1f;
+			*/
+			expandDir = clicked.GetExpandDir (pos);
+
+			if(!expandDir.Equals (new Vector2())) {
+				isExpMode = true;
+			} else if(clicked.IsInMenu(pos)) {
+				isMoveMode = true;
 			}
+
+			isDraging = true;
 
 			clicked.content.OnLeftClick (pos);
 		}
@@ -202,6 +179,8 @@ public class MyWindowManager : MonoBehaviour {
 
 			rightStart = (Vector2)Input.mousePosition;
 
+			isDraging = true;
+
 			clicked.content.OnRightClick (pos);
 		}
 	}
@@ -209,17 +188,7 @@ public class MyWindowManager : MonoBehaviour {
 	// 左ドラッグ時の動作
 	public void OnMouseLeftDrag() {
 		Vector2 now = (Vector2)Input.mousePosition;
-		if (isMoveMode) {
-			foreach (MyWindowController mwc in windowList) {
-				if (mwc.isSelected) {
-					mwc.Translate (now - leftStart);
-					//if (!mwc.IsInWindowManager ())
-					//	mwc.Translate (start - now);
-
-					mwc.content.OnTranslate (now - leftStart);
-				}
-			}
-		} else if (!expandDir.Equals (new Vector2 ())) {
+		if (isExpMode) {
 			foreach (MyWindowController mwc in windowList) {
 				if (mwc.isSelected) {
 					if (squareExpand) {
@@ -234,6 +203,16 @@ public class MyWindowManager : MonoBehaviour {
 
 					if (!expandDir.Equals (new Vector2 ()))
 						mwc.content.OnExpand (now - leftStart, expandDir);
+				}
+			}
+		} else if (isMoveMode) {
+			foreach (MyWindowController mwc in windowList) {
+				if (mwc.isSelected) {
+					mwc.Translate (now - leftStart);
+					//if (!mwc.IsInWindowManager ())
+					//	mwc.Translate (start - now);
+
+					mwc.content.OnTranslate (now - leftStart);
 				}
 			}
 		} else {
@@ -262,8 +241,15 @@ public class MyWindowManager : MonoBehaviour {
 	// 左ドロップ時の動作
 	public void OnMouseLeftUp() {
 		isMoveMode = false;
-		//isExpMode = false;
+		isDraging = false;
 		expandDir = new Vector2 ();
+		isExpMode = false;
+	}
+
+
+	// 右ドロップ時の動作
+	public void OnMouseRightUp() {
+		isDraging = false;
 	}
 
 
@@ -275,6 +261,22 @@ public class MyWindowManager : MonoBehaviour {
 			}
 		}
 	}
+
+
+	/*
+	// カーソルの画像を変える
+	public void WatchCursor() {
+		Vector2 expdir, pos = Input.mousePosition;
+		foreach (MyWindowController mwc in windowList) {
+			expdir = mwc.GetExpandDir (pos);
+			if (isExpMode || !expdir.Equals(new Vector2())) {
+				Cursor.visible = false;
+				float a = expdir.x * expdir.y;
+
+			}
+		}
+	}
+	*/
 
 
 
@@ -289,6 +291,8 @@ public class MyWindowManager : MonoBehaviour {
 		MultiEvenGraph,
 		MultiVariousGraph,
 		SingleGraphSetting,
+		MultiEvenGraphSetting,
+		MultiVariousGraphSetting,
 		Sample,
 	}
 }

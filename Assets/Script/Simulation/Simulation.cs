@@ -53,7 +53,7 @@ public class Simulation {
 	}
 
 	public static bool IsEnd() {
-		return step >= DataBase.step;
+		return step >= DataBase.step - 1;
 	}
 
 	public static void Execute() {

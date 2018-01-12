@@ -25,7 +25,7 @@ public class MyAppManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-		if (!mbc.isActive && Input.mousePosition.y > Screen.height - 10f && Input.mousePosition.y <= Screen.height) {
+		if (!mbc.isActive && !mwm.isDraging && Input.mousePosition.y > Screen.height - 10f && Input.mousePosition.y <= Screen.height) {
 			mbc.SlideIn ();
 			return;
 		}
@@ -56,10 +56,10 @@ public class MyAppManager : MonoBehaviour {
 			}
 
 			if (Input.GetMouseButtonDown (0)) {
-				Debug.Log ("Down");
+				Debug.Log ("LeftDown");
 				mwm.OnMouseLeftDown ();
 			} else if (Input.GetMouseButton (0)) {
-				Debug.Log ("Drag");
+				Debug.Log ("LeftDrag");
 				mwm.OnMouseLeftDrag ();
 			} else if(Input.GetMouseButtonUp(0)) {
 				mwm.OnMouseLeftUp ();
@@ -70,7 +70,7 @@ public class MyAppManager : MonoBehaviour {
 			} else if (Input.GetMouseButton (1)) {
 				mwm.OnMouseRightDrag ();
 			} else if (Input.GetMouseButtonUp (1)) {
-
+				mwm.OnMouseRightUp ();
 			}
 
 			if (Input.GetAxis ("Mouse ScrollWheel") != 0f) {

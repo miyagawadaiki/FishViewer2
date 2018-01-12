@@ -20,7 +20,7 @@ namespace ProjectData {
 
 		public static string GetPath(FileKey key) {
 			if (names [0, (int)key] == null) {
-				string line = UnityEngine.PlayerPrefs.GetString (System.Enum.GetName (typeof(FileKey), key), "C:/Users/Daiki/Desktop/aaa.csv");
+				string line = UnityEngine.PlayerPrefs.GetString (System.Enum.GetName (typeof(FileKey), key), "C:/Users/aaa.csv");
 				string[] tmp = line.Split (separator);
 				names [0, (int)key] = tmp [0];
 				for (int i = 1; i < tmp.Length - 1; i++)
@@ -31,7 +31,7 @@ namespace ProjectData {
 
 		public static string GetName(FileKey key) {
 			if (names [1, (int)key] == null) {
-				string line = UnityEngine.PlayerPrefs.GetString (System.Enum.GetName (typeof(FileKey), key), "C:/Users/Daiki/Desktop/aaa.csv");
+				string line = UnityEngine.PlayerPrefs.GetString (System.Enum.GetName (typeof(FileKey), key), "C:/Users/aaa.csv");
 				string[] tmp = line.Split (separator);
 				names [1, (int)key] = tmp [tmp.Length - 1];
 			}
@@ -46,20 +46,24 @@ namespace ProjectData {
 	public class ColorList {
 
 		public static UnityEngine.Color[] colors = {
-			new UnityEngine.Color(1f, 0f, 0f),							// red
+			new UnityEngine.Color(1f, 0f, 0f),						// red
 			new UnityEngine.Color(1f, 96f / 255f, 0f),				// orange
-			new UnityEngine.Color(1f, 1f, 0f),							// yellow
-			new UnityEngine.Color(0f, 1f, 0f),							// yello-green
-			new UnityEngine.Color(0f, 163f / 255, 40f / 255f),	// green
+			new UnityEngine.Color(1f, 1f, 0f),						// yellow
+			new UnityEngine.Color(0f, 1f, 0f),						// yello-green
+			new UnityEngine.Color(0f, 163f / 255, 40f / 255f),		// green
 			new UnityEngine.Color(0f, 224f / 255f, 1f),				// light-blue
 			new UnityEngine.Color(0f, 32f / 255f, 1f),				// blue
-			new UnityEngine.Color(28f / 255f, 0f, 88f / 255f),	// deap-blue
+			new UnityEngine.Color(28f / 255f, 0f, 88f / 255f),		// deap-blue
 			new UnityEngine.Color(149f / 255f, 0f, 183f / 255f),	// purple
 			new UnityEngine.Color(1f, 0f, 146f / 255f),				// pink
 		};
 
 		public static int Count() {
 			return colors.Length;
+		}
+
+		public static UnityEngine.Color GetColor(int i) {
+			return colors [i % colors.Length];
 		}
 
 	}

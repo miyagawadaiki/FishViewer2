@@ -87,14 +87,8 @@ public class GraphManager : MonoBehaviour {
 		foreach (Transform t in view)
 			Destroy (t.gameObject);
 
-		/*
-		xAxis = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
-		yAxis = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
-		xAxis.gameObject.name = "x-axis";
-		yAxis.gameObject.name = "y-axis";
-		xAxis.SetAxis ();
-		yAxis.SetAxis ();
-		*/
+		xExp = 1f;
+		yExp = 1f;
 
 		foreach (Transform t in plot)
 			Destroy (t.gameObject);

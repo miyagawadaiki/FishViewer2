@@ -37,6 +37,7 @@ public class SingleGraphSettingContent : MyWindowContent {
 		mwc.canExpand = false;
 
 		doneButton.onClick.AddListener (() => mwc.Destroy ());
+
 	}
 	
 	// Update is called once per frame

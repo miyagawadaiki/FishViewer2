@@ -237,41 +237,56 @@ public class MyWindowController : MonoBehaviour {
 		return parRect.Contains (v - size / 2f) && parRect.Contains (v + size / 2f);// && parRect.Contains (v + new Vector2 (size.x, size.y * -1f) / 2f) && parRect.Contains (v + new Vector2 (size.x * -1f, size.y) / 2f);
 	}
 
+	/*
 	public bool IsOnSide(Vector2 vec) {
-		//expandDir = new Vector2 ();
-		bool a = IsOnLeftSide (vec);
-		bool b = IsOnBottomSide (vec);
-		bool c = IsOnRightSide (vec);
-		bool d = IsOnTopSide (vec);
-		return a || b || c || d;
+		Vector2 expandDir = new Vector2 ();
+		//bool a = IsOnLeftSide (vec);
+		//bool b = IsOnBottomSide (vec);
+		//bool c = IsOnRightSide (vec);
+		//bool d = IsOnTopSide (vec);
+		//return a || b || c || d;
+	}
+	*/
+
+	public Vector2 GetExpandDir(Vector2 vec) {
+		Vector2 expandDir = new Vector2 ();
+		expandDir.x += IsOnLeftSide(vec);
+		expandDir.x += IsOnRightSide(vec);
+		expandDir.y += IsOnBottomSide(vec);
+		expandDir.y += IsOnTopSide(vec);
+		return expandDir;
 	}
 
-	public bool IsOnLeftSide(Vector2 vec) {
+	public float IsOnLeftSide(Vector2 vec) {
 		Vector2 v = ScreenToWindow (vec);
-		Rect r = new Rect (recTra.rect.x, recTra.rect.y, 20f, recTra.rect.height);
+		Rect r = new Rect (recTra.rect.x, recTra.rect.y, 10f, recTra.rect.height);
 		//if (r.Contains (v)) expandDir.x = -1f;
-		return r.Contains (v);
+		//return r.Contains (v);
+		return r.Contains(v) ? -1f : 0f;
 	}
 
-	public bool IsOnBottomSide(Vector2 vec) {
+	public float IsOnBottomSide(Vector2 vec) {
 		Vector2 v = ScreenToWindow (vec);
-		Rect r = new Rect(recTra.rect.x, recTra.rect.y, recTra.rect.width, 20f);
+		Rect r = new Rect(recTra.rect.x, recTra.rect.y, recTra.rect.width, 10f);
 		//if (r.Contains (v)) expandDir.y = -1f;
-		return r.Contains (v);
+		//return r.Contains (v);
+		return r.Contains(v) ? -1f : 0f;
 	}
 
-	public bool IsOnRightSide(Vector2 vec) {
+	public float IsOnRightSide(Vector2 vec) {
 		Vector2 v = ScreenToWindow (vec);
-		Rect r = new Rect(recTra.rect.width / 2 - 20f, recTra.rect.y, 20f, recTra.rect.height);
+		Rect r = new Rect(recTra.rect.width / 2 - 10f, recTra.rect.y, 10f, recTra.rect.height);
 		//if (r.Contains (v)) expandDir.x = 1f;
-		return r.Contains (v);
+		//return r.Contains (v);
+		return r.Contains(v) ? 1f : 0f;
 	}
 
-	public bool IsOnTopSide(Vector2 vec) {
+	public float IsOnTopSide(Vector2 vec) {
 		Vector2 v = ScreenToWindow (vec);
-		Rect r = new Rect(recTra.rect.x, recTra.rect.height / 2 - 20f, recTra.rect.width, 20f);
+		Rect r = new Rect(recTra.rect.x, recTra.rect.height / 2 - 10f, recTra.rect.width, 10f);
 		//if (r.Contains (v)) expandDir.y = 1f;
-		return r.Contains (v);
+		//return r.Contains (v);
+		return r.Contains(v) ? 1f : 0f;
 	}
 
 	public Vector2 ScreenToWindow(Vector2 vec) {
@@ -280,56 +295,4 @@ public class MyWindowController : MonoBehaviour {
 
 		return (vec - (Vector2)this.transform.position) / canvas.x;
 	}
-
-
-
-	/*
-	public bool IsOnCorner(Vector2 vec) {
-		bool a = IsOnBottomRight (vec);
-		bool b = IsOnBottomLeft (vec);
-		bool c = IsOnTopRight (vec);
-		bool d = IsOnTopLeft (vec);
-		return a || b || c || d;
-	}
-
-	public bool IsOnBottomRight(Vector2 vec) {
-		rect = recTra.rect;
-		rect.size *= canvas.x;
-		float rad = 20f;
-		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2 + new Vector2(-rect.size.x, 0f);
-		if (tmp.sqrMagnitude <= rad * rad)
-			expandDir = new Vector2 (1f, -1f);
-		return tmp.sqrMagnitude <= rad * rad;
-	}
-
-	public bool IsOnBottomLeft(Vector2 vec) {
-		rect = recTra.rect;
-		rect.size *= canvas.x;
-		float rad = 20f;
-		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2 + new Vector2(0f, 0f);
-		if (tmp.sqrMagnitude <= rad * rad)
-			expandDir = new Vector2 (-1f, -1f);
-		return tmp.sqrMagnitude <= rad * rad;
-	}
-
-	public bool IsOnTopRight(Vector2 vec) {
-		rect = recTra.rect;
-		rect.size *= canvas.x;
-		float rad = 20f;
-		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2 + new Vector2(-rect.size.x, -rect.size.y);
-		if (tmp.sqrMagnitude <= rad * rad)
-			expandDir = new Vector2 (1f, 1f);
-		return tmp.sqrMagnitude <= rad * rad;
-	}
-
-	public bool IsOnTopLeft(Vector2 vec) {
-		rect = recTra.rect;
-		rect.size *= canvas.x;
-		float rad = 20f;
-		Vector2 tmp = vec - (Vector2)this.transform.position + rect.size / 2 + new Vector2(0f, -rect.size.y);
-		if (tmp.sqrMagnitude <= rad * rad)
-			expandDir = new Vector2 (-1f, 1f);
-		return tmp.sqrMagnitude <= rad * rad;
-	}
-	*/
 }

@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Script\CursorController.cs" />
      <Compile Include="Assets\Script\MenuBar\MenuBarController.cs" />
      <Compile Include="Assets\Script\MyAppManager.cs" />
      <Compile Include="Assets\Script\ProjectData.cs" />
@@ -60,6 +61,8 @@
      <Compile Include="Assets\Script\Window\FileSelect\FileSelectContent.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileViewController.cs" />
      <Compile Include="Assets\Script\Window\Graph\Content\GraphContent.cs" />
+     <Compile Include="Assets\Script\Window\Graph\Content\MultiEvenGraphContent.cs" />
+     <Compile Include="Assets\Script\Window\Graph\Content\MultiEvenGraphSettingContent.cs" />
      <Compile Include="Assets\Script\Window\Graph\Content\SingleGraphContent.cs" />
      <Compile Include="Assets\Script\Window\Graph\Content\SingleGraphSettingContent.cs" />
      <Compile Include="Assets\Script\Window\Graph\GraphManager\AngleLineController.cs" />
@@ -69,6 +72,7 @@
      <Compile Include="Assets\Script\Window\Graph\GraphManager\PolarGraphManager.cs" />
      <Compile Include="Assets\Script\Window\Graph\GraphManager\RectGraphManager.cs" />
      <Compile Include="Assets\Script\Window\Graph\GraphManager\TimeGraphManager.cs" />
+     <Compile Include="Assets\Script\Window\Graph\Preference\FishMultiSelectSetting.cs" />
      <Compile Include="Assets\Script\Window\Graph\Preference\GraphTypeSetting.cs" />
      <Compile Include="Assets\Script\Window\Graph\Preference\PointerSetting.cs" />
      <Compile Include="Assets\Script\Window\Graph\Preference\Setting.cs" />
