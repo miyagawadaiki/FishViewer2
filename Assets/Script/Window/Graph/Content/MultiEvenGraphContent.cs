@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class MultiEvenGraphContent : GraphContent {
 
+	[SerializeField]
+	private GameObject nodeObj = null;
+	[SerializeField]
+	private Transform plotViewTra = null;
+
 	public List<GraphManager> graphManList;
 
 	void Awake() {
@@ -22,8 +27,12 @@ public class MultiEvenGraphContent : GraphContent {
 	}
 
 	public override void Init() {
-		foreach (GraphManager gm in graphManList)
+
+		foreach (GraphManager gm in graphManList) {
 			gm.Init ();
+			GameObject obj = Instantiate (nodeObj, plotViewTra) as GameObject;
+			obj.GetComponent<MultiEvenNodeController> ().Set (gm.pointColorNum, gm.fish);
+		}
 
 		graphTitleText.text = GetTitle ();
 
@@ -38,13 +47,15 @@ public class MultiEvenGraphContent : GraphContent {
 	public void Set(GraphType gt, string[] parameters) {
 		//if (graphManList.Count == 0 || graphManList [0].graphType != gt) {
 		RemoveGraphManager ();
+		foreach (Transform t in plotViewTra)
+			Destroy (t.gameObject);
 
 		if (parameters == null)
 			return;
 
 		GameObject graphManObj = Resources.Load ("GraphManager/" + System.Enum.GetName (typeof(GraphType), gt) + "GraphManager") as GameObject;
 		for (int i = 0; i < parameters.Length; i++) {
-			GameObject obj = Instantiate (graphManObj, this.transform) as GameObject;
+			GameObject obj = Instantiate (graphManObj, graphTra) as GameObject;
 			graphManList.Add (obj.GetComponent<GraphManager> ());
 			Simulation.Register (graphManList [graphManList.Count - 1]);
 		}

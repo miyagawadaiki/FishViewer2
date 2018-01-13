@@ -19,6 +19,8 @@ public class GraphContent : MyWindowContent {
 	public bool mUseColorGrad = false, mUseSizeGrad = false, mUseAutoSize = false;
 	*/
 	[SerializeField]
+	protected Transform graphTra = null;
+	[SerializeField]
 	protected Text graphTitleText = null;
 
 	[System.NonSerialized]
