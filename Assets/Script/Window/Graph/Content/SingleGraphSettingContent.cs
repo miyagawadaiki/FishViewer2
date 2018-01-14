@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SingleGraphSettingContent : MyWindowContent {
+public class SingleGraphSettingContent : GraphSettingContent {
 
-	private SingleGraphContent sgc;
+	//private SingleGraphContent sgc;
 
-	[SerializeField]
-	private Button doneButton = null;
+	//[SerializeField]
+	//private Button doneButton = null;
 	[SerializeField]
 	private GraphTypeSetting gts = null;
 	[SerializeField]
@@ -27,17 +27,13 @@ public class SingleGraphSettingContent : MyWindowContent {
 			s.gc = sgc;
 		}
 		*/
+
+		gcType = GraphContentType.Single;
 	}
 
 	// Use this for initialization
-	void Start () {
-		mwc = this.GetComponentInParent<MyWindowController> ();
-		mwc.SetSize (defaultSize);
-		mwc.MoveTo (new Vector2 ());
-		mwc.canExpand = false;
-
-		doneButton.onClick.AddListener (() => mwc.Destroy ());
-
+	protected override void Start () {
+		base.Start ();
 	}
 	
 	// Update is called once per frame
@@ -45,19 +41,13 @@ public class SingleGraphSettingContent : MyWindowContent {
 		
 	}
 
-	public void RegisterGraphContent (SingleGraphContent sgc) {
-		this.sgc = sgc;
+	public override void UpdateGraphContent() {
+		string s = GetParameterText();
 
-		foreach (Setting s in this.GetComponentsInChildren<Setting> ()) {
-			s.type = GraphContentType.Single;
-			s.gc = sgc;
-			//s.SetMemoData ();
-		}
+		gc.Set (s);
 	}
 
-	public void UpdateGraphContent() {
-		string s = ss.GetData () + ps.GetData ();
-
-		sgc.Set (gts.GetGraphType (), s);
+	public override string GetParameterText () {
+		return gts.GetData () + ss.GetData () + ps.GetData ();
 	}
 }

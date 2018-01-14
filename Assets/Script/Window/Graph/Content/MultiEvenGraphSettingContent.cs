@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MultiEvenGraphSettingContent : MyWindowContent {
+public class MultiEvenGraphSettingContent : GraphSettingContent {
 
-	private MultiEvenGraphContent megc;
+	//private MultiEvenGraphContent megc;
 
-	[SerializeField]
-	private Button doneButton = null;
+	//[SerializeField]
+	//private Button doneButton = null;
 	[SerializeField]
 	private GraphTypeSetting gts = null;
 	[SerializeField]
@@ -18,14 +18,13 @@ public class MultiEvenGraphSettingContent : MyWindowContent {
 	[SerializeField]
 	private PointerSetting ps = null;
 
-	// Use this for initialization
-	void Start () {
-		mwc = this.GetComponentInParent<MyWindowController> ();
-		mwc.SetSize (defaultSize);
-		mwc.MoveTo (new Vector2 ());
-		mwc.canExpand = false;
+	void Awake() {
+		gcType = GraphContentType.MultiEven;
+	}
 
-		doneButton.onClick.AddListener (() => mwc.Destroy ());
+	// Use this for initialization
+	protected override void Start () {
+		base.Start ();
 
 		ss.CoverElement (0);
 		ps.CoverElement (1);
@@ -36,6 +35,7 @@ public class MultiEvenGraphSettingContent : MyWindowContent {
 		
 	}
 
+	/*
 	public void RegisterGraphContent(MultiEvenGraphContent megc) {
 		this.megc = megc;
 
@@ -44,35 +44,42 @@ public class MultiEvenGraphSettingContent : MyWindowContent {
 			s.gc = megc;
 		}
 	}
+	*/
 
-	public void UpdateGraphContent() {
+	public override void UpdateGraphContent() {
+		gc.Set (GetParameterText ());
+	}
+
+	public override string GetParameterText () {
 		if(fmss.GetData().Equals("")) {
-			megc.Set (gts.GetGraphType (), null);
-			return;
+			return "";
 		}
 
 		char[] separator = { ',' };
 		string[] hoge = fmss.GetData ().Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
 
 		int num = hoge.Length;
-		string[] ret = new string[num];
+		string ret = "";
 
 		string[] ssElement = ss.GetData ().Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
 		string[] psElement = ps.GetData ().Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
 
 		for (int i = 0; i < num; i++) {
-			ret[i] = 	hoge [i] + "," + 
-						ssElement[1] + "," + 
-						ssElement[2] + "," + 
-						psElement [0] + "," +
-						int.Parse (hoge [i]) + "," +
-						psElement [2] + "," +
-						psElement [3] + "," +
-						psElement [4] + "," +
-						psElement [5];
+			ret += 
+				gts.GetData () +
+				hoge [i] + "," +
+				ssElement [1] + "," +
+				ssElement [2] + "," +
+				psElement [0] + "," +
+				int.Parse (hoge [i]) + "," +
+				psElement [2] + "," +
+				psElement [3] + "," +
+				psElement [4] + "," +
+				psElement [5] + "," +
+				"\t";
 
 		}
 
-		megc.Set (gts.GetGraphType (), ret);
+		return ret;
 	}
 }

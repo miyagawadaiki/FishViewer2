@@ -28,34 +28,25 @@ public class PointerSetting : Setting {
 		if (type == GraphContentType.MultiEven)
 			CoverElement (1);
 
-		if (gc.memo != null) {
-			pointNum.slider.value = (float)gc.memo.pointNum;
-			pointNum.text.text = gc.memo.pointNum + "";
-			color.value = gc.memo.pointColorNum;
-			colorGrad.isOn = gc.memo.useColorGrad;
-			sizeGrad.isOn = gc.memo.useSizeGrad;
-			sizeValue.text = gc.memo.plotSize + "";
-			autoSize.isOn = gc.memo.useAutoSize;
-		} else {
+		if (gc.GetParameterText().Equals("")) {
 			pointNum.SetValue (50f);
 			color.value = 0;
 			colorGrad.isOn = true;
 			sizeGrad.isOn = false;
 			sizeValue.text = "10";
 			autoSize.isOn = false;
+			return;
 		}
 
-		/*
-		for (int i = 0; i < ProjectData.ColorList.Count(); i++) {
-			color.options.Add (new Dropdown.OptionData { text = "" });
-		}
+		char[] separator = { '\t', ' ', ',' };
+		string[] tmp = gc.GetParameterText ().Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
 
-		Image[] images = content.GetComponentsInChildren<Image> ();
-
-		for (int i = 0; i < ProjectData.ColorList.Count(); i++) {
-			images [i].color = ProjectData.ColorList.colors [i];
-		}
-		*/
+		pointNum.SetValue(float.Parse(tmp[4]));
+		color.value = int.Parse(tmp[5]);
+		colorGrad.isOn = tmp[6].Equals("1") ? true : false;
+		sizeGrad.isOn = tmp [7].Equals ("1") ? true : false;
+		sizeValue.text = tmp [8];
+		autoSize.isOn = tmp [9].Equals ("1") ? true : false;
 	}
 	
 	// Update is called once per frame

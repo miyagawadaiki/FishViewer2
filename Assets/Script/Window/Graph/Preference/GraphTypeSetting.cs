@@ -18,8 +18,12 @@ public class GraphTypeSetting : Setting {
 
 	// Use this for initialization
 	void Start () {
-		if (gc.memo != null)
-			graphType.value = (int)gc.memo.graphType;
+		if (gc.GetParameterText ().Equals (""))
+			return;
+
+		char[] typeSeparator = { ' ' };
+		string[] tmp = gc.GetParameterText ().Split (typeSeparator);
+		graphType.value = int.Parse(tmp[0]);
 	}
 	
 	// Update is called once per frame
@@ -45,6 +49,6 @@ public class GraphTypeSetting : Setting {
 	}
 
 	public override string GetData() {
-		return graphType.value + ",";
+		return graphType.value + " ";
 	}
 }

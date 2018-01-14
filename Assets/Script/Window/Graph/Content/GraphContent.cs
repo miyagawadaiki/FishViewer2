@@ -5,19 +5,6 @@ using UnityEngine.UI;
 
 public class GraphContent : MyWindowContent {
 
-	//[SerializeField]
-	//private GameObject settingButton = null;
-
-	/*
-	[System.NonSerialized]
-	public GraphType mGraphType = GraphType.Rect;
-	[System.NonSerialized]
-	public int mFish = 0, mXType = 0, mYType = 1, mPointNum = 20, mPointColorNum = 0;
-	[System.NonSerialized]
-	public float mMarkerRate = 1f, mPlotSize = 10f;
-	[System.NonSerialized]
-	public bool mUseColorGrad = false, mUseSizeGrad = false, mUseAutoSize = false;
-	*/
 	[SerializeField]
 	protected Transform graphTra = null;
 	[SerializeField]
@@ -27,6 +14,8 @@ public class GraphContent : MyWindowContent {
 	public GraphManager memo = null;
 	[System.NonSerialized]
 	public ViewMode viewMode = ViewMode.ShowAxis;
+
+	protected GraphContentType gcType;
 
 	// Use this for initialization
 	public virtual void Start () {
@@ -45,6 +34,8 @@ public class GraphContent : MyWindowContent {
 
 		obj = Instantiate (Resources.Load("Menubar/Setting") as GameObject, mwc.menuArea.transform);
 		obj.GetComponent<Button> ().onClick.AddListener (() => OpenSettingWindow ());
+
+		OpenSettingWindow ();
 	}
 	
 	// Update is called once per frame
@@ -56,8 +47,13 @@ public class GraphContent : MyWindowContent {
 
 	}
 
-	public virtual void OpenSettingWindow() {
+	public virtual void Set(string parameters) {
 
+	}
+
+	public virtual void OpenSettingWindow() {
+		mwc.mwm.AddWindow (System.Enum.GetName(typeof(GraphContentType), gcType) + "Setting");
+		mwc.mwm.GetLastWindowController ().gameObject.GetComponentInChildren<GraphSettingContent> ().RegisterGraphContent (this);
 	}
 
 	public virtual void RemoveGraphManager() {
@@ -149,6 +145,10 @@ public class GraphContent : MyWindowContent {
 	}
 
 	public virtual string GetTitle() {
+		return "";
+	}
+
+	public virtual string GetParameterText() {
 		return "";
 	}
 }

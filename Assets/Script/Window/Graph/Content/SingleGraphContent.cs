@@ -7,21 +7,6 @@ public class SingleGraphContent : GraphContent {
 	//private GraphType graphType = GraphType.Rect;
 	public GraphManager graphMan;
 
-	void Awake() {
-		
-	}
-
-	// Use this for initialization
-	public override void Start () {
-		base.Start ();
-		OpenSettingWindow ();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
 	public override void Init() {
 		graphMan.Init ();
 		graphTitleText.text = GetTitle ();
@@ -30,12 +15,18 @@ public class SingleGraphContent : GraphContent {
 		//graphMan.ShowAxis ();
 	}
 
+	/*
 	public override void OpenSettingWindow() {
 		mwc.mwm.AddWindow ("SingleGraphSetting");
 		mwc.mwm.GetLastWindowController ().gameObject.GetComponentInChildren<SingleGraphSettingContent> ().RegisterGraphContent(this);
 	}
+	*/
 
-	public void Set(GraphType gt, string parameters) {
+	public override void Set(string parameters) {
+		char[] typeSeparator = { ' ' };
+		string[] tmp = parameters.Split (typeSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+
+		GraphType gt = (GraphType)(int.Parse(tmp [0]));
 		if (graphMan == null || graphMan.graphType != gt) {
 			if (graphMan != null) {
 				Simulation.Remove (graphMan);
@@ -46,13 +37,8 @@ public class SingleGraphContent : GraphContent {
 			memo = graphMan;
 			Simulation.Register (graphMan);
 		}
-		//graphType = gt;
 
-		//Init ();
-		graphMan.Set (parameters);
-		//graphMan.Init ();
-
-		//SetAxis ();
+		graphMan.Set (tmp[1]);
 
 		Init ();
 	}
@@ -101,6 +87,14 @@ public class SingleGraphContent : GraphContent {
 
 	public override string GetTitle () {
 		return graphMan.GetFishText () + ", " + graphMan.GetTypeText ();
+	}
+
+	public override string GetParameterText() {
+		string ret = "";
+		if(graphMan != null)
+			ret += graphMan.GetParameterText();
+
+		return ret;
 	}
 
 	/*

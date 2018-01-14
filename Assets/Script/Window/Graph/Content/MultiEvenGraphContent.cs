@@ -15,17 +15,6 @@ public class MultiEvenGraphContent : GraphContent {
 		graphManList = new List<GraphManager> ();
 	}
 
-	// Use this for initialization
-	public override void Start () {
-		base.Start ();
-		OpenSettingWindow ();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
 	public override void Init() {
 
 		foreach (GraphManager gm in graphManList) {
@@ -39,32 +28,39 @@ public class MultiEvenGraphContent : GraphContent {
 		ShowView ();
 	}
 
+	/*
 	public override void OpenSettingWindow() {
 		mwc.mwm.AddWindow ("MultiEvenGraphSetting");
 		mwc.mwm.GetLastWindowController ().gameObject.GetComponentInChildren<MultiEvenGraphSettingContent> ().RegisterGraphContent (this);
 	}
+	*/
 
-	public void Set(GraphType gt, string[] parameters) {
-		//if (graphManList.Count == 0 || graphManList [0].graphType != gt) {
+	public override void Set(string parameters) {
 		RemoveGraphManager ();
 		foreach (Transform t in plotViewTra)
 			Destroy (t.gameObject);
 
-		if (parameters == null)
+		if (parameters.Equals(""))
 			return;
 
+		char[] fishSeparator = {'\t'}, typeSeparator = { ' ' };
+		string[] fishParameters = parameters.Split (fishSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+
+		string[] tmp = fishParameters[0].Split (typeSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+		GraphType gt = (GraphType)(int.Parse(tmp [0]));
+
 		GameObject graphManObj = Resources.Load ("GraphManager/" + System.Enum.GetName (typeof(GraphType), gt) + "GraphManager") as GameObject;
-		for (int i = 0; i < parameters.Length; i++) {
+		for (int i = 0; i < fishParameters.Length; i++) {
 			GameObject obj = Instantiate (graphManObj, graphTra) as GameObject;
 			graphManList.Add (obj.GetComponent<GraphManager> ());
 			Simulation.Register (graphManList [graphManList.Count - 1]);
 		}
 
-			memo = graphManList [0];
-		//}
+		memo = graphManList [0];
 
-		for (int i = 0; i < parameters.Length; i++) {
-			graphManList[i].Set (parameters [i]);
+		for (int i = 0; i < fishParameters.Length; i++) {
+			tmp = fishParameters[i].Split (typeSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+			graphManList[i].Set (tmp[1]);
 		}
 
 		Init ();
@@ -134,6 +130,17 @@ public class MultiEvenGraphContent : GraphContent {
 			fishText += (gm.fish + 1) + ",";
 
 		return fishText + " " + graphManList [0].GetTypeText ();
+	}
+
+	public override string GetParameterText () {
+		string ret = "";
+		if (graphManList.Count > 0) {
+			foreach (GraphManager gm in graphManList) {
+				ret += gm.GetParameterText () + "\t";
+			}
+		}
+
+		return ret;
 	}
 
 	void OnDestroy() {

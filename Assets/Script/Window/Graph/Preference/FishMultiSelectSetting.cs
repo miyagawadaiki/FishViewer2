@@ -30,7 +30,18 @@ public class FishMultiSelectSetting : Setting {
 			obj.GetComponentInChildren<Text> ().text += (i + 1) + "";
 		}
 
-		SetAllToggle ();
+		if (gc.GetParameterText ().Equals ("")) {
+			SetAllToggle ();
+			return;
+		}
+
+		ResetAllToggle ();
+		char[] fishSeparator = { '\t' }, finelySeparator = { ' ', ',' };
+		string[] fishParameters = gc.GetParameterText ().Split (fishSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+		foreach (string s in fishParameters) {
+			string[] tmp = s.Split (finelySeparator);
+			toggles [int.Parse (tmp [1])].isOn = true;
+		}
 	}
 	
 	// Update is called once per frame

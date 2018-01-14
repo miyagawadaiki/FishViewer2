@@ -283,6 +283,22 @@ public class GraphManager : MonoBehaviour {
 	public virtual string GetTypeText() {
 		return DataBase.GetTags () [xType] + "-" + DataBase.GetTags () [yType];
 	}
+
+	public string GetParameterText() {
+		string s = 
+			(int)graphType + " " +
+			fish + "," +
+			xType + "," +
+			yType + "," +
+			pointNum + "," +
+			pointColorNum + "," +
+			(useColorGrad ? 1 : 0) + "," +
+			(useSizeGrad ? 1 : 0) + "," +
+			plotSize + "," +
+			(useAutoSize ? 1 : 0) + ",";
+
+		return s;
+	}
 }
 
 public enum GraphType {

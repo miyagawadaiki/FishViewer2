@@ -37,11 +37,14 @@ public class SourceSetting : Setting {
 		yType.value = 1;
 
 
-		if (gc.memo != null) {
-			fish.value = gc.memo.fish;
-			xType.value = gc.memo.xType;
-			yType.value = gc.memo.yType;
-		}
+		if (gc.GetParameterText ().Equals (""))
+			return;
+
+		char[] separator = { '\t', ' ', ',' };
+		string[] tmp = gc.GetParameterText ().Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
+		fish.value = int.Parse (tmp [1]);
+		xType.value = int.Parse (tmp [2]);
+		yType.value = int.Parse (tmp [3]);
 	}
 	
 	// Update is called once per frame
