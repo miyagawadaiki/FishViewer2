@@ -44,7 +44,7 @@ public class GraphManager : MonoBehaviour {
 	protected int markerIdx;
 	protected float yMax, yMin, xExp = 1f, yExp = 1f;
 	protected float xMax, xMin;
-	//protected GridLineController xAxis, yAxis;
+	protected GridLineController xAxis, yAxis;
 	protected RectTransform[] points;
 	//protected Color pointColor;
 	protected float markerRate = 0.5f;
@@ -133,16 +133,10 @@ public class GraphManager : MonoBehaviour {
 			}
 		}
 
-		/*
-		xGrids = new GridLineController[gridNum];
-		yGrids = new GridLineController[gridNum];
-		for (int i = 0; i < gridNum; i++) {
-			xGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
-			yGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
-		}
-
-		HideView ();
-		*/
+		xAxis = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
+		yAxis = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
+		xAxis.isAxis = true;
+		yAxis.isAxis = true;
 	}
 
 	public virtual void Set(string values) {
@@ -184,19 +178,6 @@ public class GraphManager : MonoBehaviour {
 			yExp = 1f;
 	}
 
-	/*
-	public virtual void ShowView() {
-		if (!showAxis && !showGrid) {
-			HideGrid ();
-			return;
-		}
-
-		if (showAxis)
-			SetAxis ();
-		if (showGrid)
-			SetGrid ();
-	*/
-
 	public virtual void SetGrid() {
 		float xMax_ = LocalToRectGraph(new Vector2(view.rect.width / 2f, 0f)).x, xMin_ = LocalToGraph(new Vector2(view.rect.width / -2f, 0f)).x;
 		float xRange = (xMax_ - xMin_);
@@ -232,15 +213,25 @@ public class GraphManager : MonoBehaviour {
 			yAxisValue = (int)(yMax_ / yGridValue) + (yMax_ < 0 ? -1 : 0);
 		else
 			yAxisValue = (int)(yMin_ / yGridValue) + (yMin_ > 0 ? 1 : 0);
+
+	}
+
+	public virtual void SetCompletely(bool first) {
 		
 	}
 
 	public virtual void ShowAxis() {
-		
+		xAxis.Hide ();
+		yAxis.Hide ();
 	}
 
 	public virtual void ShowGrid() {
-		
+		xAxis.Hide ();
+		yAxis.Hide ();
+	}
+
+	public virtual void ShowCompletely() {
+
 	}
 
 	public virtual void HideView() {

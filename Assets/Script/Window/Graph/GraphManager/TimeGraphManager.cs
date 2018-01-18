@@ -74,18 +74,26 @@ public class TimeGraphManager : GraphManager {
 
 		int yStart = (int)(yMin_ / yGridValue) + (yMin_ > 0 ? 1 : 0);
 		for (int i = 0; i < gridNum; i++) {
-			yGrids [i].Set (false, GraphToLocal(new Vector2 (Simulation.step, (yStart + i) * yGridValue)), (yStart + i) * yGridValue);
+			yGrids [i].Set (false, GraphToLocal(new Vector2 (Simulation.step, (yStart + i) * yGridValue)), (yStart + i) * yGridValue, TextPos.BelowLeft);
 			if (yStart + i == yAxisValue)
 				yGrids [i].isAxis = true;
 			else
 				yGrids [i].isAxis = false;
 		}
 
-		xGrids [0].Set (true, GraphToLocal (new Vector2 (Simulation.step, (float)yAxisValue * yGridValue)), Simulation.step);
+		xGrids [0].Set (true, GraphToLocal (new Vector2 (Simulation.step, (float)yAxisValue * yGridValue)), Simulation.step, TextPos.BelowLeft);
 		xGrids [0].isAxis = true;
 	}
 
+	public override void SetCompletely (bool first) {
+		base.SetGrid ();
+
+
+	}
+
 	public override void ShowAxis() {
+		base.ShowAxis ();
+
 		for (int i = 0; i < gridNum; i++) {
 			if (yGrids [i].isAxis)
 				yGrids [i].Draw (true, true);
@@ -97,11 +105,17 @@ public class TimeGraphManager : GraphManager {
 	}
 
 	public override void ShowGrid() {
+		base.ShowGrid ();
+
 		for (int i = 0; i < gridNum; i++) {
 			yGrids [i].Draw (true, true);
 		}
 
 		xGrids [0].Draw (true, false);
+	}
+
+	public override void ShowCompletely () {
+		base.ShowCompletely ();
 	}
 
 	public override Vector2 GraphToLocal (Vector2 v)

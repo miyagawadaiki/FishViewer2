@@ -16,7 +16,7 @@ public class AngleLineController : GridLineController {
 		//textRecTra = textObj.GetComponent<RectTransform> ();
 		image = this.GetComponent<Image> ();
 		//text = textObj.GetComponent<Text> ();
-		defColor = image.color;
+		lineDefColor = image.color;
 
 	}
 

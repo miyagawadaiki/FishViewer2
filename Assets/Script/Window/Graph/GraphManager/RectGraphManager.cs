@@ -58,13 +58,13 @@ public class RectGraphManager : GraphManager {
 
 		int xStart = (int)(xMin_ / xGridValue) + (xMin_ > 0 ? 1 : 0), yStart = (int)(yMin_ / yGridValue) + (yMin_ > 0 ? 1 : 0);
 		for (int i = 0; i < gridNum; i++) {
-			xGrids [i].Set (true, RectGraphToLocal(new Vector2 ((xStart + i) * xGridValue, (float)yAxisValue * yGridValue)), (xStart + i) * xGridValue);
+			xGrids [i].Set (true, RectGraphToLocal(new Vector2 ((xStart + i) * xGridValue, (float)yAxisValue * yGridValue)), (xStart + i) * xGridValue, TextPos.BelowLeft);
 			if (xStart + i == xAxisValue)
 				xGrids [i].isAxis = true;
 			else
 				xGrids [i].isAxis = false;
 
-			yGrids [i].Set (false, RectGraphToLocal(new Vector2 ((float)xAxisValue * xGridValue, (yStart + i) * yGridValue)), (yStart + i) * yGridValue);
+			yGrids [i].Set (false, RectGraphToLocal(new Vector2 ((float)xAxisValue * xGridValue, (yStart + i) * yGridValue)), (yStart + i) * yGridValue, TextPos.BelowLeft);
 			if (yStart + i == yAxisValue)
 				yGrids [i].isAxis = true;
 			else
@@ -72,7 +72,41 @@ public class RectGraphManager : GraphManager {
 		}
 	}
 
+	public override void SetCompletely(bool first) {
+		base.SetGrid ();
+
+		float xMax_ = LocalToRectGraph(new Vector2(view.rect.width / 2f, 0f)).x, xMin_ = LocalToGraph(new Vector2(view.rect.width / -2f, 0f)).x;
+		float yMax_ = LocalToRectGraph(new Vector2(0f, view.rect.height / 2f)).y, yMin_ = LocalToGraph(new Vector2(0f, view.rect.height / -2f)).y;
+
+		int xStart = (int)(xMin_ / xGridValue) + (xMin_ > 0 ? 1 : 0), yStart = (int)(yMin_ / yGridValue) + (yMin_ > 0 ? 1 : 0);
+		for (int i = 0; i < gridNum; i++) {
+			if(first)
+				xGrids [i].Set (true, RectGraphToLocal(new Vector2 ((xStart + i) * xGridValue, yMin_)), (xStart + i) * xGridValue, TextPos.Below);
+			else
+				xGrids [i].Set (true, RectGraphToLocal(new Vector2 ((xStart + i) * xGridValue, yMax_)), (xStart + i) * xGridValue, TextPos.Above);
+			xGrids [i].isAxis = false;
+
+			if(first)
+				yGrids [i].Set (false, RectGraphToLocal(new Vector2 (xMin_, (yStart + i) * yGridValue)), (yStart + i) * yGridValue, TextPos.Left);
+			else
+				yGrids [i].Set (false, RectGraphToLocal(new Vector2 (xMax_, (yStart + i) * yGridValue)), (yStart + i) * yGridValue, TextPos.Right);
+			yGrids [i].isAxis = false;
+		}
+
+		if (first)
+			xAxis.Set (true, view.rect.size / -2f, xMin, TextPos.Below);
+		else
+			xAxis.Set (true, view.rect.size / 2f, xMax, TextPos.Above);
+
+		if (first)
+			yAxis.Set (false, view.rect.size / -2f, yMin, TextPos.Left);
+		else
+			yAxis.Set (false, view.rect.size / 2f, yMax, TextPos.Right);
+	}
+
 	public override void ShowAxis() {
+		base.ShowAxis ();
+
 		for (int i = 0; i < gridNum; i++) {
 			if (xGrids [i].isAxis)
 				xGrids [i].Draw (true, true);
@@ -87,6 +121,8 @@ public class RectGraphManager : GraphManager {
 	}
 
 	public override void ShowGrid() {
+		base.ShowGrid ();
+
 		for (int i = 0; i < gridNum; i++) {
 			xGrids [i].Draw (true, true);
 			if (yGrids [i].isAxis)
@@ -95,7 +131,17 @@ public class RectGraphManager : GraphManager {
 				yGrids [i].Draw (true, true);
 		}
 	}
-		
+
+	public override void ShowCompletely () {
+		for (int i = 0; i < gridNum; i++) {
+			xGrids [i].Draw (true, true);
+			yGrids [i].Draw (true, true);
+		}
+
+		xAxis.Draw (true, true);
+		yAxis.Draw (true, true);
+	}
+
 	public override Vector2 GraphToLocal (Vector2 v) {
 		return base.RectGraphToLocal (v);
 	}

@@ -76,16 +76,34 @@ public class SingleGraphContent : GraphContent {
 		graphMan.SetGrid ();
 	}
 
+	public override void SetCompletely() {
+		if (graphMan == null)
+			return;
+		graphMan.SetCompletely (true);
+	}
+
 	public override void ShowAxis() {
+		base.ShowAxis ();
+
 		if (graphMan == null)
 			return;
 		graphMan.ShowAxis ();
 	}
 
 	public override void ShowGrid() {
+		base.ShowGrid ();
+
 		if (graphMan == null)
 			return;
 		graphMan.ShowGrid ();
+	}
+
+	public override void ShowCompletely () {
+		base.ShowCompletely ();
+
+		if (graphMan == null)
+			return;
+		graphMan.ShowCompletely ();
 	}
 
 	public override void HideView() {

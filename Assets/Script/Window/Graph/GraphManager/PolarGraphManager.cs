@@ -97,6 +97,10 @@ public class PolarGraphManager : GraphManager {
 		alc.SetAngle (localZero);
 	}
 
+	public override void SetCompletely (bool first) {
+		
+	}
+
 	public override void ShowAxis () {
 		for (int i = 0; i < gridNum; i++) {
 			xGrids [i].Hide ();
@@ -113,6 +117,10 @@ public class PolarGraphManager : GraphManager {
 
 		alc.isAxis = false;
 		alc.Draw (false, false);
+	}
+
+	public override void ShowCompletely () {
+		base.ShowCompletely ();
 	}
 
 	public override Vector2 GraphToLocal(Vector2 v) {
