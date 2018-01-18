@@ -120,8 +120,7 @@ public class PolarGraphManager : GraphManager {
 		return base.RectGraphToLocal (vv);
 	}
 
-	public override Vector2 LocalToGraph (Vector2 v)
-	{
+	public override Vector2 LocalToGraph (Vector2 v) {
 		Vector2 vv = base.LocalToRectGraph (v);
 		float r = vv.magnitude;
 		return new Vector2 (r, Mathf.Acos (vv.x / r));

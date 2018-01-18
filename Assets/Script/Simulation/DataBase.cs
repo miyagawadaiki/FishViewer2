@@ -71,6 +71,8 @@ public class DataBase {
 		for (int i = 0; i < fish; i++) {
 			for (int j = 0; j < tag; j++) {
 				float value = float.Parse (tmp [i * tag + j]);
+				if (float.IsNaN (value))
+					value = 0f;
 				SetData (step, i, j, value);
 				if (max [j] < value)
 					max [j] = value;

@@ -50,13 +50,13 @@ public class SimulationController : MonoBehaviour {
 	}
 
 	public void Init() {
-		stepSlider.maxValue = (float)DataBase.step;
+		stepSlider.maxValue = (float)DataBase.step - 1;
 		stepSlider.minValue = 0f;
 		stepSlider.value = 0f;
-		repStartSlider.maxValue = (float)DataBase.step;
+		repStartSlider.maxValue = (float)DataBase.step - 1;
 		repStartSlider.minValue = 0f;
 		repStartSlider.value = 0f;
-		repEndSlider.maxValue = (float)DataBase.step;
+		repEndSlider.maxValue = (float)DataBase.step - 1;
 		repEndSlider.minValue = 0f;
 		repEndSlider.value = 0f;
 		speedSlider.maxValue = 50f;

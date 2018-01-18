@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class GraphContent : MyWindowContent {
 
 	[SerializeField]
-	protected Transform graphTra = null;
+	protected RectTransform graphRecTra = null;
 	[SerializeField]
 	protected Text graphTitleText = null;
 
-	[System.NonSerialized]
-	public GraphManager memo = null;
+	//[System.NonSerialized]
+	//public GraphManager memo = null;
 	[System.NonSerialized]
 	public ViewMode viewMode = ViewMode.ShowAxis;
 
@@ -52,7 +52,7 @@ public class GraphContent : MyWindowContent {
 	}
 
 	public virtual void OpenSettingWindow() {
-		mwc.mwm.AddWindow (System.Enum.GetName(typeof(GraphContentType), gcType) + "Setting");
+		mwc.mwm.AddWindow (System.Enum.GetName(typeof(GraphContentType), gcType) + "GraphSetting");
 		mwc.mwm.GetLastWindowController ().gameObject.GetComponentInChildren<GraphSettingContent> ().RegisterGraphContent (this);
 	}
 

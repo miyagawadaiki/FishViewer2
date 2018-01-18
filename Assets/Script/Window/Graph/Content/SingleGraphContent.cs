@@ -7,9 +7,17 @@ public class SingleGraphContent : GraphContent {
 	//private GraphType graphType = GraphType.Rect;
 	public GraphManager graphMan;
 
+	void Awake() {
+		gcType = GraphContentType.Single;
+	}
+
 	public override void Init() {
 		graphMan.Init ();
 		graphTitleText.text = GetTitle ();
+
+		if (graphMan.graphType.Equals (GraphType.Polar)) {
+			graphRecTra.offsetMin = new Vector2 (graphRecTra.offsetMin.x, graphRecTra.offsetMax.x * -1f);
+		}
 
 		ShowView();
 		//graphMan.ShowAxis ();
@@ -32,12 +40,13 @@ public class SingleGraphContent : GraphContent {
 				Simulation.Remove (graphMan);
 				Destroy (graphMan.gameObject);
 			}
-			GameObject obj = Instantiate (Resources.Load ("GraphManager/" + System.Enum.GetName (typeof(GraphType), gt) + "GraphManager"), graphTra) as GameObject;
+			GameObject obj = Instantiate (Resources.Load ("GraphManager/" + System.Enum.GetName (typeof(GraphType), gt) + "GraphManager"), graphRecTra) as GameObject;
 			graphMan = obj.GetComponent<GraphManager> ();
-			memo = graphMan;
+			//memo = graphMan;
 			Simulation.Register (graphMan);
 		}
 
+		Debug.Log ("SingleGraph = " + tmp [1]);
 		graphMan.Set (tmp[1]);
 
 		Init ();

@@ -8,8 +8,16 @@ public class GraphSettingContent : MyWindowContent {
 	protected GraphContent gc;
 	protected GraphContentType gcType;
 
-	[SerializeField]
-	private Button doneButton = null;
+	//[SerializeField]
+	protected Button doneButton;
+	protected SettingManager sm; 
+
+	protected virtual void Awake () {
+		doneButton = this.GetComponentInChildren<Button> ();
+
+		sm = this.GetComponentInChildren<SettingManager> ();
+		//sm.RegisterParameterText (gc.GetParameterText ());
+	}
 
 	// Use this for initialization
 	protected virtual void Start () {
@@ -19,6 +27,9 @@ public class GraphSettingContent : MyWindowContent {
 		mwc.canExpand = false;
 
 		doneButton.onClick.AddListener (() => mwc.Destroy ());
+		doneButton.onClick.AddListener (() => gc.Set(sm.GetParameterText ()));
+
+		sm.RegisterParameterText (gc.GetParameterText ());
 	}
 	
 	// Update is called once per frame
@@ -28,18 +39,5 @@ public class GraphSettingContent : MyWindowContent {
 
 	public virtual void RegisterGraphContent(GraphContent gc) {
 		this.gc = gc;
-
-		foreach (Setting s in this.GetComponentsInChildren<Setting>()) {
-			s.type = gcType;
-			s.gc = gc;
-		}
-	}
-
-	public virtual void UpdateGraphContent() {
-
-	}
-
-	public virtual string GetParameterText() {
-		return "";
 	}
 }

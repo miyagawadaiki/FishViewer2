@@ -293,6 +293,8 @@ public class MyWindowManager : MonoBehaviour {
 		SingleGraphSetting,
 		MultiEvenGraphSetting,
 		MultiVariousGraphSetting,
+		MultiVariousParameterSetting,
+		//MultiGraphSetting,
 		Sample,
 	}
 }

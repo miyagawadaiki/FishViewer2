@@ -13,6 +13,7 @@ public class MultiEvenGraphContent : GraphContent {
 
 	void Awake() {
 		graphManList = new List<GraphManager> ();
+		gcType = GraphContentType.MultiEven;
 	}
 
 	public override void Init() {
@@ -25,6 +26,10 @@ public class MultiEvenGraphContent : GraphContent {
 
 		graphTitleText.text = GetTitle ();
 
+		if (graphManList [0].graphType.Equals (GraphType.Polar)) {
+			graphRecTra.offsetMin = new Vector2 (graphRecTra.offsetMin.x, graphRecTra.offsetMax.x * -1f);
+		}
+
 		ShowView ();
 	}
 
@@ -36,31 +41,40 @@ public class MultiEvenGraphContent : GraphContent {
 	*/
 
 	public override void Set(string parameters) {
+		//Debug.Log (parameters);
 		RemoveGraphManager ();
 		foreach (Transform t in plotViewTra)
 			Destroy (t.gameObject);
 
-		if (parameters.Equals(""))
+		char[] groupSeparator = { ':' }, typeSeparator = { ' ' }, allSeparator = { ':', ' ', ',' };
+		string[] groupTexts = parameters.Split (groupSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+
+		string[] typeText = groupTexts [0].Split (typeSeparator);
+		GraphType gt = (GraphType)(int.Parse (typeText[0]));
+		GameObject graphManObj = Resources.Load ("GraphManager/" + System.Enum.GetName (typeof(GraphType), gt) + "GraphManager") as GameObject;
+
+		string[] fishTexts = groupTexts [1].Split (allSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+		string[] sourceTexts = groupTexts [2].Split (allSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+		string[] pointerTexts = groupTexts [3].Split (allSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+
+		List<int> fishNumList = new List<int> ();
+		for (int i = 0; i < fishTexts.Length; i++)
+			if (int.Parse (fishTexts [i]) > 0)
+				fishNumList.Add (i);
+
+		if (fishNumList.Count <= 0)
 			return;
 
-		char[] fishSeparator = {'\t'}, typeSeparator = { ' ' };
-		string[] fishParameters = parameters.Split (fishSeparator, System.StringSplitOptions.RemoveEmptyEntries);
-
-		string[] tmp = fishParameters[0].Split (typeSeparator, System.StringSplitOptions.RemoveEmptyEntries);
-		GraphType gt = (GraphType)(int.Parse(tmp [0]));
-
-		GameObject graphManObj = Resources.Load ("GraphManager/" + System.Enum.GetName (typeof(GraphType), gt) + "GraphManager") as GameObject;
-		for (int i = 0; i < fishParameters.Length; i++) {
-			GameObject obj = Instantiate (graphManObj, graphTra) as GameObject;
+		for (int i = 0; i < fishNumList.Count; i++) {
+			GameObject obj = Instantiate (graphManObj, graphRecTra) as GameObject;
 			graphManList.Add (obj.GetComponent<GraphManager> ());
 			Simulation.Register (graphManList [graphManList.Count - 1]);
-		}
 
-		memo = graphManList [0];
+			string p = fishNumList [i] + "," + sourceTexts[1] + "," + sourceTexts[2] + ",";
+			p += pointerTexts [0] + "," + fishNumList [i] + "," + pointerTexts[2] + "," + pointerTexts[3] + "," + pointerTexts[4] + "," + pointerTexts[5] + ",";
 
-		for (int i = 0; i < fishParameters.Length; i++) {
-			tmp = fishParameters[i].Split (typeSeparator, System.StringSplitOptions.RemoveEmptyEntries);
-			graphManList[i].Set (tmp[1]);
+			//Debug.Log (p);
+			graphManList [i].Set (p);
 		}
 
 		Init ();
@@ -134,11 +148,26 @@ public class MultiEvenGraphContent : GraphContent {
 
 	public override string GetParameterText () {
 		string ret = "";
-		if (graphManList.Count > 0) {
-			foreach (GraphManager gm in graphManList) {
-				ret += gm.GetParameterText () + "\t";
-			}
+
+		if (graphManList.Count == 0)
+			return ret;
+
+		char[] typeSeparator = { ':', ' ' }, paramSeparator = { ':', ' ', ',' };
+		string[] typeTexts = graphManList [0].GetParameterText ().Split(typeSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+
+		ret += typeTexts [0] + " :";
+
+		int[] fishMemo = new int[DataBase.fish];
+		foreach (GraphManager gm in graphManList) {
+			string[] tmp = gm.GetParameterText ().Split (paramSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+			fishMemo [int.Parse (tmp [1])] = 1;
 		}
+		foreach (int i in fishMemo)
+			ret += i + ",";
+		ret += ":";
+
+		ret += typeTexts [1] + ":" + typeTexts [2] + ":";
+		Debug.Log ("ret = " + ret);
 
 		return ret;
 	}

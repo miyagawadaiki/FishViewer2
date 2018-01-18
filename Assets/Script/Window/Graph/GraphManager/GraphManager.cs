@@ -146,8 +146,8 @@ public class GraphManager : MonoBehaviour {
 	}
 
 	public virtual void Set(string values) {
-		char[] separator = { ',' };
-		string[] tmp = values.Split (separator);
+		char[] separator = { ':', ',' };
+		string[] tmp = values.Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
 
 		fish = int.Parse (tmp [0]);
 		xType = int.Parse (tmp [1]);
@@ -159,8 +159,6 @@ public class GraphManager : MonoBehaviour {
 		useSizeGrad = int.Parse (tmp [6]) > 0 ? true : false;
 		plotSize = float.Parse (tmp [7]);
 		useAutoSize = int.Parse (tmp [8]) > 0 ? true : false;
-
-		//Init ();
 	}
 
 	public virtual void Plot(int step) {
@@ -286,16 +284,16 @@ public class GraphManager : MonoBehaviour {
 
 	public string GetParameterText() {
 		string s = 
-			(int)graphType + " " +
+			(int)graphType + " :" +
 			fish + "," +
 			xType + "," +
-			yType + "," +
+			yType + ",:" +
 			pointNum + "," +
 			pointColorNum + "," +
 			(useColorGrad ? 1 : 0) + "," +
 			(useSizeGrad ? 1 : 0) + "," +
 			plotSize + "," +
-			(useAutoSize ? 1 : 0) + ",";
+			(useAutoSize ? 1 : 0) + ",:";
 
 		return s;
 	}
