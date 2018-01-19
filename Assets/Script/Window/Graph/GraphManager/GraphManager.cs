@@ -230,7 +230,11 @@ public class GraphManager : MonoBehaviour {
 		yAxis.Hide ();
 	}
 
-	public virtual void ShowCompletely() {
+	public virtual void ShowAxisCompletely() {
+
+	}
+
+	public virtual void ShowGridCompletely() {
 
 	}
 

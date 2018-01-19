@@ -15,9 +15,11 @@ public class SingleGraphContent : GraphContent {
 		graphMan.Init ();
 		graphTitleText.text = GetTitle ();
 
+		/*
 		if (graphMan.graphType.Equals (GraphType.Polar)) {
 			graphRecTra.offsetMin = new Vector2 (graphRecTra.offsetMin.x, graphRecTra.offsetMax.x * -1f);
 		}
+		*/
 
 		ShowView();
 		//graphMan.ShowAxis ();
@@ -98,12 +100,20 @@ public class SingleGraphContent : GraphContent {
 		graphMan.ShowGrid ();
 	}
 
-	public override void ShowCompletely () {
-		base.ShowCompletely ();
+	public override void ShowAxisCompletely () {
+		base.ShowAxisCompletely ();
 
 		if (graphMan == null)
 			return;
-		graphMan.ShowCompletely ();
+		graphMan.ShowAxisCompletely ();
+	}
+
+	public override void ShowGridCompletely () {
+		base.ShowGridCompletely ();
+
+		if (graphMan == null)
+			return;
+		graphMan.ShowGridCompletely ();
 	}
 
 	public override void HideView() {

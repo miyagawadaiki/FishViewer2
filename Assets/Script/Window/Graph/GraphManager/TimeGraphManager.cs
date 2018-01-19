@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TimeGraphManager : GraphManager {
 
+	private UnityEngine.UI.Text xText;
+
 	protected override void Awake() {
 		base.Awake ();
 		graphType = GraphType.Time;
@@ -28,7 +30,10 @@ public class TimeGraphManager : GraphManager {
 		xMax = (float)(Simulation.step + (pointNum - markerIdx));
 
 		xGrids = new GridLineController[1];
-		xGrids[0] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
+		GameObject obj = Instantiate (gridLineObj, view) as GameObject;
+		xGrids[0] = obj.GetComponent<GridLineController>();
+		xText = obj.GetComponentInChildren<UnityEngine.UI.Text> ();
+
 		yGrids = new GridLineController[gridNum];
 		for (int i = 0; i < gridNum; i++) {
 			yGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
@@ -51,6 +56,8 @@ public class TimeGraphManager : GraphManager {
 					points [i].gameObject.SetActive (false);
 			}
 		}
+
+		xText.text = step + "";
 	}
 		
 	public override void Translate(Vector2 start, Vector2 end) {
@@ -75,20 +82,44 @@ public class TimeGraphManager : GraphManager {
 		int yStart = (int)(yMin_ / yGridValue) + (yMin_ > 0 ? 1 : 0);
 		for (int i = 0; i < gridNum; i++) {
 			yGrids [i].Set (false, GraphToLocal(new Vector2 (Simulation.step, (yStart + i) * yGridValue)), (yStart + i) * yGridValue, TextPos.BelowLeft);
-			if (yStart + i == yAxisValue)
-				yGrids [i].isAxis = true;
-			else
-				yGrids [i].isAxis = false;
+			yGrids [i].isAxis = false;
 		}
+		yGrids [yAxisValue - yStart].isAxis = true;
 
-		xGrids [0].Set (true, GraphToLocal (new Vector2 (Simulation.step, (float)yAxisValue * yGridValue)), Simulation.step, TextPos.BelowLeft);
-		xGrids [0].isAxis = true;
+		xGrids [0].Set (true, GraphToLocal (new Vector2 (Simulation.step, (float)yAxisValue * yGridValue)), Simulation.step, TextPos.BelowRight);
+		xGrids [0].isAxis = false;
 	}
 
 	public override void SetCompletely (bool first) {
 		base.SetGrid ();
 
+		float xMax_ = LocalToRectGraph(new Vector2(view.rect.width / 2f, 0f)).x, xMin_ = LocalToGraph(new Vector2(view.rect.width / -2f, 0f)).x;
+		float yMax_ = LocalToRectGraph(new Vector2(0f, view.rect.height / 2f)).y, yMin_ = LocalToGraph(new Vector2(0f, view.rect.height / -2f)).y;
 
+		int yStart = (int)(yMin_ / yGridValue) + (yMin_ > 0 ? 1 : 0);
+		for (int i = 0; i < gridNum; i++) {
+			if(first)
+				yGrids [i].Set (false, GraphToLocal(new Vector2 (Simulation.step - pointNum / 2, (yStart + i) * yGridValue)), (yStart + i) * yGridValue, TextPos.Left);
+			else
+				yGrids [i].Set (false, GraphToLocal(new Vector2 (Simulation.step + pointNum / 2, (yStart + i) * yGridValue)), (yStart + i) * yGridValue, TextPos.Right);
+			yGrids [i].isAxis = false;
+		}
+
+		if (first)
+			xGrids [0].Set (true, GraphToLocal (new Vector2 (Simulation.step, yMin_)), Simulation.step, TextPos.Below);
+		else
+			xGrids [0].Set (true, GraphToLocal (new Vector2 (Simulation.step + pointNum, yMax_)), Simulation.step, TextPos.Below);
+		xGrids [0].isAxis = false;
+
+		if (first)
+			xAxis.Set (true, view.rect.size / -2f, xMin_, TextPos.Below);
+		else
+			xAxis.Set (true, view.rect.size / 2f, xMax_, TextPos.Above);
+
+		if (first)
+			yAxis.Set (false, view.rect.size / -2f, yMin_, TextPos.Left);
+		else
+			yAxis.Set (false, view.rect.size / 2f, yMax_, TextPos.Right);
 	}
 
 	public override void ShowAxis() {
@@ -101,7 +132,7 @@ public class TimeGraphManager : GraphManager {
 				yGrids [i].Hide ();
 		}
 
-		xGrids [0].Draw (true, false);
+		xGrids [0].Draw (true, true);
 	}
 
 	public override void ShowGrid() {
@@ -111,15 +142,36 @@ public class TimeGraphManager : GraphManager {
 			yGrids [i].Draw (true, true);
 		}
 
-		xGrids [0].Draw (true, false);
+		xGrids [0].Draw (true, true);
 	}
 
-	public override void ShowCompletely () {
-		base.ShowCompletely ();
+	public override void ShowAxisCompletely () {
+		base.ShowAxisCompletely ();
+
+		for (int i = 0; i < gridNum; i++) {
+			yGrids [i].DrawShort ();
+		}
+
+		xGrids [0].Draw (true, true);
+
+		xAxis.Draw (true, false);
+		yAxis.Draw (true, false);
 	}
 
-	public override Vector2 GraphToLocal (Vector2 v)
-	{
+	public override void ShowGridCompletely () {
+		base.ShowGridCompletely ();
+
+		for (int i = 0; i < gridNum; i++) {
+			yGrids [i].Draw (true, true);
+		}
+
+		xGrids [0].Draw (true, true);
+
+		xAxis.Draw (true, false);
+		yAxis.Draw (true, false);
+	}
+
+	public override Vector2 GraphToLocal (Vector2 v) {
 		return base.RectGraphToLocal (v);
 	}
 

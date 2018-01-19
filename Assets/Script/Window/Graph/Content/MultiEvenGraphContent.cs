@@ -117,6 +117,13 @@ public class MultiEvenGraphContent : GraphContent {
 		graphManList [graphManList.Count - 1].SetGrid ();
 	}
 
+	public override void SetCompletely () {
+		if (graphManList.Count == 0)
+			return;
+
+		graphManList [graphManList.Count - 1].SetCompletely (true);
+	}
+
 	public override void ShowAxis() {
 		if (graphManList.Count == 0)
 			return;
@@ -129,6 +136,20 @@ public class MultiEvenGraphContent : GraphContent {
 			return;
 
 		graphManList [graphManList.Count - 1].ShowGrid ();
+	}
+
+	public override void ShowAxisCompletely() {
+		if (graphManList.Count == 0)
+			return;
+
+		graphManList [graphManList.Count - 1].ShowAxisCompletely ();
+	}
+
+	public override void ShowGridCompletely() {
+		if (graphManList.Count == 0)
+			return;
+
+		graphManList [graphManList.Count - 1].ShowGridCompletely ();
 	}
 
 	public override void HideView() {

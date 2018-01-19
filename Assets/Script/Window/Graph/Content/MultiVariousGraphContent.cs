@@ -83,28 +83,56 @@ public class MultiVariousGraphContent : GraphContent {
 		if (graphManList.Count == 0)
 			return;
 
-		graphManList [graphManList.Count - 1].SetGrid ();
+		selected.SetGrid ();
+	}
+
+	public override void SetCompletely() {
+		if (graphManList.Count == 0)
+			return;
+
+		graphManList [0].SetCompletely (true);
+		if (graphManList.Count >= 2)
+			graphManList [1].SetCompletely (false);
 	}
 
 	public override void ShowAxis() {
 		if (graphManList.Count == 0)
 			return;
 
-		graphManList [graphManList.Count - 1].ShowAxis ();
+		selected.ShowAxis ();
 	}
 
 	public override void ShowGrid() {
 		if (graphManList.Count == 0)
 			return;
 
-		graphManList [graphManList.Count - 1].ShowGrid ();
+		selected.ShowGrid ();
+	}
+
+	public override void ShowAxisCompletely() {
+		if (graphManList.Count == 0)
+			return;
+		
+		graphManList [0].ShowAxisCompletely ();
+		if (graphManList.Count >= 2)
+			graphManList [1].ShowAxisCompletely ();
+	}
+
+	public override void ShowGridCompletely() {
+		if (graphManList.Count == 0)
+			return;
+
+		graphManList [0].ShowGridCompletely ();
+		if (graphManList.Count >= 2)
+			graphManList [1].ShowAxisCompletely ();
 	}
 
 	public override void HideView() {
 		if (graphManList.Count == 0)
 			return;
 
-		graphManList [graphManList.Count - 1].HideView ();
+		foreach (GraphManager gm in graphManList)
+			gm.HideView ();
 	}
 
 	public override string GetTitle () {

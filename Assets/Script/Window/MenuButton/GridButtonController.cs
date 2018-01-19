@@ -10,7 +10,9 @@ public class GridButtonController : MonoBehaviour {
 	[SerializeField]
 	private Sprite gridImage = null;
 	[SerializeField]
-	private Sprite compImage = null;
+	private Sprite axisCompImage = null;
+	[SerializeField]
+	private Sprite gridCompImage = null;
 	[SerializeField]
 	private Sprite hideImage = null;
 
@@ -44,8 +46,11 @@ public class GridButtonController : MonoBehaviour {
 		case ViewMode.ShowGrid:
 			image.sprite = gridImage;
 			return;
-		case ViewMode.ShowCompletely:
-			image.sprite = compImage;
+		case ViewMode.ShowAxisCompletely:
+			image.sprite = axisCompImage;
+			return;
+		case ViewMode.ShowGridCompletely:
+			image.sprite = gridCompImage;
 			return;
 		case ViewMode.Hide:
 			image.sprite = hideImage;

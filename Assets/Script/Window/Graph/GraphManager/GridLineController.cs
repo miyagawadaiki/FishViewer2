@@ -17,6 +17,42 @@ public class GridLineController : MonoBehaviour {
 	public Vector2 localPos;
 	public float value;
 
+	private Vector2 pivotMemo;
+	private Vector2[] textPivotMemo = {
+		new Vector2 (0.5f, 1.2f),
+		new Vector2 (0f, 0.5f),
+		new Vector2 (0.5f, -0.2f),
+		new Vector2 (1f, 0.5f),
+		new Vector2 (1f, 1.2f),
+		new Vector2 (-0.1f, 1.4f),
+	};
+	private TextAnchor[] textAnchorMemo = {
+		TextAnchor.LowerCenter,
+		TextAnchor.MiddleCenter,
+		TextAnchor.UpperCenter,
+		TextAnchor.MiddleCenter,
+		TextAnchor.MiddleRight,
+		TextAnchor.MiddleLeft,
+	};
+	private Vector2[] linePivotMemo = {
+		new Vector2 (0.5f, 0f),
+		new Vector2 (1f, 0.5f),
+		new Vector2 (0.5f, 1f),
+		new Vector2 (0f, 0.5f),
+		new Vector2 (0.5f, 0.5f),
+		new Vector2 (0.5f, 0.5f)
+	};
+
+	private Vector2 zero = new Vector2 ();
+	//private Vector2 leftBottom = new Vector2 ();
+	private Vector2 centerBottom = new Vector2 (0.5f, 0f);
+	private Vector2 rightBottom = new Vector2 (1f, 0f);
+	private Vector2 leftMiddle = new Vector2 (0f, 0.5f);
+	private Vector2 centerMiddle = new Vector2 (0.5f, 0.5f);
+	private Vector2 rightMiddle = new Vector2 (1f, 0.5f);
+	private Vector2 leftTop = new Vector2 (0f, 1f);
+	private Vector2 centerTop = new Vector2 (0.5f, 1f);
+	private Vector2 rightTop = new Vector2 (1f, 1f);
 
 	protected virtual void Awake() {
 		viewRecTra = this.transform.parent.GetComponent<RectTransform> ();
@@ -42,7 +78,9 @@ public class GridLineController : MonoBehaviour {
 		this.isVertical = isVertical;
 		this.localPos = localPos;
 		this.value = value;
-		SetText (tp);
+		textRecTra.pivot = textPivotMemo[(int)tp];
+		text.alignment = textAnchorMemo[(int)tp];
+		pivotMemo = linePivotMemo[(int)tp];
 	}
 
 	public virtual void SetCircle(Vector2 localZero, float localRadius, float angle, float value) {
@@ -62,18 +100,20 @@ public class GridLineController : MonoBehaviour {
 			text.color = textDefColor;
 		}
 
+		lineRecTra.pivot = centerMiddle;
+
 		if (isVertical) {
-			lineRecTra.anchorMin = new Vector2 (0.5f, 0f);
-			lineRecTra.anchorMax = new Vector2 (0.5f, 1f);
-			lineRecTra.sizeDelta = new Vector2 (0f, 0f);
-			lineRecTra.localPosition = new Vector2 (localPos.x, 0f);
-			textRecTra.localPosition = new Vector2 (0f, localPos.y);
+			lineRecTra.anchorMin = centerBottom;
+			lineRecTra.anchorMax = centerTop;
+			lineRecTra.sizeDelta = zero;
+			lineRecTra.localPosition = rightBottom * localPos.x;
+			textRecTra.localPosition = leftTop * localPos.y;
 		} else {
-			lineRecTra.anchorMin = new Vector2 (0f, 0.5f);
-			lineRecTra.anchorMax = new Vector2 (1f, 0.5f);
-			lineRecTra.sizeDelta = new Vector2 (0f, 0f);
-			lineRecTra.localPosition = new Vector2 (0f, localPos.y);
-			textRecTra.localPosition = new Vector2 (localPos.x, 0f);
+			lineRecTra.anchorMin = leftMiddle;
+			lineRecTra.anchorMax = rightMiddle;
+			lineRecTra.sizeDelta = zero;
+			lineRecTra.localPosition = leftTop * localPos.y;
+			textRecTra.localPosition = rightBottom * localPos.x;
 		}
 
 		text.text = value + "";
@@ -82,12 +122,12 @@ public class GridLineController : MonoBehaviour {
 		if (drawLine) {
 			if ((isVertical && (localPos.x < viewRecTra.rect.width / -2f || localPos.x > viewRecTra.rect.width / 2f)) ||
 				(!isVertical && (localPos.y < viewRecTra.rect.height / -2f || localPos.y > viewRecTra.rect.height / 2f))) {
-				Debug.Log ("Hide : " + localPos);
+				//Debug.Log ("Hide : " + localPos);
 			} else {
 				if (isVertical) {
-					lineRecTra.sizeDelta = new Vector2 (isAxis ? 1.5f : 1f, 0f);
+					lineRecTra.sizeDelta = rightBottom * (isAxis ? 1.5f : 1f);
 				} else {
-					lineRecTra.sizeDelta = new Vector2 (0f, isAxis ? 1.5f : 1f);
+					lineRecTra.sizeDelta = leftTop * (isAxis ? 1.5f : 1f);
 				}
 			}
 		}
@@ -95,7 +135,7 @@ public class GridLineController : MonoBehaviour {
 		if (showText) {
 			if (localPos.x < viewRecTra.rect.width / -2f - 0.01f || localPos.x > viewRecTra.rect.width / 2f + 0.01f ||
 				localPos.y < viewRecTra.rect.height / -2f - 0.01f || localPos.y > viewRecTra.rect.height / 2f + 0.01f) {
-				Debug.Log ("text out");
+				//Debug.Log ("text out");
 				text.gameObject.SetActive (false);
 			} else {
 				text.gameObject.SetActive (true);
@@ -103,35 +143,47 @@ public class GridLineController : MonoBehaviour {
 		}
 	}
 
-	public virtual void Hide() {
-		Draw (false, false);
+	public virtual void DrawShort() {
+		if (isAxis) {
+			image.color = Color.black;
+			text.color = Color.black;
+		} else {
+			image.color = lineDefColor;
+			text.color = textDefColor;
+		}
+
+		lineRecTra.anchorMin = centerMiddle;
+		lineRecTra.anchorMax = centerMiddle;
+		lineRecTra.pivot = pivotMemo;
+		textRecTra.localPosition = zero;
+		lineRecTra.localPosition = localPos;
+
+		if (isVertical) {
+			lineRecTra.sizeDelta = new Vector2 (1f, 10f);
+		} else {
+			lineRecTra.sizeDelta = new Vector2 (10f, 1f);
+		}
+
+		text.text = value + "";
+		text.gameObject.SetActive (false);
+
+		if ((isVertical && (localPos.x < viewRecTra.rect.width / -2f || localPos.x > viewRecTra.rect.width / 2f)) ||
+			(!isVertical && (localPos.y < viewRecTra.rect.height / -2f || localPos.y > viewRecTra.rect.height / 2f))) {
+			//Debug.Log ("Hide : " + localPos);
+			lineRecTra.sizeDelta = new Vector2 ();
+		}
+
+		if (localPos.x < viewRecTra.rect.width / -2f - 0.01f || localPos.x > viewRecTra.rect.width / 2f + 0.01f ||
+			localPos.y < viewRecTra.rect.height / -2f - 0.01f || localPos.y > viewRecTra.rect.height / 2f + 0.01f) {
+			//Debug.Log ("text out");
+			text.gameObject.SetActive (false);
+		} else {
+			text.gameObject.SetActive (true);
+		}
 	}
 
-	private void SetText(TextPos tp) {
-		switch (tp) {
-		case TextPos.Below:
-			textRecTra.pivot = new Vector2 (0.5f, 1f);
-			text.alignment = TextAnchor.MiddleCenter;
-			break;
-		case TextPos.Right:
-			textRecTra.pivot = new Vector2 (0f, 0.5f);
-			text.alignment = TextAnchor.MiddleCenter;
-			break;
-		case TextPos.Above:
-			textRecTra.pivot = new Vector2 (0.5f, 0f);
-			text.alignment = TextAnchor.MiddleCenter;
-			break;
-		case TextPos.Left:
-			textRecTra.pivot = new Vector2 (1f, 0.5f);
-			text.alignment = TextAnchor.MiddleCenter;
-			break;
-		case TextPos.BelowLeft:
-			textRecTra.pivot = new Vector2 (1f, 1f);
-			text.alignment = TextAnchor.MiddleRight;
-			break;
-		default:
-			break;
-		}
+	public virtual void Hide() {
+		Draw (false, false);
 	}
 }
 
@@ -141,4 +193,5 @@ public enum TextPos {
 	Above,
 	Left,
 	BelowLeft,
+	BelowRight,
 }

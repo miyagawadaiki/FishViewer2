@@ -66,9 +66,12 @@ public class GraphContent : MyWindowContent {
 			viewMode = ViewMode.ShowGrid;
 			break;
 		case ViewMode.ShowGrid:
-			viewMode = ViewMode.ShowCompletely;
+			viewMode = ViewMode.ShowAxisCompletely;
 			break;
-		case ViewMode.ShowCompletely:
+		case ViewMode.ShowAxisCompletely:
+			viewMode = ViewMode.ShowGridCompletely;
+			break;
+		case ViewMode.ShowGridCompletely:
 			viewMode = ViewMode.Hide;
 			break;
 		case ViewMode.Hide:
@@ -82,23 +85,26 @@ public class GraphContent : MyWindowContent {
 	}
 
 	public virtual void ShowView() {
-
 		switch(viewMode) {
 		case ViewMode.ShowAxis:
 			SetGrid ();
 			ShowAxis ();
-			break;
+			return;
 		case ViewMode.ShowGrid:
 			SetGrid ();
 			ShowGrid ();
-			break;
-		case ViewMode.ShowCompletely:
+			return;
+		case ViewMode.ShowAxisCompletely:
 			SetCompletely ();
-			ShowCompletely ();
-			break;
+			ShowAxisCompletely ();
+			return;
+		case ViewMode.ShowGridCompletely:
+			SetCompletely ();
+			ShowGridCompletely ();
+			return;
 		case ViewMode.Hide:
 			HideView ();
-			break;
+			return;
 		default:
 			break;
 		}
@@ -120,7 +126,11 @@ public class GraphContent : MyWindowContent {
 
 	}
 
-	public virtual void ShowCompletely() {
+	public virtual void ShowAxisCompletely() {
+
+	}
+
+	public virtual void ShowGridCompletely() {
 
 	}
 
@@ -178,6 +188,7 @@ public enum GraphContentType {
 public enum ViewMode {
 	ShowAxis,
 	ShowGrid,
-	ShowCompletely,
+	ShowAxisCompletely,
+	ShowGridCompletely,
 	Hide,
 }

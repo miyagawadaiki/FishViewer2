@@ -59,17 +59,20 @@ public class RectGraphManager : GraphManager {
 		int xStart = (int)(xMin_ / xGridValue) + (xMin_ > 0 ? 1 : 0), yStart = (int)(yMin_ / yGridValue) + (yMin_ > 0 ? 1 : 0);
 		for (int i = 0; i < gridNum; i++) {
 			xGrids [i].Set (true, RectGraphToLocal(new Vector2 ((xStart + i) * xGridValue, (float)yAxisValue * yGridValue)), (xStart + i) * xGridValue, TextPos.BelowLeft);
-			if (xStart + i == xAxisValue)
-				xGrids [i].isAxis = true;
-			else
+			//if (xStart + i == xAxisValue)
+			//	xGrids [i].isAxis = true;
+			//else
 				xGrids [i].isAxis = false;
 
 			yGrids [i].Set (false, RectGraphToLocal(new Vector2 ((float)xAxisValue * xGridValue, (yStart + i) * yGridValue)), (yStart + i) * yGridValue, TextPos.BelowLeft);
-			if (yStart + i == yAxisValue)
-				yGrids [i].isAxis = true;
-			else
+			//if (yStart + i == yAxisValue)
+			//	yGrids [i].isAxis = true;
+			//else
 				yGrids [i].isAxis = false;
 		}
+
+		xGrids [xAxisValue - xStart].isAxis = true;
+		yGrids [yAxisValue - yStart].isAxis = true;
 	}
 
 	public override void SetCompletely(bool first) {
@@ -94,14 +97,14 @@ public class RectGraphManager : GraphManager {
 		}
 
 		if (first)
-			xAxis.Set (true, view.rect.size / -2f, xMin, TextPos.Below);
+			xAxis.Set (true, view.rect.size / -2f, xMin_, TextPos.Below);
 		else
-			xAxis.Set (true, view.rect.size / 2f, xMax, TextPos.Above);
+			xAxis.Set (true, view.rect.size / 2f, xMax_, TextPos.Above);
 
 		if (first)
-			yAxis.Set (false, view.rect.size / -2f, yMin, TextPos.Left);
+			yAxis.Set (false, view.rect.size / -2f, yMin_, TextPos.Left);
 		else
-			yAxis.Set (false, view.rect.size / 2f, yMax, TextPos.Right);
+			yAxis.Set (false, view.rect.size / 2f, yMax_, TextPos.Right);
 	}
 
 	public override void ShowAxis() {
@@ -132,7 +135,21 @@ public class RectGraphManager : GraphManager {
 		}
 	}
 
-	public override void ShowCompletely () {
+	public override void ShowAxisCompletely () {
+		base.ShowAxisCompletely ();
+
+		for (int i = 0; i < gridNum; i++) {
+			xGrids [i].DrawShort ();
+			yGrids [i].DrawShort ();
+		}
+
+		xAxis.Draw (true, true);
+		yAxis.Draw (true, true);
+	}
+
+	public override void ShowGridCompletely () {
+		base.ShowGridCompletely ();
+
 		for (int i = 0; i < gridNum; i++) {
 			xGrids [i].Draw (true, true);
 			yGrids [i].Draw (true, true);
