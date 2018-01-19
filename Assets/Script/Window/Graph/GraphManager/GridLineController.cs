@@ -155,7 +155,7 @@ public class GridLineController : MonoBehaviour {
 		lineRecTra.anchorMin = centerMiddle;
 		lineRecTra.anchorMax = centerMiddle;
 		lineRecTra.pivot = pivotMemo;
-		textRecTra.localPosition = zero;
+		textRecTra.localPosition = (pivotMemo - centerMiddle) * 10f;
 		lineRecTra.localPosition = localPos;
 
 		if (isVertical) {
