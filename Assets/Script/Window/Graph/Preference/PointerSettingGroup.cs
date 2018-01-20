@@ -29,7 +29,7 @@ public class PointerSettingGroup : SettingGroup {
 	// Use this for initialization
 	protected override void Start () {
 
-		defParameter = "50,0,1,0,10,0,";
+		defParameter = "50,0,1,1,10,0,";
 
 		base.Start ();
 	}

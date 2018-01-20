@@ -22,13 +22,18 @@ public class MultiEvenGraphContent : GraphContent {
 			gm.Init ();
 			GameObject obj = Instantiate (nodeObj, plotViewTra) as GameObject;
 			obj.GetComponent<MultiEvenNodeController> ().Set (gm.pointColorNum, gm.fish);
+			obj.GetComponent<MultiEvenNodeController> ().RegisterTransform (gm.transform);
+
+			gm.HideView ();
 		}
 
 		graphTitleText.text = GetTitle ();
 
+		/*
 		if (graphManList [0].graphType.Equals (GraphType.Polar)) {
 			graphRecTra.offsetMin = new Vector2 (graphRecTra.offsetMin.x, graphRecTra.offsetMax.x * -1f);
 		}
+		*/
 
 		ShowView ();
 	}
@@ -164,7 +169,7 @@ public class MultiEvenGraphContent : GraphContent {
 		foreach (GraphManager gm in graphManList)
 			fishText += (gm.fish + 1) + ",";
 
-		return fishText + " " + graphManList [0].GetTypeText ();
+		return fishText + "\n" + graphManList [0].GetTypeText ();
 	}
 
 	public override string GetParameterText () {

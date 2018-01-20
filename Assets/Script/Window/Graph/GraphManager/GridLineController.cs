@@ -173,8 +173,8 @@ public class GridLineController : MonoBehaviour {
 			lineRecTra.sizeDelta = new Vector2 ();
 		}
 
-		if (localPos.x < viewRecTra.rect.width / -2f - 0.01f || localPos.x > viewRecTra.rect.width / 2f + 0.01f ||
-			localPos.y < viewRecTra.rect.height / -2f - 0.01f || localPos.y > viewRecTra.rect.height / 2f + 0.01f) {
+		if (localPos.x < viewRecTra.rect.width / -2f - 0.1f || localPos.x > viewRecTra.rect.width / 2f + 0.1f ||
+			localPos.y < viewRecTra.rect.height / -2f - 0.1f || localPos.y > viewRecTra.rect.height / 2f + 0.1f) {
 			//Debug.Log ("text out");
 			text.gameObject.SetActive (false);
 		} else {

@@ -53,8 +53,7 @@ public class MultiVariousGraphContent : GraphContent {
 		if (graphManList.Count == 0)
 			return;
 
-		foreach (GraphManager gm in graphManList)
-			gm.Translate (start, end);
+		selected.Translate (start, end);
 
 		ShowView ();
 	}
@@ -63,8 +62,7 @@ public class MultiVariousGraphContent : GraphContent {
 		if (graphManList.Count == 0)
 			return;
 
-		foreach (GraphManager gm in graphManList)
-			gm.Expand(expand);
+		selected.Expand(expand);
 
 		ShowView ();
 	}

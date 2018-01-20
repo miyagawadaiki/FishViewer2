@@ -58,6 +58,19 @@ namespace ProjectData {
 			new UnityEngine.Color(1f, 0f, 146f / 255f),				// pink
 		};
 
+		public static string[] names = {
+			"Red",
+			"Orange",
+			"Yellow",
+			"Light Green",
+			"Green",
+			"Light Blue",
+			"Blue",
+			"Deep Blue",
+			"Purple",
+			"Pink",
+		};
+
 		public static int Count() {
 			return colors.Length;
 		}

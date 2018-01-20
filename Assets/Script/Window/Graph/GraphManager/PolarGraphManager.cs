@@ -8,6 +8,8 @@ public class PolarGraphManager : GraphManager {
 	private GameObject circleLineObj = null;
 	[SerializeField]
 	private GameObject angleLineObj = null;
+	[SerializeField]
+	private RectTransform polarView = null;
 
 	private GridLineController[] rGrids;
 	private AngleLineController alc;
@@ -41,10 +43,10 @@ public class PolarGraphManager : GraphManager {
 		for (int i = 0; i < gridNum; i++) {
 			yGrids[i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
 			yGrids[gridNum + i] = Instantiate (gridLineObj, view).GetComponent<GridLineController>();
-			rGrids[i] = Instantiate (circleLineObj, view).GetComponent<GridLineController>();
+			rGrids[i] = Instantiate (circleLineObj, polarView).GetComponent<GridLineController>();
 		}
 
-		alc = Instantiate (angleLineObj, view).GetComponent<AngleLineController> ();
+		alc = Instantiate (angleLineObj, polarView).GetComponent<AngleLineController> ();
 
 		HideView ();
 	}
@@ -139,14 +141,15 @@ public class PolarGraphManager : GraphManager {
 				angle = Mathf.Acos (localZero.x * -1f / localZero.magnitude) * (localZero.y * -1f > 0f ? 1f : -1f);
 				Debug.Log ("angle = " + angle);
 			}
-			rGrids [i].SetCircle (localZero, rad, angle, (i + 1 + startIdx) * xGridValue);
 
 			if (first) {
 				yGrids [i].Set (false, RectGraphToLocal (new Vector2(minVec.x, (i + 1 + startIdx) * xGridValue)), (i + 1 + startIdx) * xGridValue, TextPos.Left);
 				yGrids [gridNum + i].Set (false, RectGraphToLocal (new Vector2(minVec.x, (i + 1 + startIdx) * xGridValue * -1f)), (i + 1 + startIdx) * xGridValue, TextPos.Left);
+				rGrids [i].SetCircle (localZero, rad, angle, (i + 1 + startIdx) * xGridValue);
 			} else {
 				yGrids [i].Set (false, RectGraphToLocal (new Vector2(maxVec.x, (i + 1 + startIdx) * xGridValue)), (i + 1 + startIdx) * xGridValue, TextPos.Right);
 				yGrids [gridNum + i].Set (false, RectGraphToLocal (new Vector2(maxVec.x, (i + 1 + startIdx) * xGridValue * -1f)), (i + 1 + startIdx) * xGridValue, TextPos.Right);
+				rGrids [i].SetCircle (localZero, 0f, angle, (i + 1 + startIdx) * xGridValue);
 			}
 		}
 
@@ -212,6 +215,13 @@ public class PolarGraphManager : GraphManager {
 		alc.Draw (false, false);
 
 		xAxis.Draw (true, false);
+	}
+
+	public override void HideView () {
+		base.HideView ();
+
+		foreach (Transform t in polarView)
+			t.gameObject.GetComponent<GridLineController> ().Hide ();
 	}
 
 	public override Vector2 GraphToLocal(Vector2 v) {

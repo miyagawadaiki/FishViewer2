@@ -6,6 +6,7 @@ public class DataBase {
 
 	public static string fileName;
 	private static string[] tags;
+	private static string[] shortTags;
 	private static float[,,] data;
 	private static float[] max;
 	private static float[] min;
@@ -29,12 +30,14 @@ public class DataBase {
 		tmp = sr.ReadLine ().Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
 		tag = tmp.Length / fish;
 		tags = new string[tag];
+		shortTags = new string[tag];
 		data = new float[step, fish, tag];
 		max = new float[tag];
 		min = new float[tag];
 
 		for (int i = 0; i < tag; i++) {
 			tags [i] = tmp [i];
+			shortTags [i] = GetShortString (tags [i]);
 			max [i] = -10000f;
 			min [i] = 10000f;
 
@@ -90,11 +93,35 @@ public class DataBase {
 		return tags;
 	}
 
+	public static string[] GetShortTags() {
+		return shortTags;
+	}
+
 	public static float GetMax(int tag) {
 		return max [tag];
 	}
 
 	public static float GetMin(int tag) {
 		return min [tag];
+	}
+
+	public static string GetShortString (string text) {
+		string ret = "";
+
+		int cnt = 0;
+		for (int i = 0; i < text.Length; i++) {
+			if (char.IsUpper (text, i)) {
+				ret += text.Substring (i, 1);
+				cnt = 2;
+			} else if (cnt > 0) {
+				ret += text.Substring (i, 1);
+				cnt--;
+			}
+		}
+
+		if (ret.Length > 7)
+			ret = ret.Substring (0, 7);
+
+		return ret;
 	}
 }

@@ -10,9 +10,11 @@ public class MultiEvenNodeController : MonoBehaviour {
 	[SerializeField]
 	private Text text = null;
 
+	private Transform tra;
+
 	// Use this for initialization
 	void Start () {
-		
+		this.GetComponent<Button> ().onClick.AddListener (() => tra.SetAsLastSibling ());
 	}
 	
 	// Update is called once per frame
@@ -23,5 +25,9 @@ public class MultiEvenNodeController : MonoBehaviour {
 	public void Set(int colorNum, int fish) {
 		image.color = ProjectData.ColorList.colors[colorNum];
 		text.text = (fish + 1) + "";
+	}
+
+	public void RegisterTransform (Transform t) {
+		tra = t;
 	}
 }
