@@ -68,6 +68,7 @@
      <Compile Include="Assets\Script\Window\Graph\Content\MultiGraphSettingContent.cs" />
      <Compile Include="Assets\Script\Window\Graph\Content\MultiVariousGraphContent.cs" />
      <Compile Include="Assets\Script\Window\Graph\Content\MultiVariousGraphSettingContent.cs" />
+     <Compile Include="Assets\Script\Window\Graph\Content\MultiVariousLabelNode.cs" />
      <Compile Include="Assets\Script\Window\Graph\Content\MultiVariousParameterSettingContent.cs" />
      <Compile Include="Assets\Script\Window\Graph\Content\MultiVariousPlotViewController.cs" />
      <Compile Include="Assets\Script\Window\Graph\Content\SingleGraphContent.cs" />

@@ -277,6 +277,10 @@ public class GraphManager : MonoBehaviour {
 		return DataBase.GetTags () [xType] + "-" + DataBase.GetTags () [yType];
 	}
 
+	public string GetLabelText () {
+		return fish + ", " + DataBase.GetShortTags () [xType] + "-" + DataBase.GetShortTags () [yType];
+	}
+
 	public string GetParameterText() {
 		string s = 
 			(int)graphType + " :" +

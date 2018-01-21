@@ -119,49 +119,49 @@ public class MultiEvenGraphContent : GraphContent {
 		if (graphManList.Count == 0)
 			return;
 
-		graphManList [graphManList.Count - 1].SetGrid ();
+		graphManList [0].SetGrid ();
 	}
 
 	public override void SetCompletely () {
 		if (graphManList.Count == 0)
 			return;
 
-		graphManList [graphManList.Count - 1].SetCompletely (true);
+		graphManList [0].SetCompletely (true);
 	}
 
 	public override void ShowAxis() {
 		if (graphManList.Count == 0)
 			return;
 
-		graphManList [graphManList.Count - 1].ShowAxis ();
+		graphManList [0].ShowAxis ();
 	}
 
 	public override void ShowGrid() {
 		if (graphManList.Count == 0)
 			return;
 
-		graphManList [graphManList.Count - 1].ShowGrid ();
+		graphManList [0].ShowGrid ();
 	}
 
 	public override void ShowAxisCompletely() {
 		if (graphManList.Count == 0)
 			return;
 
-		graphManList [graphManList.Count - 1].ShowAxisCompletely ();
+		graphManList [0].ShowAxisCompletely ();
 	}
 
 	public override void ShowGridCompletely() {
 		if (graphManList.Count == 0)
 			return;
 
-		graphManList [graphManList.Count - 1].ShowGridCompletely ();
+		graphManList [0].ShowGridCompletely ();
 	}
 
 	public override void HideView() {
 		if (graphManList.Count == 0)
 			return;
 
-		graphManList [graphManList.Count - 1].HideView ();
+		graphManList [0].HideView ();
 	}
 
 	public override string GetTitle () {
