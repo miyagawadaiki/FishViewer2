@@ -11,6 +11,8 @@ public class MyAppManager : MonoBehaviour {
 	private MenuBarController mbc = null;
 	[SerializeField]
 	private SimuPanelController spc = null;
+	[SerializeField]
+	private List<Button> buttonList = null;
 
 
 	void Awake() {
@@ -19,7 +21,8 @@ public class MyAppManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		foreach (Button b in buttonList)
+			b.gameObject.SetActive (false);
 	}
 	
 	// Update is called once per frame
@@ -81,5 +84,7 @@ public class MyAppManager : MonoBehaviour {
 
 	public void ActivateSimuPanel() {
 		spc.gameObject.SetActive (true);
+		foreach (Button b in buttonList)
+			b.gameObject.SetActive (true);
 	}
 }

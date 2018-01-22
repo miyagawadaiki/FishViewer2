@@ -43,6 +43,8 @@ public class MultiVariousGraphContent : GraphContent {
 			nodes [nodes.Count - 1].Set (nodes.Count - 1, gm.pointColorNum, gm.GetLabelText ());
 		}
 
+		graphTitleText.text = GetTitle ();
+
 		selected = graphManList [0];
 
 		allToggle.gameObject.SetActive (true);
@@ -177,11 +179,7 @@ public class MultiVariousGraphContent : GraphContent {
 	}
 
 	public override string GetTitle () {
-		string fishText = "fish";
-		foreach (GraphManager gm in graphManList)
-			fishText += (gm.fish + 1) + ",";
-
-		return fishText + " " + graphManList [0].GetTypeText ();
+		return "Various Graphs";
 	}
 
 	public override string GetParameterText () {
