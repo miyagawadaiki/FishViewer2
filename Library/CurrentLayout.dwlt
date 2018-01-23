@@ -43,7 +43,7 @@ MonoBehaviour:
     y: 0
     width: 1920
     height: 979
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 492}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &3
 MonoBehaviour:
@@ -339,7 +339,7 @@ MonoBehaviour:
     y: 539
     width: 807
     height: 471
-  m_MaximizeOnPlay: 0
+  m_MaximizeOnPlay: 1
   m_Gizmos: 0
   m_Stats: 0
   m_SelectedSizes: 05000000000000000000000000000000000000000000000000000000000000000000000000000000

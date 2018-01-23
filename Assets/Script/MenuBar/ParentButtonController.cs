@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GraphButtonController : MonoBehaviour {
+public class ParentButtonController : MonoBehaviour {
 
 	[SerializeField]
 	private RectTransform templete = null;
@@ -21,6 +21,7 @@ public class GraphButtonController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		button.onClick.AddListener (() => mbc.RegisterPanel (templete));
+		button.onClick.AddListener (() => templete.gameObject.SetActive (true));
 	}
 	
 	// Update is called once per frame
