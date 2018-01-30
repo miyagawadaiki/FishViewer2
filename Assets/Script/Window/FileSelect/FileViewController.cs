@@ -60,7 +60,7 @@ public class FileViewController : MonoBehaviour {
 		if(fifMan.key == ProjectData.FileKey.Read)
 			files = Directory.GetFiles (fifMan.GetPath (), "*-fv.csv");
 		else
-			files = Directory.GetFiles (fifMan.GetPath ());
+			files = Directory.GetFiles (fifMan.GetPath (), "*.csv");
 		foreach (string name in files) {
 			string[] tmp = name.Split (separator);
 			string s = tmp [tmp.Length - 1];

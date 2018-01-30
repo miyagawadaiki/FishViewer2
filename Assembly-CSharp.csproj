@@ -56,6 +56,10 @@
      <Compile Include="Assets\Script\Simulation\Simulation.cs" />
      <Compile Include="Assets\Script\Simulation\SimulationController.cs" />
      <Compile Include="Assets\Script\SliderWithText.cs" />
+     <Compile Include="Assets\Script\Window\FileMake\DataType.cs" />
+     <Compile Include="Assets\Script\Window\FileMake\FileMakeContent.cs" />
+     <Compile Include="Assets\Script\Window\FileMake\InputFileSetting.cs" />
+     <Compile Include="Assets\Script\Window\FileMake\MakeDataBase.cs" />
      <Compile Include="Assets\Script\Window\FileRead\FileReadContent.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileInputFieldManager.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileNode.cs" />
@@ -95,6 +99,7 @@
      <Compile Include="Assets\Script\Window\MyWindowContent.cs" />
      <Compile Include="Assets\Script\Window\MyWindowController.cs" />
      <Compile Include="Assets\Script\Window\MyWindowManager.cs" />
+     <Compile Include="Assets\Script\Window\Parameter\ParamenterContent.cs" />
      <Compile Include="Assets\Script\Window\Sample\SampleContent.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

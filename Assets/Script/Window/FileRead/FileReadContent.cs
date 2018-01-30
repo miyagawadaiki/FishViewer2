@@ -19,7 +19,7 @@ public class FileReadContent : MyWindowContent {
 	[SerializeField]
 	private Button doneButton = null;
 
-	private bool addListerFlag = false;
+	private bool addListenerFlag = false;
 	private StreamReader sr;
 	private char[] separator = { ',' };
 
@@ -43,9 +43,9 @@ public class FileReadContent : MyWindowContent {
 	
 	// Update is called once per frame
 	void Update () {
-		if (addListerFlag) {
+		if (addListenerFlag) {
 			AddListener ();
-			addListerFlag = false;
+			addListenerFlag = false;
 		}
 	}
 
@@ -68,7 +68,7 @@ public class FileReadContent : MyWindowContent {
 	}
 
 	public void CallAddListener() {
-		addListerFlag = true;
+		addListenerFlag = true;
 	}
 
 	public void AddListener() {
