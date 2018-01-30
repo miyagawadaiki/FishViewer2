@@ -8,6 +8,8 @@ public class SimulationController : MonoBehaviour {
 	[SerializeField]
 	private Slider stepSlider = null;
 	[SerializeField]
+	private Text stepText = null;
+	[SerializeField]
 	private Slider repStartSlider = null;
 	[SerializeField]
 	private Slider repEndSlider = null;
@@ -122,7 +124,7 @@ public class SimulationController : MonoBehaviour {
 		}
 
 		stepSlider.value = (float)Simulation.step;
-
+		stepText.text = (int)stepSlider.value + "";
 	}
 
 	public void Play() {
@@ -174,10 +176,12 @@ public class SimulationController : MonoBehaviour {
 	public void GoNext() {
 		Simulation.step++;
 		Simulation.Execute ();
+		stepSlider.value = (float)Simulation.step;
 	}
 
 	public void GoBack() {
 		Simulation.step--;
 		Simulation.Execute ();
+		stepSlider.value = (float)Simulation.step;
 	}
 }

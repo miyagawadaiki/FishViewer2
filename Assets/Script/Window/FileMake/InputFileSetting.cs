@@ -25,6 +25,7 @@ public class InputFileSetting : MonoBehaviour {
 	private Text[] textArray;
 	private int step, fish = 5;
 	private float dt = 0.1f;
+	private string[] defaultTags;
 
 	void Awake () {
 		selectButton.onClick.AddListener (() => this.GetComponentInParent<MyWindowManager> ().AddWindow ("FileSelect/Input"));
@@ -33,7 +34,10 @@ public class InputFileSetting : MonoBehaviour {
 		Dropdown dd = nodeObj.GetComponentInChildren<Dropdown> ();
 		dd.ClearOptions ();
 
-
+		DataType[] dta = ProjectData.DefaultData.dataTypes;
+		for (int i = 0; i < dta.Length; i++) {
+			//defaultTags[i] = dta[i].
+		}
 	}
 
 	// Use this for initialization

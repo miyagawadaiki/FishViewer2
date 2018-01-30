@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DataType {
 
-	public string name;
+	public string dataName;
 
 	private string[] elements;
 	private List<float> parameters;
@@ -19,7 +19,7 @@ public class DataType {
 	}
 
 	public DataType (string name, string text) {
-		this.name = name;
+		this.dataName = name;
 
 		elements = text.Split (elementSeparator, StringSplitOptions.RemoveEmptyEntries);
 
