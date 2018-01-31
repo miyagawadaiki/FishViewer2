@@ -59,7 +59,7 @@
      <Compile Include="Assets\Script\Window\FileMake\DataType.cs" />
      <Compile Include="Assets\Script\Window\FileMake\FileMakeContent.cs" />
      <Compile Include="Assets\Script\Window\FileMake\InputFileSetting.cs" />
-     <Compile Include="Assets\Script\Window\FileMake\MakeDataBase.cs" />
+     <Compile Include="Assets\Script\Window\FileMake\OutputFileSetting.cs" />
      <Compile Include="Assets\Script\Window\FileRead\FileReadContent.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileInputFieldManager.cs" />
      <Compile Include="Assets\Script\Window\FileSelect\FileNode.cs" />

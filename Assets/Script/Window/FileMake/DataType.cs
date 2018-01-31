@@ -18,7 +18,7 @@ public class DataType {
 		values = new Stack<float> ();
 	}
 
-	public DataType (string name, string text) {
+	public DataType (string name, string text) : this () {
 		this.dataName = name;
 
 		elements = text.Split (elementSeparator, StringSplitOptions.RemoveEmptyEntries);
