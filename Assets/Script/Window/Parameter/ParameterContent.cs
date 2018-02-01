@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ParamenterContent : MyWindowContent {
+public class ParameterContent : MyWindowContent {
 
 	[SerializeField]
 	private GameObject circleObj = null;
@@ -13,14 +13,18 @@ public class ParamenterContent : MyWindowContent {
 	private GameObject paramNodeObj = null;
 	[SerializeField]
 	private Transform content = null;
+	[SerializeField]
+	private Button doneButton = null;
 
 	private Image[] images;
 	private Text[] texts;
-	private char[] separator = { ',' };
+	private char[] separator = { ',', ':', ' ' };
 	private Vector2 localOrigin;
 	private float[] memo;
 	private int index;
 	private float height;
+
+	private Text paramText;
 
 	// Use this for initialization
 	void Start () {
@@ -31,7 +35,11 @@ public class ParamenterContent : MyWindowContent {
 		mwc.MoveTo (new Vector2 (0f, 0f));
 
 		height = this.GetComponent<RectTransform> ().rect.height;
-		Register (typeName);
+		//Register (typeName);
+
+
+		doneButton.onClick.AddListener (() => SetText ());
+		doneButton.onClick.AddListener (() => mwc.Destroy ());
 	}
 	
 	// Update is called once per frame
@@ -39,7 +47,14 @@ public class ParamenterContent : MyWindowContent {
 		
 	}
 
+	public void RegisterTextArea (Text t) {
+		paramText = t;
+		Register (paramText.text);
+	}
+
 	public void Register (string text) {
+		Debug.Log ("text = " + text);
+
 		foreach (Transform t in circleArea)
 			Destroy (t.gameObject);
 		foreach (Transform t in content)
@@ -51,7 +66,7 @@ public class ParamenterContent : MyWindowContent {
 
 		float sum = 0f, prev = 0f;
 		for (int i = 0; i < images.Length; i++) {
-			sum += float.Parse (tmp [i]) / 10f;
+			sum += float.Parse (tmp [i]);
 			images [i] = Instantiate (circleObj, circleArea).GetComponent<Image> ();
 			images [i].fillAmount = sum;
 			images [i].color = ProjectData.ColorList.colors [i];
@@ -60,13 +75,13 @@ public class ParamenterContent : MyWindowContent {
 			GameObject obj = Instantiate (paramNodeObj, content) as GameObject;
 			obj.GetComponentInChildren<Image> ().color = ProjectData.ColorList.colors [i];
 			texts [i] = obj.GetComponentInChildren<Text> ();
-			texts [i].text = (((int)((sum - prev) * 20f + 0.5f)) / 2f) + "";
+			texts [i].text = (((int)((sum - prev) * 20f + 0.5f)) / 20f) + "";
 
 			prev = sum;
 		}
 
 		images [images.Length - 1].fillAmount = 1f;
-		texts [images.Length - 1].text = (((int)((1f - prev) * 20f + 0.5f)) / 2f) + "";
+		texts [images.Length - 1].text = (((int)((1f - prev) * 20f + 0.5f)) / 20f) + "";
 	}
 
 	public void Register (int num) {
@@ -77,10 +92,28 @@ public class ParamenterContent : MyWindowContent {
 		Register (s);
 	}
 
+	public string GetParameterText () {
+		float f = (int)(images [0].fillAmount * 20f + 0.5f) / 20f;
+		string s = "" + f;
+		for (int i = 1; i < images.Length; i++) {
+			s += ":" + ((int)(images [i].fillAmount * 20f + 0.5f) / 20f - f);
+			f = (int)(images [i].fillAmount * 20f + 0.5f) / 20f;
+		}
+	
+		return s;
+	}
+
+	private void SetText () {
+		if (paramText == null)
+			return;
+		
+		paramText.text = GetParameterText ();
+	}
+
 	public float[] GetParameter () {
 		float[] ret = new float[images.Length];
 		for (int i = 0; i < images.Length; i++)
-			ret [i] = (int)(images [i].fillAmount * 20f + 0.5f) / 2f;
+			ret [i] = (int)(images [i].fillAmount * 20f + 0.5f) / 20f;
 
 		return ret;
 	}
@@ -131,9 +164,9 @@ public class ParamenterContent : MyWindowContent {
 			if (1f - f > (images.Length - i - 1) * 0.05f) 
 				images [i].fillAmount = f;
 
-			texts [i].text = (int)((images [i].fillAmount - (i > 0 ? images [i - 1].fillAmount : 0)) * 20f + 0.5f) / 2f + "";
+			texts [i].text = (int)((images [i].fillAmount - (i > 0 ? images [i - 1].fillAmount : 0)) * 20f + 0.5f) / 20f + "";
 
 		}
-		texts[texts.Length - 1].text = (int)((images [texts.Length - 1].fillAmount - images[texts.Length - 2].fillAmount) * 20f + 0.5f) / 2f + "";
+		texts[texts.Length - 1].text = (int)((images [texts.Length - 1].fillAmount - images[texts.Length - 2].fillAmount) * 20f + 0.5f) / 20f + "";
 	}
 }

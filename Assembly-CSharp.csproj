@@ -99,7 +99,7 @@
      <Compile Include="Assets\Script\Window\MyWindowContent.cs" />
      <Compile Include="Assets\Script\Window\MyWindowController.cs" />
      <Compile Include="Assets\Script\Window\MyWindowManager.cs" />
-     <Compile Include="Assets\Script\Window\Parameter\ParamenterContent.cs" />
+     <Compile Include="Assets\Script\Window\Parameter\ParameterContent.cs" />
      <Compile Include="Assets\Script\Window\Sample\SampleContent.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

@@ -111,6 +111,8 @@ public class InputFileSetting : MonoBehaviour {
 				hoge = sr.ReadLine ();
 			} while (hoge != null);
 
+			//step--;
+
 
 			// オープンし直す
 			sr.Close ();
@@ -120,13 +122,11 @@ public class InputFileSetting : MonoBehaviour {
 			do {
 				s = sr.ReadLine ();
 			} while (s.Equals (""));
-			do {
-				s = sr.ReadLine ();
-			} while (s.Equals (""));
 
 			tmp = s.Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
 		}
 
+		Debug.Log ("(step, fish) = " + new Vector2 (step, fish));
 
 		constData = new float[step, fish, constTags.Count];
 
@@ -165,17 +165,26 @@ public class InputFileSetting : MonoBehaviour {
 			do {
 				s = sr.ReadLine ();
 			} while (s.Equals (""));
+
 			tmp = s.Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
+
 		} else {
 			for (int i = 0; i < tmp.Length / fish; i++)
 				ddArray [i].value = i + 1;
 		}
 
 
-		for (int i = 0; i < 4; i++) {
-			for(int j=0;j<tmp.Length / fish; j++)
-				textArray [j].text += tmp [j] + "\n";
-			tmp = sr.ReadLine ().Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
+		for (int i = 0; i < step; i++) {
+			for (int j = 0; j < fish; j++) {
+				for (int k = 0; k < tmp.Length / fish; k++) {
+					if(i < 4 && j == 0)
+						textArray [k].text += tmp [k] + "\n";
+
+					constData [i, j, k] = float.Parse (tmp [j * (tmp.Length / fish) + k]);
+				}
+			}
+			if(i < step - 1)
+				tmp = sr.ReadLine ().Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
 		}
 	}
 }

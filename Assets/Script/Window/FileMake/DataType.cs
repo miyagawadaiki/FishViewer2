@@ -10,7 +10,7 @@ public class DataType {
 	private string[] elements;
 	private List<float> parameters;
 	private Stack<float> values;
-	private char[] elementSeparator = { ' ' };
+	private char[] elementSeparator = { '\t', ' ' };
 	private char[] prefixSeparator = { '#' };
 
 	public DataType () {
@@ -24,8 +24,10 @@ public class DataType {
 		elements = text.Split (elementSeparator, StringSplitOptions.RemoveEmptyEntries);
 
 		for (int i = 0; i < elements.Length; i++) {
-			if (elements [i] [0].Equals ('$'))
+			if (elements [i] [0].Equals ('$')) {
 				parameters.Add (0f);
+
+			}
 		}
 
 		for (int i = 0; i < parameters.Count; i++)
@@ -39,12 +41,16 @@ public class DataType {
 
 			switch (prefix) {
 			case '!':
+				
 				break;
 			case '#':
 				values.Push (float.Parse (text));
 				break;
 			case '$':
 				values.Push (parameters [int.Parse (text)]);
+				break;
+			case '%':
+
 				break;
 			default :
 				EvalOperator (text);
@@ -59,6 +65,31 @@ public class DataType {
 		char[] separator = { ',' };
 		string[] tmp = text.Split (separator, StringSplitOptions.RemoveEmptyEntries);
 
+	}
+
+	public string GetParametersText () {
+		if (parameters.Count < 2)
+			return "";
+		
+		string s = parameters[0] + "";
+		for (int i = 1; i < parameters.Count; i++)
+			s += ":" + parameters [i];
+
+		return s;
+	}
+
+	public void SetParametersText (string text) {
+		parameters.Clear ();
+
+		char[] sep = { ':' };
+		string[] tmp = text.Split (sep, System.StringSplitOptions.RemoveEmptyEntries);
+
+		for (int i = 0; i < tmp.Length; i++)
+			parameters.Add (float.Parse (tmp [i]));
+	}
+
+	public bool HasParameter () {
+		return parameters.Count > 1;
 	}
 
 	public void EvalOperator (string op) {

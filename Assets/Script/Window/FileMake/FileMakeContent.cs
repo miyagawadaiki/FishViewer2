@@ -1,8 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FileMakeContent : MyWindowContent {
+
+	[SerializeField]
+	private Button doneButtn = null;
+
+	void Awake () {
+		doneButtn.onClick.AddListener (() => Make ());
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -17,4 +25,15 @@ public class FileMakeContent : MyWindowContent {
 	void Update () {
 		
 	}
+
+	public void Make () {
+
+	}
+}
+
+public class DB {
+	public DataType[] dataTypes;
+	public static float[,,] data;
+
+
 }
