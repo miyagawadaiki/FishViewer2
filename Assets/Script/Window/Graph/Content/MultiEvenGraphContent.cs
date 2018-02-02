@@ -76,7 +76,7 @@ public class MultiEvenGraphContent : GraphContent {
 			Simulation.Register (graphManList [graphManList.Count - 1]);
 
 			string p = fishNumList [i] + "," + sourceTexts[1] + "," + sourceTexts[2] + ",";
-			p += pointerTexts [0] + "," + fishNumList [i] + "," + pointerTexts[2] + "," + pointerTexts[3] + "," + pointerTexts[4] + "," + pointerTexts[5] + ",";
+			p += pointerTexts [0] + "," + pointerTexts [1] + "," + fishNumList [i] + "," + pointerTexts[3] + "," + pointerTexts[4] + "," + pointerTexts[5] + "," + pointerTexts[6] + ",";
 
 			//Debug.Log (p);
 			graphManList [i].Set (p);

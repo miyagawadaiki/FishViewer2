@@ -25,7 +25,7 @@ public class MultiVariousParameterNode : MonoBehaviour {
 	void Awake () {
 		mpsg = this.GetComponentInParent<MultiParameterSettingGroup> ();
 		int i = (this.transform.parent.GetComponentsInChildren<MultiVariousParameterNode> ().Length - 1) % ProjectData.ColorList.colors.Length;
-		parameter = "0 :0,0,1,:50," + i + ",1,1,10,0,:";
+		parameter = "0 :0,0,1,:0,50," + i + ",1,1,10,0,:";
 
 		buttonImage = this.GetComponent<Image> ();
 		image = this.GetComponentsInChildren<Image> ()[1];
@@ -87,7 +87,7 @@ public class MultiVariousParameterNode : MonoBehaviour {
 		char[] separator = { ':', ' ', ',' };
 		string[] tmp = parameter.Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
 
-		image.color = ProjectData.ColorList.colors[int.Parse(tmp[5])];
+		image.color = ProjectData.ColorList.colors[int.Parse(tmp[6])];
 	}
 
 	public string GetViewText () {
@@ -104,12 +104,13 @@ public class MultiVariousParameterNode : MonoBehaviour {
 			s += "\tInput:\t\tStep\n";
 		s += "\tOutput:\t" + DataBase.GetTags () [int.Parse (tmp [3])] + "\n";
 		s += " [Pointer]\n";
-		s += "\tNumber:\t" + tmp [4] + "\n";
-		s += "\tColor:\t\t" + ProjectData.ColorList.names[int.Parse(tmp [5])] + "\n";
-		s += "\tUse color grad:\n\t\t\t\t\t" + (int.Parse (tmp [6]) > 0 ? "Yes" : "No") + "\n";
-		s += "\tUse size grad:\n\t\t\t\t\t" + (int.Parse (tmp [7]) > 0 ? "Yes" : "No") + "\n";
-		s += "\tSize:\t\t" + tmp [8] + "\n";
-		s += "\tUse auto size:\n\t\t\t\t\t" + (int.Parse (tmp [9]) > 0 ? "Yes" : "No") + "\n";
+		s += "\tType:\t" + tmp [4] + "\n";
+		s += "\tNumber:\t" + tmp [5] + "\n";
+		s += "\tColor:\t\t" + ProjectData.ColorList.names[int.Parse(tmp [6])] + "\n";
+		s += "\tUse color grad:\n\t\t\t\t\t" + (int.Parse (tmp [7]) > 0 ? "Yes" : "No") + "\n";
+		s += "\tUse size grad:\n\t\t\t\t\t" + (int.Parse (tmp [8]) > 0 ? "Yes" : "No") + "\n";
+		s += "\tSize:\t\t" + tmp [9] + "\n";
+		s += "\tUse auto size:\n\t\t\t\t\t" + (int.Parse (tmp [10]) > 0 ? "Yes" : "No") + "\n";
 
 		return s;
 	}
