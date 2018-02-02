@@ -14,7 +14,7 @@ public class MultiEvenGraphSettingContent : GraphSettingContent {
 		base.Start ();
 
 		sm.CoverSettingElement (2, 0);
-		sm.CoverSettingElement (3, 1);
+		sm.CoverSettingElement (3, 2);
 	}
 	
 	// Update is called once per frame

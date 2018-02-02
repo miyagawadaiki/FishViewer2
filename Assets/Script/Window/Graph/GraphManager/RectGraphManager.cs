@@ -46,6 +46,8 @@ public class RectGraphManager : GraphManager {
 				points [i].localPosition = RectGraphToLocal (new Vector2 (DataBase.GetData (step - markerIdx + i, fish, xType), DataBase.GetData (step - markerIdx + i, fish, yType)));
 				if (!recTra.rect.Contains (points [i].localPosition))
 					points [i].gameObject.SetActive (false);
+				if ((int)pointType > 0 && i > 0)
+					points [i].rotation = Quaternion.FromToRotation (Vector3.left, points [i - 1].position - points [i].position);
 			}
 		}
 	}

@@ -17,8 +17,8 @@ public class GraphManager : MonoBehaviour {
 	public int pointNum = 50;
 	//[SerializeField, Range(0,1)]
 	//public float markerRate = 1f;
-	[SerializeField]
-	protected GameObject pointObj = null;
+	//[SerializeField]
+	protected GameObject pointObj;// = null;
 	//[SerializeField]
 	//protected Color pointColor = Color.white;
 	public int pointColorNum = 0;
@@ -36,6 +36,8 @@ public class GraphManager : MonoBehaviour {
 	public int xType = 0;
 
 	public int yType = 1;
+
+	public PointType pointType = PointType.Circle;
 
 	//public bool showAxis, showGrid;
 
@@ -92,6 +94,8 @@ public class GraphManager : MonoBehaviour {
 
 		foreach (Transform t in plot)
 			Destroy (t.gameObject);
+
+		pointObj = Resources.Load (System.Enum.GetName (typeof(PointType), pointType) + "Point") as GameObject;
 		
 		points = new RectTransform[pointNum];
 		markerIdx = (int)((pointNum - 1) * markerRate + 0.5f);
@@ -146,13 +150,13 @@ public class GraphManager : MonoBehaviour {
 		fish = int.Parse (tmp [0]);
 		xType = int.Parse (tmp [1]);
 		yType = int.Parse (tmp [2]);
-		pointNum = int.Parse (tmp [3]);
-		//markerRate = float.Parse (tmp [4]);
-		pointColorNum = int.Parse (tmp [4]);
-		useColorGrad = int.Parse (tmp [5]) > 0 ? true : false;
-		useSizeGrad = int.Parse (tmp [6]) > 0 ? true : false;
-		plotSize = float.Parse (tmp [7]);
-		useAutoSize = int.Parse (tmp [8]) > 0 ? true : false;
+		pointType = (PointType)int.Parse (tmp [3]);
+		pointNum = int.Parse (tmp [4]);
+		pointColorNum = int.Parse (tmp [5]);
+		useColorGrad = int.Parse (tmp [6]) > 0 ? true : false;
+		useSizeGrad = int.Parse (tmp [7]) > 0 ? true : false;
+		plotSize = float.Parse (tmp [8]);
+		useAutoSize = int.Parse (tmp [9]) > 0 ? true : false;
 	}
 
 	public virtual void Plot(int step) {
@@ -287,6 +291,7 @@ public class GraphManager : MonoBehaviour {
 			fish + "," +
 			xType + "," +
 			yType + ",:" +
+			(int)pointType + "," + 
 			pointNum + "," +
 			pointColorNum + "," +
 			(useColorGrad ? 1 : 0) + "," +
@@ -302,4 +307,9 @@ public enum GraphType {
 	Rect,
 	Time,
 	Polar,
+}
+
+public enum PointType {
+	Circle,
+	Triangle,
 }
