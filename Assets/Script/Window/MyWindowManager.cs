@@ -13,7 +13,7 @@ public class MyWindowManager : MonoBehaviour {
 	private List<MyWindowController> windowList;
 	private RectTransform recTra;
 
-	private Vector2 leftStart, rightStart;
+	private Vector2 leftOrigin, rightOrigin, leftStart, rightStart;
 	private Vector2 expandDir = new Vector2();
 	private bool isMoveMode, isExpMode, removeFlag;
 	private float canvasScale;
@@ -127,6 +127,7 @@ public class MyWindowManager : MonoBehaviour {
 			clicked.SetAsLastSibling ();
 			clicked.SetSelectMode ();
 
+			//leftOrigin = (Vector2)Input.mousePosition;
 			leftStart = (Vector2)Input.mousePosition;
 
 			/*
@@ -177,6 +178,7 @@ public class MyWindowManager : MonoBehaviour {
 			clicked.SetAsLastSibling ();
 			clicked.SetSelectMode ();
 
+			//rightOrigin = (Vector2)Input.mousePosition;
 			rightStart = (Vector2)Input.mousePosition;
 
 			isDraging = true;
@@ -287,6 +289,7 @@ public class MyWindowManager : MonoBehaviour {
 	public enum ContentType {
 		FileSelect,
 		FileRead,
+		FileMake,
 		SingleGraph,
 		MultiEvenGraph,
 		MultiVariousGraph,
@@ -294,7 +297,7 @@ public class MyWindowManager : MonoBehaviour {
 		MultiEvenGraphSetting,
 		MultiVariousGraphSetting,
 		MultiVariousParameterSetting,
-		//MultiGraphSetting,
+		Parameter,
 		Sample,
 	}
 }

@@ -4,7 +4,9 @@ using System.Collections.Generic;
 namespace ProjectData {
 	public enum FileKey {
 		Read,
-		Write,
+		Input,
+		Output,
+		Formula,
 	}
 
 	public class FileName {
@@ -79,5 +81,30 @@ namespace ProjectData {
 			return colors [i % colors.Length];
 		}
 
+	}
+
+	public class DefaultData {
+		public static DataType[] dataTypes = {
+			new DataType ("PositionX", ""),
+			new DataType ("PositionY", ""),
+			new DataType ("VelocityX", "!PositionX,0 !PositionX,-1 -   %dt /"),
+			new DataType ("VelocityY", "!PositionY,0 !PositionY,-1 -   %dt /"),
+			new DataType ("AccelerationX", "!VelocityX,0 !VelocityX,-1 -   %dt /"),
+			new DataType ("AccelerationY", "!VelocityY,0 !VelocityY,-1 -   %dt /"),
+			new DataType ("Distance", "!PositionX,0 !PositionY,0 Mag"),
+			new DataType ("Speed", "!VelocityX,0 !VelocityY,0 Mag"),
+			new DataType ("Acceleration", "!AccelerationX,0 !AccelerationY,0 Mag"),
+			new DataType ("PositionAngle", "!PositionX,0 !Distance,0 /   PositionY,0 #0 >   #1 #-1 If   *   Acos"),
+			new DataType ("AugumentAngle", "!VelocityX,-1 !VelocityY,-1 !VelocityX,0 !VelocityY,0 Dot   !Speed,-1 !Speed,0 *   /   !VelocityX,-1 !VelocityY,-1 !VelocityX,0 !VelocityY,0 Cross   #0 >   #1 #-1 If   *   Acos"),
+		};
+
+		public static int Search (string s) {
+			for (int i = 0; i < dataTypes.Length; i++) {
+				if (dataTypes [i].Equals (s))
+					return i;
+			}
+
+			return -1;
+		}
 	}
 }

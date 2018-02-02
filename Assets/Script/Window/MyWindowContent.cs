@@ -40,7 +40,7 @@ public class MyWindowContent : MonoBehaviour {
 	}
 
 	public virtual void OnLeftDrag (Vector2 start, Vector2 end) {
-
+		
 	}
 
 	public virtual void OnRightDrag (Vector2 start, Vector2 end) {

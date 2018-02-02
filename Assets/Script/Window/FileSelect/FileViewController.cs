@@ -57,10 +57,12 @@ public class FileViewController : MonoBehaviour {
 
 		// ファイルを読み込んでcontentに追加
 		string[] files;
-		if(fifMan.key == ProjectData.FileKey.Read)
+		if (fifMan.key == ProjectData.FileKey.Read)
 			files = Directory.GetFiles (fifMan.GetPath (), "*-fv.csv");
+		else if (fifMan.key == ProjectData.FileKey.Formula)
+			files = Directory.GetFiles (fifMan.GetPath (), "*.txt");
 		else
-			files = Directory.GetFiles (fifMan.GetPath ());
+			files = Directory.GetFiles (fifMan.GetPath (), "*.csv");
 		foreach (string name in files) {
 			string[] tmp = name.Split (separator);
 			string s = tmp [tmp.Length - 1];

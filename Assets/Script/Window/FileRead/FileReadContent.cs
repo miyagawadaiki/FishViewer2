@@ -19,7 +19,7 @@ public class FileReadContent : MyWindowContent {
 	[SerializeField]
 	private Button doneButton = null;
 
-	private bool addListerFlag = false;
+	private bool addListenerFlag = false;
 	private StreamReader sr;
 	private char[] separator = { ',' };
 
@@ -43,9 +43,9 @@ public class FileReadContent : MyWindowContent {
 	
 	// Update is called once per frame
 	void Update () {
-		if (addListerFlag) {
+		if (addListenerFlag) {
 			AddListener ();
-			addListerFlag = false;
+			addListenerFlag = false;
 		}
 	}
 
@@ -53,7 +53,7 @@ public class FileReadContent : MyWindowContent {
 		nameText.text = ProjectData.FileName.GetName (ProjectData.FileKey.Read);
 
 		sr = new StreamReader (ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Read), System.Text.Encoding.GetEncoding("UTF-8"));
-		string[] tmp = sr.ReadLine ().Split (separator);
+		string[] tmp = sr.ReadLine ().Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
 		valueText.text = tmp [0] + "\n" + tmp [1] + "\n" + tmp [2];
 		int step = int.Parse (tmp [0]), fish = int.Parse (tmp [1]);
 		float deltaTime = float.Parse (tmp [2]);
@@ -68,7 +68,7 @@ public class FileReadContent : MyWindowContent {
 	}
 
 	public void CallAddListener() {
-		addListerFlag = true;
+		addListenerFlag = true;
 	}
 
 	public void AddListener() {

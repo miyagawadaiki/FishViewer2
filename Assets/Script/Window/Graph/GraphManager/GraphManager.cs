@@ -270,7 +270,7 @@ public class GraphManager : MonoBehaviour {
 	}
 
 	public string GetFishText() {
-		return "fish" + fish;
+		return "fish" + (fish + 1);
 	}
 
 	public virtual string GetTypeText() {
