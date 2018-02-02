@@ -5,46 +5,53 @@ using UnityEngine;
 
 public class DataType {
 
-	public string name;
+	public string dataName;
 
 	private string[] elements;
 	private List<float> parameters;
 	private Stack<float> values;
-	private char[] elementSeparator = { ' ' };
-	private char[] prefixSeparator = { '#' };
+	private char[] elementSeparator = { '\t', ' ' };
+	private char[] prefixSeparator = { '!', '#', '$', '@' };
 
 	public DataType () {
 		parameters = new List<float> ();
 		values = new Stack<float> ();
 	}
 
-	public DataType (string name, string text) {
-		this.name = name;
+	public DataType (string name, string text) : this () {
+		this.dataName = name;
 
 		elements = text.Split (elementSeparator, StringSplitOptions.RemoveEmptyEntries);
 
 		for (int i = 0; i < elements.Length; i++) {
-			if (elements [i] [0].Equals ('$'))
+			if (elements [i] [0].Equals ('$')) {
 				parameters.Add (0f);
+			}
 		}
 
 		for (int i = 0; i < parameters.Count; i++)
 			parameters [i] = 1f / parameters.Count;
 	}
 
-	public float Eval (int step) {
+	public float Eval (int step, int fish) {
+		values.Clear ();
+
 		for (int i = 0; i < elements.Length; i++) {
 			char prefix = elements [i] [0];
 			string text = elements [i].Split (prefixSeparator, StringSplitOptions.RemoveEmptyEntries)[0];
 
 			switch (prefix) {
 			case '!':
+				values.Push (GetData (step, fish, text));
 				break;
 			case '#':
 				values.Push (float.Parse (text));
 				break;
 			case '$':
 				values.Push (parameters [int.Parse (text)]);
+				break;
+			case '@':
+				values.Push (DB.constNums [text]);
 				break;
 			default :
 				EvalOperator (text);
@@ -55,10 +62,47 @@ public class DataType {
 		return values.Pop ();
 	}
 
-	public void SetData (string text) {
+	public float GetData (int step, int fish, string text) {
 		char[] separator = { ',' };
 		string[] tmp = text.Split (separator, StringSplitOptions.RemoveEmptyEntries);
 
+		int tag = DB.tags[(tmp [0])];
+		int st = int.Parse (tmp [1]);
+		if (step + st < 0) {
+			if (DB.start < step - st)
+				DB.start = step - st;
+			return 0f;
+		}
+		int fi = fish;
+		if (tmp.Length > 2)
+			fi = int.Parse (tmp [2]);
+
+		return DB.data [step + st, fi, tag];
+	}
+
+	public string GetParametersText () {
+		if (parameters.Count < 2)
+			return "";
+		
+		string s = parameters[0] + "";
+		for (int i = 1; i < parameters.Count; i++)
+			s += ":" + parameters [i];
+
+		return s;
+	}
+
+	public void SetParametersText (string text) {
+		parameters.Clear ();
+
+		char[] sep = { ':' };
+		string[] tmp = text.Split (sep, System.StringSplitOptions.RemoveEmptyEntries);
+
+		for (int i = 0; i < tmp.Length; i++)
+			parameters.Add (float.Parse (tmp [i]));
+	}
+
+	public bool HasParameter () {
+		return parameters.Count > 1;
 	}
 
 	public void EvalOperator (string op) {

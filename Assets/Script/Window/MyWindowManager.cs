@@ -289,6 +289,7 @@ public class MyWindowManager : MonoBehaviour {
 	public enum ContentType {
 		FileSelect,
 		FileRead,
+		FileMake,
 		SingleGraph,
 		MultiEvenGraph,
 		MultiVariousGraph,
