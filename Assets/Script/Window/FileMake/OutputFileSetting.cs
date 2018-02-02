@@ -96,15 +96,18 @@ public class OutputFileSetting : MonoBehaviour {
 			string name;
 			do {
 				name = sr.ReadLine ();
-			} while (name != null && name.Equals (""));
+			} while (name != null && (name.Equals ("") || name.IndexOf("//") >= 0));
 
 			if (name == null)
 				break;
 
+			char[] sep = { '\t', ' ' };
+			name = name.Split (sep, System.StringSplitOptions.RemoveEmptyEntries) [0];
+
 			string formula;
 			do {
 				formula = sr.ReadLine ();
-			} while (formula.Equals (""));
+			} while (formula.Equals ("") || name.IndexOf("//") >= 0);
 
 			DataType dt = new DataType (name, formula);
 			dataTypes.Add (dt);

@@ -20,7 +20,7 @@ public class FileMakeContent : MyWindowContent {
 	private int tagNum;
 	private DataType dataT;
 	private List<string> tagNames;
-	private bool flag = false;
+	//private bool flag = false;
 
 	private int i, j, k;
 
@@ -265,6 +265,7 @@ public class FileMakeContent : MyWindowContent {
 		for (i = 0; i < DB.dataTypes.Count; i++) {
 			DataType dataT = DB.dataTypes [i];
 			int tagNum = DB.tags [dataT.dataName];
+			Debug.Log ("tag = " + dataT.dataName);
 			for (j = 0; j < DB.step; j++) {
 				for (k = 0; k < DB.fish; k++) {
 					//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
