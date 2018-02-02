@@ -10,16 +10,28 @@ public class FileMakeContent : MyWindowContent {
 
 	[SerializeField]
 	private Button doneButtn = null;
+	[SerializeField]
+	private Slider slider = null;
 
 	private InputFileSetting ifs;
 	private OutputFileSetting ofs;
+	private StreamWriter streamWriter;
+	private StreamWriter debug;
+	private int tagNum;
+	private DataType dataT;
+	private List<string> tagNames;
+	private bool flag = false;
+
+	private int i, j, k;
 
 	void Awake () {
 		doneButtn.onClick.AddListener (() => Make ());
-		doneButtn.onClick.AddListener (() => mwc.Destroy ());
+		//doneButtn.onClick.AddListener (() => mwc.Destroy ());
 
 		ifs = this.GetComponentInChildren<InputFileSetting> ();
 		ofs = this.GetComponentInChildren<OutputFileSetting> ();
+
+		slider.gameObject.SetActive (false);
 	}
 
 	// Use this for initialization
@@ -33,16 +45,48 @@ public class FileMakeContent : MyWindowContent {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		//if (!flag)
+		//	return;
+
+		/*
+		if (k >= DB.fish) {
+			j++;
+			if (j >= DB.step) {
+				i++;
+				if (i >= DB.dataTypes.Count) {
+					Write ();
+
+					mwc.Destroy ();
+					flag = false;
+					return;
+				}
+				dataT = DB.dataTypes [i];
+				tagNum = DB.tags [dataT.dataName];
+				j = 0;
+			}
+			k = 0;
+		}
+		debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
+		debug.WriteLine ("\ti, j, k = " + i + ", " + j + ", " + k);
+		debug.Close ();
+		Debug.Log ("\ti, j, k = " + i + ", " + j + ", " + k);
+		DB.data [j, k, tagNum] = dataT.Eval (j, k);
+		k++;
+
+		slider.value++;
+		*/
 	}
 
 	public void Make () {
-		List<string> tagNames = new List<string> ();
+		tagNames = new List<string> ();
+		//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", false, Encoding.GetEncoding ("UTF-8"));
+
 
 		DB.Init (ifs.step, ifs.fish, ifs.dt);
 
+		//debug.WriteLine ("Read tags in InputFile");
 		// Input File から読み込む系列名をハッシュに登録
-		for (int i = 0; i < ifs.ddArray.Length; i++) {
+		for (i = 0; i < ifs.ddArray.Length; i++) {
 			if (ifs.ddArray [i].value == 0)
 				continue;
 
@@ -51,11 +95,15 @@ public class FileMakeContent : MyWindowContent {
 
 			tagNames.Add (ifs.constTags [ifs.ddArray [i].value]);
 		}
+		//debug.WriteLine ("...End reading tags in InputFile");
+		//debug.Close ();
 
 		int fillNum = DB.tags.Count;
 
+		//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
+		//debug.WriteLine ("Read tags in OutputFile");
 		// Output File Setting で定めたこれから用意する系列名をハッシュに登録
-		for (int i = 0; i < ofs.toggles.Count; i++) {
+		for (i = 0; i < ofs.toggles.Count; i++) {
 			if (ofs.toggles [i].isOn) {
 				if (!DB.tags.ContainsKey (ofs.dataTypes [i].dataName)) {
 					int n = DB.tags.Count;
@@ -68,14 +116,21 @@ public class FileMakeContent : MyWindowContent {
 				tagNames.Add (ofs.dataTypes [i].dataName);
 			}
 		}
+		//debug.WriteLine ("...End reading tags in OutputFile");
+		//debug.Close ();
 
 		DB.data = new float[ifs.step, ifs.fish, DB.tags.Count];
 
+		//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
+		//debug.WriteLine ("DB.data = float[" + ifs.step + "," + ifs.fish + "," + DB.tags.Count + "]");
+	
+		//debug.WriteLine ("Read data in InputFile");
+		//debug.Close ();
 		// Input File からすでにある情報を読み取り
-		for (int i = 0; i < ifs.step; i++) {
-			for (int j = 0; j < ifs.fish; j++) {
+		for (i = 0; i < ifs.step; i++) {
+			for (j = 0; j < ifs.fish; j++) {
 				int l = 0;
-				for (int k = 0; k < fillNum; k++) {
+				for (k = 0; k < fillNum; k++) {
 					while (ifs.ddArray [l].value == 0) {
 						l++;
 					}
@@ -85,45 +140,146 @@ public class FileMakeContent : MyWindowContent {
 				}
 			}
 		}
+		//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
+		//debug.WriteLine ("...End reading data in InputFile");
+		//debug.Close ();
 
+		//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
+		//debug.WriteLine ("Calculate data by FormulaFile");
+		//debug.Close ();
+
+		i = 0; j = 0; k = 0;
+		//dataT = DB.dataTypes [i];
+		//tagNum = DB.tags [dataT.dataName];
+
+		//slider.gameObject.SetActive (true);
+		//slider.minValue = 0f;
+		//slider.maxValue = DB.step * DB.fish * DB.dataTypes.Count;
+		//slider.value = 0f;
+		//flag = true;
+		StartCoroutine("CreateData");
+
+		/*
 		// DataTypeを使ってデータを生成
-		for (int i = 0; i < DB.step; i++) {
-			for (int j = 0; j < DB.fish; j++) {
-				for (int k = 0; k < DB.dataTypes.Count; k++) {
-					DataType dataT = DB.dataTypes [k];
-					DB.data [i, j, DB.tags [dataT.dataName]] = dataT.Eval (i, j);
+		for (i = 0; i < DB.dataTypes.Count; i++) {
+			DataType dataT = DB.dataTypes [i];
+			int tagNum = DB.tags [dataT.dataName];
+			for (j = 0; j < DB.step; j++) {
+				for (k = 0; k < DB.fish; k++) {
+					debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
+					debug.WriteLine ("\ti, j, k = " + i + ", " + j + ", " + k);
+					debug.Close ();
+					Debug.Log ("\ti, j, k = " + i + ", " + j + ", " + k);
+					DB.data [j, k, tagNum] = dataT.Eval (j, k);
 				}
 			}
 		}
+		debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
+		debug.WriteLine ("...End calculating data by FormulaFile");
+		debug.Close ();
+		*/
 
 
-		StreamWriter sw = new StreamWriter (ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Output), false, Encoding.GetEncoding ("UTF-8"));
-		sw.WriteLine ((DB.step - DB.start) + "," + DB.fish + "," + DB.constNums ["dt"]);
+		/*
+		debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
+		debug.WriteLine ("Write data");
+		debug.Close ();
+		streamWriter = new StreamWriter (ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Output), false, Encoding.GetEncoding ("UTF-8"));
+		streamWriter.WriteLine ((DB.step - DB.start) + "," + DB.fish + "," + DB.constNums ["dt"]);
 
 		string t = "";
-		for (int i = 0; i < DB.fish; i++) {
-			for (int j = 0; j < tagNames.Count; j++) {
-				t += tagNames [i] + ",";
+		for (i = 0; i < DB.fish; i++) {
+			for (j = 0; j < tagNames.Count; j++) {
+				t += tagNames [j] + ",";
 			}
 			t += ",";
 		}
-		sw.WriteLine (t);
+		streamWriter.WriteLine (t);
 
-		for (int i = DB.start; i < DB.step; i++) {
+		for (i = DB.start; i < DB.step; i++) {
 			string s = "";
-			for (int j = 0; j < DB.fish; j++) {
-				for (int k = 0; k < DB.tags.Count; k++) {
+			for (j = 0; j < DB.fish; j++) {
+				for (k = 0; k < DB.tags.Count; k++) {
 					s += DB.data [i, j, k] + ",";
 				}
 				s += ",";
 			}
 
-			sw.WriteLine (s);
+			streamWriter.WriteLine (s);
 		}
 
-		sw.Close ();
-
+		streamWriter.Close ();
 		
+		debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
+		debug.WriteLine ("...End");
+		debug.Close ();
+
+		*/
+		return;
+	}
+
+	private void Write () {
+		//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
+		//debug.WriteLine ("Write data");
+		//debug.Close ();
+		streamWriter = new StreamWriter (ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Output), false, Encoding.GetEncoding ("UTF-8"));
+		streamWriter.WriteLine ((DB.step - DB.start) + "," + DB.fish + "," + DB.constNums ["dt"]);
+
+		string t = "";
+		for (i = 0; i < DB.fish; i++) {
+			for (j = 0; j < tagNames.Count; j++) {
+				t += tagNames [j] + ",";
+			}
+			t += ",";
+		}
+		streamWriter.WriteLine (t);
+
+		for (i = DB.start; i < DB.step; i++) {
+			string s = "";
+			for (j = 0; j < DB.fish; j++) {
+				for (k = 0; k < DB.tags.Count; k++) {
+					s += DB.data [i, j, k] + ",";
+				}
+				s += ",";
+			}
+
+			streamWriter.WriteLine (s);
+		}
+
+		streamWriter.Close ();
+
+		//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
+		//debug.WriteLine ("...End");
+		//debug.Close ();
+	}
+
+	private IEnumerator CreateData () {
+
+		slider.gameObject.SetActive (true);
+		slider.minValue = 0f;
+		slider.maxValue = DB.step * DB.fish * DB.dataTypes.Count;
+		slider.value = 0f;
+
+		yield return null;
+
+		for (i = 0; i < DB.dataTypes.Count; i++) {
+			DataType dataT = DB.dataTypes [i];
+			int tagNum = DB.tags [dataT.dataName];
+			for (j = 0; j < DB.step; j++) {
+				for (k = 0; k < DB.fish; k++) {
+					//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
+					//debug.WriteLine ("\ti, j, k = " + i + ", " + j + ", " + k);
+					//debug.Close ();
+					//Debug.Log ("\ti, j, k = " + i + ", " + j + ", " + k);
+					DB.data [j, k, tagNum] = dataT.Eval (j, k);
+					slider.value++;
+				}
+			}
+		}
+
+		Write ();
+		mwc.Destroy ();
+		yield break;
 	}
 }
 

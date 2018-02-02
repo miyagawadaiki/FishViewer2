@@ -25,7 +25,7 @@ public class InputFileSetting : MonoBehaviour {
 	public float[,,] constData;
 	public Dropdown[] ddArray;
 
-	private bool addListenerFlag;
+	private bool addListenerFlag = false;
 	private StreamReader sr;
 	private Text[] textArray;
 	//private List<string> defaultTags;
@@ -110,6 +110,7 @@ public class InputFileSetting : MonoBehaviour {
 				hoge = sr.ReadLine ();
 			}
 
+			step = 0;
 			do {
 				step++;
 				hoge = sr.ReadLine ();
@@ -190,5 +191,7 @@ public class InputFileSetting : MonoBehaviour {
 			if(i < step - 1)
 				tmp = sr.ReadLine ().Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
 		}
+
+		sr.Close ();
 	}
 }

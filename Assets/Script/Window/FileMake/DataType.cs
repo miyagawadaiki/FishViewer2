@@ -11,7 +11,7 @@ public class DataType {
 	private List<float> parameters;
 	private Stack<float> values;
 	private char[] elementSeparator = { '\t', ' ' };
-	private char[] prefixSeparator = { '!', '#', '$', '%' };
+	private char[] prefixSeparator = { '!', '#', '$', '@' };
 
 	public DataType () {
 		parameters = new List<float> ();
@@ -34,6 +34,8 @@ public class DataType {
 	}
 
 	public float Eval (int step, int fish) {
+		values.Clear ();
+
 		for (int i = 0; i < elements.Length; i++) {
 			char prefix = elements [i] [0];
 			string text = elements [i].Split (prefixSeparator, StringSplitOptions.RemoveEmptyEntries)[0];
@@ -48,7 +50,7 @@ public class DataType {
 			case '$':
 				values.Push (parameters [int.Parse (text)]);
 				break;
-			case '%':
+			case '@':
 				values.Push (DB.constNums [text]);
 				break;
 			default :
@@ -64,7 +66,6 @@ public class DataType {
 		char[] separator = { ',' };
 		string[] tmp = text.Split (separator, StringSplitOptions.RemoveEmptyEntries);
 
-		Debug.Log ("tmp [0] = " + tmp [0]);
 		int tag = DB.tags[(tmp [0])];
 		int st = int.Parse (tmp [1]);
 		if (step + st < 0) {

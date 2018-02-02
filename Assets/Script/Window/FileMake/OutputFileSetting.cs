@@ -24,7 +24,7 @@ public class OutputFileSetting : MonoBehaviour {
 	public List<DataType> dataTypes;
 	public List<Toggle> toggles;
 
-	private bool addListenerFlagO, addListenerFlagF;
+	private bool addListenerFlagO = false, addListenerFlagF = false;
 	private StreamReader sr;
 
 
@@ -121,6 +121,8 @@ public class OutputFileSetting : MonoBehaviour {
 				b.onClick.AddListener (() => OpenParameterWindow (texts [2]));
 			}
 		}
+
+		sr.Close ();
 	}
 
 	public void OpenParameterWindow (Text text) {
