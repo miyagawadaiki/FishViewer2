@@ -23,10 +23,10 @@ public class InputFileSetting : MonoBehaviour {
 	public float dt = 0.1f;
 	public List<string> constTags;
 	public float[,,] constData;
+	public Dropdown[] ddArray;
 
 	private bool addListenerFlag;
 	private StreamReader sr;
-	private Dropdown[] ddArray;
 	private Text[] textArray;
 	//private List<string> defaultTags;
 
@@ -74,6 +74,10 @@ public class InputFileSetting : MonoBehaviour {
 	public void UpdateContent () {
 		// ファイル名を表示
 		fileNameText.text = ProjectData.FileName.GetName (ProjectData.FileKey.Input);
+
+		// もしファイルがなければ何もしない
+		if(!File.Exists(ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Input)))
+			return;
 
 		// ファイルをオープン
 		sr = new StreamReader (ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Input), System.Text.Encoding.GetEncoding("UTF-8"));

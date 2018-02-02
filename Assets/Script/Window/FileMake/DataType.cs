@@ -11,7 +11,7 @@ public class DataType {
 	private List<float> parameters;
 	private Stack<float> values;
 	private char[] elementSeparator = { '\t', ' ' };
-	private char[] prefixSeparator = { '#' };
+	private char[] prefixSeparator = { '!', '#', '$', '%' };
 
 	public DataType () {
 		parameters = new List<float> ();
@@ -26,7 +26,6 @@ public class DataType {
 		for (int i = 0; i < elements.Length; i++) {
 			if (elements [i] [0].Equals ('$')) {
 				parameters.Add (0f);
-
 			}
 		}
 
@@ -34,14 +33,14 @@ public class DataType {
 			parameters [i] = 1f / parameters.Count;
 	}
 
-	public float Eval (int step) {
+	public float Eval (int step, int fish) {
 		for (int i = 0; i < elements.Length; i++) {
 			char prefix = elements [i] [0];
 			string text = elements [i].Split (prefixSeparator, StringSplitOptions.RemoveEmptyEntries)[0];
 
 			switch (prefix) {
 			case '!':
-				
+				values.Push (GetData (step, fish, text));
 				break;
 			case '#':
 				values.Push (float.Parse (text));
@@ -50,7 +49,7 @@ public class DataType {
 				values.Push (parameters [int.Parse (text)]);
 				break;
 			case '%':
-
+				values.Push (DB.constNums [text]);
 				break;
 			default :
 				EvalOperator (text);
@@ -61,10 +60,23 @@ public class DataType {
 		return values.Pop ();
 	}
 
-	public void SetData (string text) {
+	public float GetData (int step, int fish, string text) {
 		char[] separator = { ',' };
 		string[] tmp = text.Split (separator, StringSplitOptions.RemoveEmptyEntries);
 
+		Debug.Log ("tmp [0] = " + tmp [0]);
+		int tag = DB.tags[(tmp [0])];
+		int st = int.Parse (tmp [1]);
+		if (step + st < 0) {
+			if (DB.start < step - st)
+				DB.start = step - st;
+			return 0f;
+		}
+		int fi = fish;
+		if (tmp.Length > 2)
+			fi = int.Parse (tmp [2]);
+
+		return DB.data [step + st, fi, tag];
 	}
 
 	public string GetParametersText () {

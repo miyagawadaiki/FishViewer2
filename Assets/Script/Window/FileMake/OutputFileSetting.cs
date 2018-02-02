@@ -22,10 +22,11 @@ public class OutputFileSetting : MonoBehaviour {
 	private Transform content = null;
 
 	public List<DataType> dataTypes;
+	public List<Toggle> toggles;
 
 	private bool addListenerFlagO, addListenerFlagF;
 	private StreamReader sr;
-	private List<Toggle> toggles;
+
 
 	void Awake () {
 		outputSelectButton.onClick.AddListener (() => this.GetComponentInParent<MyWindowManager> ().AddWindow ("FileSelect/Output"));
@@ -79,6 +80,9 @@ public class OutputFileSetting : MonoBehaviour {
 	public void UpdateFormulaContent () {
 
 		formulaFileNameText.text = ProjectData.FileName.GetName (ProjectData.FileKey.Formula);
+
+		if (!File.Exists (ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Formula)))
+			return;
 
 		sr = new StreamReader (ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Formula), System.Text.Encoding.GetEncoding("UTF-8"));
 
