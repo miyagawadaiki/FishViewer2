@@ -20,7 +20,6 @@ public class MyWindowController : MonoBehaviour {
 	[SerializeField]
 	private RectTransform frameRT = null;
 
-	private RectTransform recTra, parRecTra;
 	private Vector2 canvas;
 	private Rect rect, parRect;
 	//private Vector2 expandDir;
@@ -35,6 +34,10 @@ public class MyWindowController : MonoBehaviour {
 	public bool canMove = true;
 	[System.NonSerialized]
 	public bool canExpand = true;
+	[System.NonSerialized]
+	public RectTransform recTra;
+	[System.NonSerialized]
+	public RectTransform parRecTra;
 
 	void Awake() {
 		mwm = this.GetComponentInParent<MyWindowManager> ();

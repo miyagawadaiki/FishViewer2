@@ -111,7 +111,7 @@ MonoBehaviour:
   m_MinSize: {x: 917, y: 442}
   m_MaxSize: {x: 22012, y: 14042}
   vertical: 0
-  controlID: 911
+  controlID: 3364
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_MinSize: {x: 202, y: 442}
   m_MaxSize: {x: 4002, y: 8042}
   vertical: 1
-  controlID: 912
+  controlID: 3365
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -236,7 +236,7 @@ MonoBehaviour:
   m_MinSize: {x: 234, y: 392}
   m_MaxSize: {x: 10004, y: 14042}
   vertical: 1
-  controlID: 864
+  controlID: 3152
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -416,14 +416,14 @@ MonoBehaviour:
     width: 817
     height: 428
   m_SceneLighting: 1
-  lastFramingTime: 22156.0396823598
+  lastFramingTime: 3200.1844157188198
   m_2DMode: 1
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 16.084724, y: 319.31226, z: -44.132133}
+    m_Target: {x: 174.69684, y: 360.40002, z: 0}
     speed: 2
-    m_Value: {x: 16.084724, y: 319.31226, z: -44.132133}
+    m_Value: {x: 174.69684, y: 360.40002, z: 0}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -450,9 +450,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 339.72803
+    m_Target: 37.335236
     speed: 2
-    m_Value: 339.72803
+    m_Value: 37.335236
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -566,9 +566,9 @@ MonoBehaviour:
     height: 908
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 
+    m_SelectedIDs: 64270000
     m_LastClickedID: 0
-    m_ExpandedIDs: dcfbffff00000000
+    m_ExpandedIDs: a8e3ffffb0e3ffffb4e3ffffdcfbffff000000003a28000052290000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -628,18 +628,18 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Resources/Content
+    - Assets/Prefab
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Resources/Content
+  - Assets/Prefab
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Daiki\Desktop\Unity\FishViewer_2
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 48}
-    m_SelectedIDs: c0260000
-    m_LastClickedID: 9920
+    scrollPos: {x: 0, y: 76}
+    m_SelectedIDs: c4260000
+    m_LastClickedID: 9924
     m_ExpandedIDs: 0000000006250000a82500005e2600006a26000070260000c42600008a27000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0

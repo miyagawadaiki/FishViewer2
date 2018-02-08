@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,6 +34,9 @@ public class GraphContent : MyWindowContent {
 		obj.GetComponent<GridButtonController> ().gc = this;
 		obj.GetComponent<Button>().onClick.AddListener(() => ChangeGridMode());
 
+		obj = Instantiate (Resources.Load ("Menubar/Capture") as GameObject, mwc.menuArea.transform);
+		obj.GetComponent<Button> ().onClick.AddListener (() => OpenFileSelectWindow ());
+
 		obj = Instantiate (Resources.Load("Menubar/Setting") as GameObject, mwc.menuArea.transform);
 		obj.GetComponent<Button> ().onClick.AddListener (() => OpenSettingWindow ());
 
@@ -54,6 +59,11 @@ public class GraphContent : MyWindowContent {
 	public virtual void OpenSettingWindow() {
 		mwc.mwm.AddWindow (System.Enum.GetName(typeof(GraphContentType), gcType) + "GraphSetting");
 		mwc.mwm.GetLastWindowController ().gameObject.GetComponentInChildren<GraphSettingContent> ().RegisterGraphContent (this);
+	}
+
+	public void OpenFileSelectWindow () {
+		mwc.mwm.AddWindow ("FileSelect/Image");
+		mwc.mwm.GetLastWindowController ().gameObject.GetComponentInChildren<FileSelectContent> ().doneButton.onClick.AddListener (() => Capture ());
 	}
 
 	public virtual void RemoveGraphManager() {
@@ -176,6 +186,28 @@ public class GraphContent : MyWindowContent {
 
 	public virtual string GetParameterText() {
 		return "";
+	}
+
+	public void Capture () {
+		StartCoroutine ("CaptureCoroutine");
+	}
+
+	private IEnumerator CaptureCoroutine () {
+		Vector2 size = mwc.recTra.sizeDelta;
+		mwc.recTra.SetAsLastSibling ();
+
+		Debug.Log ("size = " + size);
+
+		Texture2D tex = new Texture2D ((int)size.x + 1, (int)size.y + 1, TextureFormat.ARGB32, false);
+
+		yield return new WaitForEndOfFrame ();
+
+		tex.ReadPixels (new Rect (this.transform.position.x - size.x / 2f, this.transform.position.y - size.y / 2f, size.x, size.y), 0, 0);
+		tex.Apply ();
+
+		byte[] bytes = tex.EncodeToPNG ();
+		Destroy (tex);
+		File.WriteAllBytes (ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Image), bytes);
 	}
 }
 
