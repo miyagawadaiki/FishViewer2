@@ -92,6 +92,11 @@ public class MultiEvenGraphContent : GraphContent {
 		foreach (GraphManager gm in graphManList)
 			gm.Translate (start, end);
 
+		if (!Simulation.playing) {
+			foreach (GraphManager gm in graphManList)
+				gm.Plot (Simulation.step);
+		}
+
 		ShowView ();
 	}
 
@@ -101,6 +106,11 @@ public class MultiEvenGraphContent : GraphContent {
 
 		foreach (GraphManager gm in graphManList)
 			gm.Expand(expand);
+
+		if (!Simulation.playing) {
+			foreach (GraphManager gm in graphManList)
+				gm.Plot (Simulation.step);
+		}
 
 		ShowView ();
 	}

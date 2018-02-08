@@ -78,6 +78,9 @@ public class FileMakeContent : MyWindowContent {
 	}
 
 	public void Make () {
+
+		ProjectData.FileName.Set (ProjectData.FileKey.Read, ProjectData.FileName.GetPath (ProjectData.FileKey.Output), ProjectData.FileName.GetName (ProjectData.FileKey.Output));
+
 		tagNames = new List<string> ();
 		//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", false, Encoding.GetEncoding ("UTF-8"));
 

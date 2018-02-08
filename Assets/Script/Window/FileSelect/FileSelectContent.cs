@@ -43,6 +43,11 @@ public class FileSelectContent : MyWindowContent {
 
 	public void Set() {
 		FileName.Set (key, fifm.GetPath (), fifm.GetName ());
+		if (key == FileKey.Input) {
+			char[] sep = { '.' };
+			string[] tmp = fifm.GetName ().Split (sep, StringSplitOptions.RemoveEmptyEntries);
+			FileName.Set (FileKey.Output, FileName.GetPath(FileKey.Output), tmp[0] + "-fv." + tmp[1]);
+		}
 	}
 
 	/*

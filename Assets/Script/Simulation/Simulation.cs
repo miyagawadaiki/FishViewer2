@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Simulation {
 
-	public static bool isEnabled = false;
+	public static bool isEnabled = false, playing = false;
 	public static int step = 0;
 
 	private static List<GraphManager> graphList;

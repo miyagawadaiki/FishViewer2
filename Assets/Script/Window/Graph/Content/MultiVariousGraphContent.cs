@@ -87,11 +87,21 @@ public class MultiVariousGraphContent : GraphContent {
 		if (graphManList.Count == 0)
 			return;
 
-		if (allToggle.isOn)
+		if (allToggle.isOn) {
 			foreach (GraphManager gm in graphManList)
 				gm.Translate (start, end);
-		else
+
+			if (!Simulation.playing) {
+				foreach (GraphManager gm in graphManList)
+					gm.Plot (Simulation.step);
+			}
+		} else {
 			selected.Translate (start, end);
+
+			if (!Simulation.playing) {
+				selected.Plot (Simulation.step);
+			}
+		}
 
 		ShowView ();
 	}
@@ -100,11 +110,21 @@ public class MultiVariousGraphContent : GraphContent {
 		if (graphManList.Count == 0)
 			return;
 		
-		if(allToggle.isOn)
+		if (allToggle.isOn) {
 			foreach (GraphManager gm in graphManList)
 				gm.Expand (expand);
-		else
+
+			if (!Simulation.playing) {
+				foreach (GraphManager gm in graphManList)
+					gm.Plot (Simulation.step);
+			}
+		} else {
 			selected.Expand (expand);
+
+			if (!Simulation.playing) {
+				selected.Plot (Simulation.step);
+			}
+		}
 
 		ShowView ();
 	}

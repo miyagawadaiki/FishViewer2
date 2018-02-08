@@ -58,6 +58,10 @@ public class SingleGraphContent : GraphContent {
 		if (graphMan == null)
 			return;
 		graphMan.Translate (start, end);
+
+		if (!Simulation.playing)
+			graphMan.Plot (Simulation.step);
+
 		ShowView ();
 	}
 
@@ -65,6 +69,10 @@ public class SingleGraphContent : GraphContent {
 		if (graphMan == null)
 			return;
 		graphMan.Expand (expand);
+
+		if (!Simulation.playing)
+			graphMan.Plot (Simulation.step);
+		
 		ShowView ();
 	}
 
