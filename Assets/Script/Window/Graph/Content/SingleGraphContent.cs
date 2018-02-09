@@ -54,6 +54,12 @@ public class SingleGraphContent : GraphContent {
 		Init ();
 	}
 
+	public override void Plot (int step) {
+		base.Plot (step);
+
+		graphMan.Plot (step);
+	}
+
 	public override void Translate(Vector2 start, Vector2 end) {
 		if (graphMan == null)
 			return;
@@ -62,7 +68,7 @@ public class SingleGraphContent : GraphContent {
 		if (!Simulation.playing)
 			graphMan.Plot (Simulation.step);
 
-		ShowView ();
+		base.Translate (start, end);
 	}
 
 	public override void Expand(float expand) {
@@ -73,7 +79,7 @@ public class SingleGraphContent : GraphContent {
 		if (!Simulation.playing)
 			graphMan.Plot (Simulation.step);
 		
-		ShowView ();
+		base.Expand (expand);
 	}
 
 	public override void RemoveGraphManager() {

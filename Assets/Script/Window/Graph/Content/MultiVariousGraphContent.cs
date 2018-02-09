@@ -83,6 +83,14 @@ public class MultiVariousGraphContent : GraphContent {
 		Init ();
 	}
 
+	public override void Plot (int step) {
+		base.Plot (step);
+
+		foreach (GraphManager gm in graphManList) {
+			gm.Plot (step);
+		}
+	}
+
 	public override void Translate(Vector2 start, Vector2 end) {
 		if (graphManList.Count == 0)
 			return;
@@ -103,7 +111,7 @@ public class MultiVariousGraphContent : GraphContent {
 			}
 		}
 
-		ShowView ();
+		base.Translate (start, end);
 	}
 
 	public override void Expand(float expand) {
@@ -126,7 +134,7 @@ public class MultiVariousGraphContent : GraphContent {
 			}
 		}
 
-		ShowView ();
+		base.Expand (expand);
 	}
 
 	public override void RemoveGraphManager() {

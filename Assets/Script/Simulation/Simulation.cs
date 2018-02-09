@@ -21,7 +21,7 @@ public class Simulation {
 		}
 
 		graphList = new List<GraphManager> ();
-		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Graph")) {
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("GraphContent")) {
 			GraphManager gm = obj.GetComponent<GraphManager>();
 			//gm.Init ();
 			graphList.Add (gm);

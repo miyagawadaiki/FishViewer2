@@ -124,4 +124,16 @@ public class DataBase {
 
 		return ret;
 	}
+
+	public static string GetDefMEGraphSetting () {
+		string s = "2 :";
+
+		for (int i = 0; i < fish; i++) {
+			s += "1,";
+		}
+
+		s += ":0,6,9,:0,50,0,1,1,10,0,:";
+
+		return s;
+	}
 }

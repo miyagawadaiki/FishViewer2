@@ -48,7 +48,7 @@ public class SimulationController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Init ();
+		// Init ();
 	}
 
 	public void Init() {
@@ -78,6 +78,11 @@ public class SimulationController : MonoBehaviour {
 
 		Pause ();
 		RepeatOff ();
+
+		MyWindowManager mwm = GameObject.Find ("MyWindowManager").GetComponent<MyWindowManager> ();
+		mwm.AddWindow ("MultiEvenGraph/" + DataBase.GetDefMEGraphSetting ());
+		mwm.GetLastWindowController ().gameObject.GetComponentInChildren<MyWindowContent> ().defaultSize = new Vector2 (1f, 1f) * (Screen.height - this.GetComponent<RectTransform> ().rect.height - 50);
+		mwm.GetLastWindowController ().gameObject.GetComponentInChildren<GraphContent> ().SetGridMode (ViewMode.ShowGridCompletely);
 	}
 	
 	// Update is called once per frame

@@ -24,11 +24,8 @@ public class GraphContent : MyWindowContent {
 		mwc = this.GetComponentInParent<MyWindowController> ();
 		mwc.SetSize (defaultSize);
 		int num = mwc.mwm.Count ();
-		//Vector2 tmp = mwc.mwm.GetComponent<RectTransform> ().rect.size;
-		//Vector2 hoge = mwc.GetComponent<RectTransform> ().rect.size;
-		//Vector2 topLeft = new Vector2 (-tmp.x / 2 + hoge.x / 2, tmp.y / 2 - hoge.y / 2);
-		//mwc.MoveTo (topLeft + new Vector2 (10f * num + 10f, - 10f * num - 10f));
 		mwc.MoveTo(new Vector2(0.1f * num - 1f, 1f - 0.1f * num));
+		mwc.TranslateIntoWindowManager ();
 
 		GameObject obj = Instantiate (Resources.Load ("Menubar/Grid") as GameObject, mwc.menuArea.transform);
 		obj.GetComponent<GridButtonController> ().gc = this;
@@ -40,7 +37,10 @@ public class GraphContent : MyWindowContent {
 		obj = Instantiate (Resources.Load("Menubar/Setting") as GameObject, mwc.menuArea.transform);
 		obj.GetComponent<Button> ().onClick.AddListener (() => OpenSettingWindow ());
 
-		OpenSettingWindow ();
+		if (typeName.Equals (""))
+			OpenSettingWindow ();
+		else
+			Set (typeName);
 	}
 	
 	// Update is called once per frame
@@ -56,6 +56,10 @@ public class GraphContent : MyWindowContent {
 
 	}
 
+	public virtual void Plot (int step) {
+
+	}
+
 	public virtual void OpenSettingWindow() {
 		mwc.mwm.AddWindow (System.Enum.GetName(typeof(GraphContentType), gcType) + "GraphSetting");
 		mwc.mwm.GetLastWindowController ().gameObject.GetComponentInChildren<GraphSettingContent> ().RegisterGraphContent (this);
@@ -68,6 +72,11 @@ public class GraphContent : MyWindowContent {
 
 	public virtual void RemoveGraphManager() {
 
+	}
+
+	public void SetGridMode (ViewMode vm) {
+		viewMode = vm;
+		ShowView ();
 	}
 
 	public void ChangeGridMode() {
@@ -149,15 +158,29 @@ public class GraphContent : MyWindowContent {
 	}
 
 	public virtual void Translate(Vector2 start, Vector2 end) {
-		
+		if (!Simulation.playing)
+			Plot (Simulation.step);
+		ShowView ();
 	}
 
 	public virtual void Expand(float expand) {
+		if (!Simulation.playing)
+			Plot (Simulation.step);
+		ShowView ();
+	}
 
+	public override void OnTranslate (Vector2 vec) {
+		base.OnTranslate (vec);
+		if (!Simulation.playing)
+			Plot (Simulation.step);
+		ShowView ();
 	}
 
 	public override void OnExpand(Vector2 vec, Vector2 expandDir) {
-		ShowView();
+		base.OnExpand (vec, expandDir);
+		if (!Simulation.playing)
+			Plot (Simulation.step);
+		ShowView ();
 	}
 		
 	public override void OnLeftClick(Vector2 pos) {
