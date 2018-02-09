@@ -36,7 +36,7 @@ public class SimulationController : MonoBehaviour {
 	[SerializeField]
 	private Text fileName = null;
 
-	private bool playing, repeating;
+	private bool repeating;
 	private float time = 0f, dt, defDt;
 	private int repStartStep, repEndStep;
 	private Color repButtonColor, repOnColor, repOffColor;
@@ -111,7 +111,7 @@ public class SimulationController : MonoBehaviour {
 			return;
 		}
 
-		if (playing) {
+		if (Simulation.playing) {
 			Debug.Log ("<color=blue>Simulating... step=" + Simulation.step + "</color>");
 			GoNext ();
 		} else {
@@ -128,17 +128,17 @@ public class SimulationController : MonoBehaviour {
 	}
 
 	public void Play() {
-		playing = true;
+		Simulation.playing = true;
 		playPauseImage.sprite = pauseSprite;
 	}
 
 	public void Pause() {
-		playing = false;
+		Simulation.playing = false;
 		playPauseImage.sprite = playSprite;
 	}
 
 	public void SwitchPlay() {
-		if (playing)
+		if (Simulation.playing)
 			Pause ();
 		else
 			Play ();

@@ -15,13 +15,15 @@ public class FileViewController : MonoBehaviour {
 	private FileInputFieldManager fifMan = null;
 	[SerializeField]
 	private InputField nameIf = null;
+	[SerializeField]
+	private Button addFolderButton = null;
 
 	private string fileName;
 	private bool flag = true;
 
 	// Use this for initialization
 	void Start () {
-		
+		addFolderButton.onClick.AddListener (() => AddFolder ());
 	}
 	
 	// Update is called once per frame
@@ -61,6 +63,8 @@ public class FileViewController : MonoBehaviour {
 			files = Directory.GetFiles (fifMan.GetPath (), "*-fv.csv");
 		else if (fifMan.key == ProjectData.FileKey.Formula)
 			files = Directory.GetFiles (fifMan.GetPath (), "*.txt");
+		else if (fifMan.key == ProjectData.FileKey.Image)
+			files = Directory.GetFiles (fifMan.GetPath (), "*.png");
 		else
 			files = Directory.GetFiles (fifMan.GetPath (), "*.csv");
 		foreach (string name in files) {
@@ -77,5 +81,13 @@ public class FileViewController : MonoBehaviour {
 
 	public void CallForUpdateView() {
 		flag = true;
+	}
+
+	public void AddFolder () {
+		if (Directory.Exists (fifMan.GetPath () + "/" + fifMan.GetName ()))
+			return;
+
+		Directory.CreateDirectory (fifMan.GetPath () + "/" + fifMan.GetName ());
+		UpdateView ();
 	}
 }

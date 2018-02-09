@@ -7,6 +7,7 @@ namespace ProjectData {
 		Input,
 		Output,
 		Formula,
+		Image,
 	}
 
 	public class FileName {
