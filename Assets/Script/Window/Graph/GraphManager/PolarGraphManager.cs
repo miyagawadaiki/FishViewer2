@@ -31,6 +31,7 @@ public class PolarGraphManager : GraphManager {
 
 	public override void Init() {
 		Debug.Log ("<color=green>PolarGraphManager.Init()</color>");
+		markerRate = 1f;
 		base.Init ();
 
 		xMax = DataBase.GetMax (xType);
@@ -61,8 +62,10 @@ public class PolarGraphManager : GraphManager {
 				points [i].localPosition = GraphToLocal (new Vector2 (DataBase.GetData (step - markerIdx + i, fish, xType), DataBase.GetData (step - markerIdx + i, fish, yType)));
 				if (!recTra.rect.Contains (points [i].localPosition))
 					points [i].gameObject.SetActive (false);
-				if ((int)pointType > 0 && i > 0)
-					points [i].rotation = Quaternion.FromToRotation (Vector3.left, points [i - 1].position - points [i].position);
+				//if ((int)pointType > 0 && i > 0)
+				//	points [i].rotation = Quaternion.FromToRotation (Vector3.left, points [i - 1].position - points [i].position);
+				if ((int)pointType > 0)
+					points [i].rotation = Quaternion.FromToRotation (Vector3.right, (Vector3)new Vector2(Mathf.Cos (DataBase.GetData (step - markerIdx + i, fish, yType + 5)), Mathf.Sin (DataBase.GetData (step - markerIdx + i, fish, yType + 5))));
 			}
 		}
 	}
