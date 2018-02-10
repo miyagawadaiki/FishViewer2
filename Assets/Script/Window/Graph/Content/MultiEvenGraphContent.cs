@@ -70,10 +70,12 @@ public class MultiEvenGraphContent : GraphContent {
 		if (fishNumList.Count <= 0)
 			return;
 
+		Simulation.Register (this);
+
 		for (int i = 0; i < fishNumList.Count; i++) {
 			GameObject obj = Instantiate (graphManObj, graphRecTra) as GameObject;
 			graphManList.Add (obj.GetComponent<GraphManager> ());
-			Simulation.Register (graphManList [graphManList.Count - 1]);
+			//Simulation.Register (graphManList [graphManList.Count - 1]);
 
 			string p = fishNumList [i] + "," + sourceTexts[1] + "," + sourceTexts[2] + ",";
 			p += pointerTexts [0] + "," + pointerTexts [1] + "," + fishNumList [i] + "," + pointerTexts[3] + "," + pointerTexts[4] + "," + pointerTexts[5] + "," + pointerTexts[6] + ",";
@@ -122,12 +124,14 @@ public class MultiEvenGraphContent : GraphContent {
 
 		base.Expand (expand);
 	}
-
+		
 	public override void RemoveGraphManager() {
+		base.RemoveGraphManager ();
+
 		int num = graphManList.Count;
 		for (int i = 0; i < num; i++) {
 			GraphManager gm = graphManList [0];
-			Simulation.Remove (gm);
+			//Simulation.Remove (gm);
 			graphManList.RemoveAt (0);
 			Destroy (gm.gameObject);
 		}
@@ -187,7 +191,7 @@ public class MultiEvenGraphContent : GraphContent {
 		foreach (GraphManager gm in graphManList)
 			fishText += (gm.fish + 1) + ",";
 
-		return fishText + "\n" + graphManList [0].GetTypeText ();
+		return graphManList[0].GetStepText () + ", " + fishText + "\n" + graphManList [0].GetTypeText ();
 	}
 
 	public override string GetParameterText () {

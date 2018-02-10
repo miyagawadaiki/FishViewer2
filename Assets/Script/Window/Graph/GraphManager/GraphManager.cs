@@ -273,6 +273,17 @@ public class GraphManager : MonoBehaviour {
 		return new Vector2 ();
 	}
 
+	public string GetStepText () {
+		int st = Simulation.step - markerIdx;
+		st = st < 0 ? 0 : st;
+		st = st >= DataBase.step ? DataBase.step - 1 : st;
+		int ed = Simulation.step - markerIdx + pointNum - 1;
+		ed = ed < 0 ? 0 : ed;
+		ed = ed >= DataBase.step ? DataBase.step - 1 : ed;
+		string s = st + " - " + ed;
+		return s;
+	}
+
 	public string GetFishText() {
 		return "fish" + (fish + 1);
 	}

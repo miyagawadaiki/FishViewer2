@@ -39,13 +39,14 @@ public class SingleGraphContent : GraphContent {
 		GraphType gt = (GraphType)(int.Parse(tmp [0]));
 		if (graphMan == null || graphMan.graphType != gt) {
 			if (graphMan != null) {
-				Simulation.Remove (graphMan);
+				//Simulation.Remove (graphMan);
 				Destroy (graphMan.gameObject);
 			}
 			GameObject obj = Instantiate (Resources.Load ("GraphManager/" + System.Enum.GetName (typeof(GraphType), gt) + "GraphManager"), graphRecTra) as GameObject;
 			graphMan = obj.GetComponent<GraphManager> ();
 			//memo = graphMan;
-			Simulation.Register (graphMan);
+			Simulation.Register (this);
+			//Simulation.Register (graphMan);
 		}
 
 		Debug.Log ("SingleGraph = " + tmp [1]);
@@ -81,9 +82,10 @@ public class SingleGraphContent : GraphContent {
 		
 		base.Expand (expand);
 	}
-
+		
 	public override void RemoveGraphManager() {
-		Simulation.Remove (graphMan);
+		base.RemoveGraphManager ();
+		//Simulation.Remove (graphMan);
 	}
 		
 	public override void SetGrid() {
@@ -137,7 +139,8 @@ public class SingleGraphContent : GraphContent {
 	}
 
 	public override string GetTitle () {
-		return graphMan.GetFishText () + ", " + graphMan.GetTypeText ();
+		string s = graphMan.GetStepText () + ", " + graphMan.GetFishText () + "\n" + graphMan.GetTypeText ();
+		return s;
 	}
 
 	public override string GetParameterText() {
