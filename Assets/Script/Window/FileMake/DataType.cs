@@ -11,7 +11,7 @@ public class DataType {
 	private List<float> parameters;
 	private Stack<float> values;
 	private char[] elementSeparator = { '\t', ' ' };
-	private char[] prefixSeparator = { '!', '#', '$', '@' };
+	private char[] prefixSeparator = { '!', '#', '$', '@', '?' };
 
 	public DataType () {
 		parameters = new List<float> ();
@@ -52,6 +52,10 @@ public class DataType {
 				break;
 			case '@':
 				values.Push (DB.constNums [text]);
+				break;
+			case '?':
+				float f = values.ToArray () [values.Count + int.Parse (text)];
+				values.Push (f);
 				break;
 			default :
 				EvalOperator (text);
@@ -130,6 +134,9 @@ public class DataType {
 			break;
 		case "<":
 			Smaller ();
+			break;
+		case "IsNaN":
+			IsNaN ();
 			break;
 		case "Abs":
 			Abs ();
@@ -218,6 +225,16 @@ public class DataType {
 			values.Push (1f);
 		else
 			values.Push (0f);
+	}
+
+	public void IsNaN () {
+		float c = values.Pop ();
+		float b = values.Pop ();
+		float a = values.Pop ();
+		if (float.IsNaN (a))
+			values.Push (b);
+		else
+			values.Push (c);
 	}
 
 	public void Abs () {

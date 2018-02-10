@@ -12,6 +12,8 @@ public class FileMakeContent : MyWindowContent {
 	private Button doneButtn = null;
 	[SerializeField]
 	private Slider slider = null;
+	//[SerializeField]
+	//private Image image = null;
 
 	private InputFileSetting ifs;
 	private OutputFileSetting ofs;
@@ -260,7 +262,7 @@ public class FileMakeContent : MyWindowContent {
 
 		slider.gameObject.SetActive (true);
 		slider.minValue = 0f;
-		slider.maxValue = DB.step * DB.fish * DB.dataTypes.Count;
+		slider.maxValue = DB.dataTypes.Count;
 		slider.value = 0f;
 
 		yield return null;
@@ -276,9 +278,12 @@ public class FileMakeContent : MyWindowContent {
 					//debug.Close ();
 					//Debug.Log ("\ti, j, k = " + i + ", " + j + ", " + k);
 					DB.data [j, k, tagNum] = dataT.Eval (j, k);
-					slider.value++;
+					//image.fillAmount += 1f / slider.maxValue;
+					
 				}
 			}
+			slider.value++;
+			yield return null;
 		}
 
 		Write ();

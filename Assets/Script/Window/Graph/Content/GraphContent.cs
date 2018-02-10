@@ -57,7 +57,7 @@ public class GraphContent : MyWindowContent {
 	}
 
 	public virtual void Plot (int step) {
-
+		graphTitleText.text = GetTitle ();
 	}
 
 	public virtual void OpenSettingWindow() {
@@ -71,7 +71,7 @@ public class GraphContent : MyWindowContent {
 	}
 
 	public virtual void RemoveGraphManager() {
-
+		Simulation.Remove (this);
 	}
 
 	public void SetGridMode (ViewMode vm) {

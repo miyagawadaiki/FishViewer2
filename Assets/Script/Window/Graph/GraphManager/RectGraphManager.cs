@@ -21,6 +21,7 @@ public class RectGraphManager : GraphManager {
 
 	public override void Init() {
 		Debug.Log ("<color=green>RectGraphManager.Init()</color>");
+		markerRate = 1f;
 		base.Init ();
 
 		xMax = DataBase.GetMax (xType);

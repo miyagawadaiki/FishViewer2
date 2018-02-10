@@ -10,9 +10,12 @@ public class PolarGraphManager : GraphManager {
 	private GameObject angleLineObj = null;
 	[SerializeField]
 	private RectTransform polarView = null;
+	[SerializeField]
+	private RectTransform[] angleTextRecTras = null;
 
 	private GridLineController[] rGrids;
 	private AngleLineController alc;
+	//private Vector3 right, top, bottom;
 
 	protected override void Awake() {
 		base.Awake ();
@@ -21,7 +24,9 @@ public class PolarGraphManager : GraphManager {
 
 	// Use this for initialization
 	protected override void Start () {
-		
+		//right = Vector3.right * recTra.rect.width / 2f;
+		//top = Vector3.up * recTra.rect.height / 2f;
+		//bottom = Vector3.down * recTra.rect.height / -2f;
 	}
 	
 	// Update is called once per frame
@@ -31,6 +36,7 @@ public class PolarGraphManager : GraphManager {
 
 	public override void Init() {
 		Debug.Log ("<color=green>PolarGraphManager.Init()</color>");
+		markerRate = 1f;
 		base.Init ();
 
 		xMax = DataBase.GetMax (xType);
@@ -61,8 +67,10 @@ public class PolarGraphManager : GraphManager {
 				points [i].localPosition = GraphToLocal (new Vector2 (DataBase.GetData (step - markerIdx + i, fish, xType), DataBase.GetData (step - markerIdx + i, fish, yType)));
 				if (!recTra.rect.Contains (points [i].localPosition))
 					points [i].gameObject.SetActive (false);
-				if ((int)pointType > 0 && i > 0)
-					points [i].rotation = Quaternion.FromToRotation (Vector3.left, points [i - 1].position - points [i].position);
+				//if ((int)pointType > 0 && i > 0)
+				//	points [i].rotation = Quaternion.FromToRotation (Vector3.left, points [i - 1].position - points [i].position);
+				if ((int)pointType > 0)
+					points [i].rotation = Quaternion.FromToRotation (Vector3.right, (Vector3)new Vector2(Mathf.Cos (DataBase.GetData (step - markerIdx + i, fish, yType + 5)), Mathf.Sin (DataBase.GetData (step - markerIdx + i, fish, yType + 5))));
 			}
 		}
 	}
@@ -106,6 +114,9 @@ public class PolarGraphManager : GraphManager {
 		}
 
 		alc.SetAngle (localZero);
+
+		for (int i = 0; i < angleTextRecTras.Length; i++)
+			angleTextRecTras [i].gameObject.SetActive (false);
 	}
 
 	public override void SetCompletely (bool first) {
@@ -156,11 +167,32 @@ public class PolarGraphManager : GraphManager {
 		}
 
 		alc.SetAngle (localZero);
-
+		
 		if (first)
 			xAxis.Set (true, view.rect.size / -2f, 0f, TextPos.Below);
 		else
 			xAxis.Set (true, view.rect.size / 2f, 0f, TextPos.Below);
+
+		if (localZero.x > recTra.rect.width / 2f || localZero.y < recTra.rect.height / -2f || localZero.y > recTra.rect.height / 2f) {
+			angleTextRecTras [0].gameObject.SetActive (false);
+		} else {
+			angleTextRecTras [0].gameObject.SetActive (true);
+			angleTextRecTras [0].localPosition = Vector3.right * recTra.rect.width / 2f + Vector3.up * localZero.y;
+		}
+
+		if (localZero.x < recTra.rect.width / -2f || localZero.x > recTra.rect.width / 2f || localZero.y > recTra.rect.height / 2f) {
+			angleTextRecTras [1].gameObject.SetActive (false);
+		} else {
+			angleTextRecTras [1].gameObject.SetActive (true);
+			angleTextRecTras [1].localPosition = Vector3.right * localZero.x + Vector3.up * recTra.rect.height / 2f;
+		}
+
+		if (localZero.x < recTra.rect.width / -2f || localZero.x > recTra.rect.width / 2f || localZero.y < recTra.rect.height / -2f) {
+			angleTextRecTras [2].gameObject.SetActive (false);
+		} else {
+			angleTextRecTras [2].gameObject.SetActive (true);
+			angleTextRecTras [2].localPosition = Vector3.right * localZero.x + Vector3.up * recTra.rect.height / -2f;
+		}
 	}
 
 	public override void ShowAxis () {

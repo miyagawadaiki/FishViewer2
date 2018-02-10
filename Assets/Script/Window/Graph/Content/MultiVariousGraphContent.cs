@@ -68,13 +68,15 @@ public class MultiVariousGraphContent : GraphContent {
 		char[] graphSeparator = {'\t'}, typeSeparator = { ' ' };
 		string[] graphParameters = parameters.Split (graphSeparator, System.StringSplitOptions.RemoveEmptyEntries);
 
+		Simulation.Register (this);
+
 		for (int i = 0; i < graphParameters.Length; i++) {
 			string[] tmp = graphParameters [i].Split (typeSeparator, System.StringSplitOptions.RemoveEmptyEntries);
 			string graphTypeName = System.Enum.GetNames(typeof(GraphType))[(int.Parse (tmp [0]))];
 			GameObject graphManObj = Resources.Load ("GraphManager/" + graphTypeName + "GraphManager") as GameObject;
 			GameObject obj = Instantiate (graphManObj, graphRecTra) as GameObject;
 			graphManList.Add (obj.GetComponent<GraphManager> ());
-			Simulation.Register (graphManList [graphManList.Count - 1]);
+			//Simulation.Register (graphManList [graphManList.Count - 1]);
 
 			Debug.Log ("MultiVarious " + i + " = " + tmp [1]);
 			graphManList [i].Set (tmp [1]);
@@ -138,10 +140,12 @@ public class MultiVariousGraphContent : GraphContent {
 	}
 
 	public override void RemoveGraphManager() {
+		base.RemoveGraphManager ();
+
 		int num = graphManList.Count;
 		for (int i = 0; i < num; i++) {
 			GraphManager gm = graphManList [0];
-			Simulation.Remove (gm);
+			//Simulation.Remove (gm);
 			graphManList.RemoveAt (0);
 			Destroy (gm.gameObject);
 		}
