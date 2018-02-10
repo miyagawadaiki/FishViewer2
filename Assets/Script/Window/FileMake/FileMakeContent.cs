@@ -26,7 +26,13 @@ public class FileMakeContent : MyWindowContent {
 
 	private int i, j, k;
 
-	void Awake () {
+	public override void Awake () {
+		base.Awake ();
+
+		defaultPosition = new Vector2 ();
+		mwc.canMove = false;
+		mwc.canExpand = false;
+
 		doneButtn.onClick.AddListener (() => Make ());
 		//doneButtn.onClick.AddListener (() => mwc.Destroy ());
 
@@ -37,12 +43,8 @@ public class FileMakeContent : MyWindowContent {
 	}
 
 	// Use this for initialization
-	void Start () {
-		mwc = this.GetComponentInParent<MyWindowController> ();
-		mwc.SetSize (defaultSize);
-		mwc.canMove = false;
-		mwc.canExpand = false;
-		mwc.MoveTo (new Vector2 (0f, 0f));
+	public override void Start () {
+		base.Start ();
 	}
 	
 	// Update is called once per frame

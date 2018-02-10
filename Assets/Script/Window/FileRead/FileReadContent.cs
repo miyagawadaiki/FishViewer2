@@ -23,13 +23,18 @@ public class FileReadContent : MyWindowContent {
 	private StreamReader sr;
 	private char[] separator = { ',' };
 
+	public override void Awake () {
+		base.Awake ();
+		defaultPosition = new Vector2 ();
+	}
+
 	// Use this for initialization
-	void Start () {
-		mwc = this.GetComponentInParent<MyWindowController> ();
+	public override void Start () {
+		base.Start ();
+
+		//mwc = this.GetComponentInParent<MyWindowController> ();
 		mwc.canMove = false;
 		mwc.canExpand = false;
-		mwc.SetSize (defaultSize);
-		mwc.MoveTo (new Vector2 (0f, 0f));
 
 		button.onClick.AddListener (() => this.GetComponentInParent<MyWindowManager> ().AddWindow ("FileSelect/Read"));
 		button.onClick.AddListener (() => CallAddListener());

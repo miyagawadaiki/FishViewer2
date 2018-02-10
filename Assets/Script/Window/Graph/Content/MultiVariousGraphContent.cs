@@ -16,11 +16,16 @@ public class MultiVariousGraphContent : GraphContent {
 	public List<MultiVariousLabelNode> nodes;
 	public GraphManager selected;
 
-	void Awake() {
+	public override void Awake() {
+		base.Awake ();
 		graphManList = new List<GraphManager> ();
 		gcType = GraphContentType.MultiVarious;
 
 		allToggle.gameObject.SetActive (false);
+	}
+
+	public override bool IsReady () {
+		return graphManList != null;
 	}
 
 	public void Select(int index) {
@@ -212,6 +217,11 @@ public class MultiVariousGraphContent : GraphContent {
 
 	public override string GetTitle () {
 		return "Various Graphs";
+	}
+
+	public override string GetShortTitle () {
+		string s = base.GetShortTitle ();
+		return s + graphManList [0].GetStepText () + "_" + DataBase.GetShortTags () [graphManList [0].xType] + "-" + DataBase.GetShortTags () [graphManList [0].yType] + "_mv";
 	}
 
 	public override string GetParameterText () {

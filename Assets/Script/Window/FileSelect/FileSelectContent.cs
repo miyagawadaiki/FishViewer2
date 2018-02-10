@@ -21,13 +21,16 @@ public class FileSelectContent : MyWindowContent {
 
 	//private Vector2 defaultSize = new Vector2 (321f, 294f);
 
-	// Use this for initialization
-	void Start () {
-		mwc = this.GetComponentInParent<MyWindowController> ();
+	public override void Awake () {
+		base.Awake ();
+		defaultPosition = new Vector2 ();
 		mwc.canMove = false;
 		mwc.canExpand = false;
-		mwc.SetSize (defaultSize);
-		mwc.MoveTo (new Vector2 (0f, 0f));
+	}
+
+	// Use this for initialization
+	public override void Start () {
+		base.Start ();
 
 		key = (FileKey)System.Enum.Parse (typeof(FileKey), typeName);
 		fifm = this.GetComponent<FileInputFieldManager> ();

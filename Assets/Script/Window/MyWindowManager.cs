@@ -104,6 +104,16 @@ public class MyWindowManager : MonoBehaviour {
 	}
 
 
+	// GraphContentのWindowをコピーする
+	public void MakeClone () {
+		for (int i = 0;i<windowList.Count;i++) {
+			if (windowList[i].isSelected) {
+				windowList [i].content.MakeClone ();
+			}
+		}
+	}
+
+
 	// 左クリック時の動作
 	public void OnMouseLeftDown() {
 		int max = -1;

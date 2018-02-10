@@ -19,13 +19,13 @@ public class GraphContent : MyWindowContent {
 
 	protected GraphContentType gcType;
 
+	public override void Awake () {
+		base.Awake ();
+	}
+
 	// Use this for initialization
-	public virtual void Start () {
-		mwc = this.GetComponentInParent<MyWindowController> ();
-		mwc.SetSize (defaultSize);
-		int num = mwc.mwm.Count ();
-		mwc.MoveTo(new Vector2(0.1f * num - 1f, 1f - 0.1f * num));
-		mwc.TranslateIntoWindowManager ();
+	public override void Start () {
+		base.Start ();
 
 		GameObject obj = Instantiate (Resources.Load ("Menubar/Grid") as GameObject, mwc.menuArea.transform);
 		obj.GetComponent<GridButtonController> ().gc = this;
@@ -48,6 +48,10 @@ public class GraphContent : MyWindowContent {
 		
 	}
 
+	public virtual bool IsReady () {
+		return false;
+	}
+
 	public virtual void Init() {
 
 	}
@@ -66,6 +70,7 @@ public class GraphContent : MyWindowContent {
 	}
 
 	public void OpenFileSelectWindow () {
+		ProjectData.FileName.Set (ProjectData.FileKey.Image, ProjectData.FileName.GetPath (ProjectData.FileKey.Image),  GetShortTitle () + ".png");
 		mwc.mwm.AddWindow ("FileSelect/Image");
 		mwc.mwm.GetLastWindowController ().gameObject.GetComponentInChildren<FileSelectContent> ().doneButton.onClick.AddListener (() => Capture ());
 	}
@@ -170,6 +175,9 @@ public class GraphContent : MyWindowContent {
 	}
 
 	public override void OnTranslate (Vector2 vec) {
+		if (!IsReady ())
+			return;
+
 		base.OnTranslate (vec);
 		if (!Simulation.playing)
 			Plot (Simulation.step);
@@ -177,6 +185,9 @@ public class GraphContent : MyWindowContent {
 	}
 
 	public override void OnExpand(Vector2 vec, Vector2 expandDir) {
+		if (!IsReady ())
+			return;
+
 		base.OnExpand (vec, expandDir);
 		if (!Simulation.playing)
 			Plot (Simulation.step);
@@ -207,8 +218,22 @@ public class GraphContent : MyWindowContent {
 		return "";
 	}
 
+	public virtual string GetShortTitle () {
+		char[] sep = { '.' };
+		string name = ProjectData.FileName.GetName (ProjectData.FileKey.Read).Split (sep) [0];
+		return name.Substring (0, name.Length - 3) + "_";
+	}
+
 	public virtual string GetParameterText() {
 		return "";
+	}
+
+	public override void MakeClone () {
+		base.MakeClone ();
+
+		mwc.mwm.AddWindow (System.Enum.GetName (typeof (GraphContentType), gcType) + "Graph/" + this.GetParameterText ());
+		mwc.mwm.GetLastWindowController ().gameObject.GetComponentInChildren<MyWindowContent> ().defaultSize = this.defaultSize;
+		mwc.mwm.GetLastWindowController ().gameObject.GetComponentInChildren<GraphContent> ().SetGridMode (viewMode);
 	}
 
 	public void Capture () {
@@ -218,8 +243,6 @@ public class GraphContent : MyWindowContent {
 	private IEnumerator CaptureCoroutine () {
 		Vector2 size = mwc.recTra.sizeDelta;
 		mwc.recTra.SetAsLastSibling ();
-
-		Debug.Log ("size = " + size);
 
 		Texture2D tex = new Texture2D ((int)size.x + 1, (int)size.y + 1, TextureFormat.ARGB32, false);
 

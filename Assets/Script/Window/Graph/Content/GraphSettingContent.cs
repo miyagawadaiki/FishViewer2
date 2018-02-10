@@ -12,7 +12,12 @@ public class GraphSettingContent : MyWindowContent {
 	protected Button doneButton;
 	protected SettingManager sm; 
 
-	protected virtual void Awake () {
+	public override void Awake () {
+		base.Awake ();
+
+		defaultPosition = new Vector2 ();
+		mwc.canExpand = false;
+
 		doneButton = this.GetComponentInChildren<Button> ();
 
 		sm = this.GetComponentInChildren<SettingManager> ();
@@ -20,11 +25,8 @@ public class GraphSettingContent : MyWindowContent {
 	}
 
 	// Use this for initialization
-	protected virtual void Start () {
-		mwc = this.GetComponentInParent<MyWindowController> ();
-		mwc.SetSize (defaultSize);
-		mwc.MoveTo (new Vector2 ());
-		mwc.canExpand = false;
+	public override void Start () {
+		base.Start ();
 
 		doneButton.onClick.AddListener (() => mwc.Destroy ());
 		doneButton.onClick.AddListener (() => gc.Set(sm.GetParameterText ()));

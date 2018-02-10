@@ -11,9 +11,14 @@ public class MultiEvenGraphContent : GraphContent {
 
 	public List<GraphManager> graphManList;
 
-	void Awake() {
+	public override void Awake() {
+		base.Awake ();
 		graphManList = new List<GraphManager> ();
 		gcType = GraphContentType.MultiEven;
+	}
+
+	public override bool IsReady () {
+		return graphManList != null;
 	}
 
 	public override void Init() {
@@ -192,6 +197,11 @@ public class MultiEvenGraphContent : GraphContent {
 			fishText += (gm.fish + 1) + ",";
 
 		return graphManList[0].GetStepText () + ", " + fishText + "\n" + graphManList [0].GetTypeText ();
+	}
+
+	public override string GetShortTitle () {
+		string s = base.GetShortTitle ();
+		return s + graphManList [0].GetStepText () + "_" + DataBase.GetShortTags () [graphManList [0].xType] + "-" + DataBase.GetShortTags () [graphManList [0].yType] + "_me";
 	}
 
 	public override string GetParameterText () {

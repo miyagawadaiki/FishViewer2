@@ -280,7 +280,7 @@ public class GraphManager : MonoBehaviour {
 		int ed = Simulation.step - markerIdx + pointNum - 1;
 		ed = ed < 0 ? 0 : ed;
 		ed = ed >= DataBase.step ? DataBase.step - 1 : ed;
-		string s = st + " - " + ed;
+		string s = st + "-" + ed;
 		return s;
 	}
 

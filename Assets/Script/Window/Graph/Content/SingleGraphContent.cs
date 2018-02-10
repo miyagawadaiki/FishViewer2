@@ -7,8 +7,13 @@ public class SingleGraphContent : GraphContent {
 	//private GraphType graphType = GraphType.Rect;
 	public GraphManager graphMan;
 
-	void Awake() {
+	public override void Awake() {
+		base.Awake ();
 		gcType = GraphContentType.Single;
+	}
+
+	public override bool IsReady () {
+		return graphMan != null;
 	}
 
 	public override void Init() {
@@ -141,6 +146,11 @@ public class SingleGraphContent : GraphContent {
 	public override string GetTitle () {
 		string s = graphMan.GetStepText () + ", " + graphMan.GetFishText () + "\n" + graphMan.GetTypeText ();
 		return s;
+	}
+
+	public override string GetShortTitle () {
+		string s = base.GetShortTitle ();
+		return s + graphMan.GetStepText () + "_" + DataBase.GetShortTags () [graphMan.xType] + "-" + DataBase.GetShortTags () [graphMan.yType];
 	}
 
 	public override string GetParameterText() {

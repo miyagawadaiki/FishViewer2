@@ -18,14 +18,15 @@ public class MultiGraphSettingContent : MyWindowContent {
 	private MultiEachGraphNode megn;
 	*/
 
-	// Use this for initialization
-	void Start () {
-		mwc = this.GetComponentInParent<MyWindowController> ();
-		mwc.SetSize (defaultSize);
-		mwc.MoveTo (new Vector2 ());
+	public override void Awake () {
+		base.Awake ();
+		defaultPosition = new Vector2 ();
 		mwc.canExpand = false;
+	}
 
-		//doneButton.onClick.AddListener (() => mwc.Destroy ());
+	// Use this for initialization
+	public override void Start () {
+		base.Start ();
 	}
 	
 	// Update is called once per frame

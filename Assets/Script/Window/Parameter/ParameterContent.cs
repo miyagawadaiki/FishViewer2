@@ -26,13 +26,17 @@ public class ParameterContent : MyWindowContent {
 
 	private Text paramText;
 
-	// Use this for initialization
-	void Start () {
-		mwc = this.GetComponentInParent<MyWindowController> ();
-		mwc.SetSize (defaultSize);
+	public override void Awake () {
+		base.Awake ();
+
+		defaultPosition = new Vector2 ();
 		mwc.canMove = false;
 		mwc.canExpand = false;
-		mwc.MoveTo (new Vector2 (0f, 0f));
+	}
+
+	// Use this for initialization
+	public override void Start () {
+		base.Start ();
 
 		height = this.GetComponent<RectTransform> ().rect.height;
 		//Register (typeName);

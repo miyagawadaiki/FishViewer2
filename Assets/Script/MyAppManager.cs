@@ -22,7 +22,8 @@ public class MyAppManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		foreach (Button b in buttonList)
-			b.gameObject.SetActive (false);
+			b.interactable = false;
+			//b.gameObject.SetActive (false);
 	}
 	
 	// Update is called once per frame
@@ -58,6 +59,10 @@ public class MyAppManager : MonoBehaviour {
 				mwm.squareExpand = false;
 			}
 
+			if (Input.GetKeyDown (KeyCode.K)) {
+				mwm.MakeClone ();
+			}
+
 			if (Input.GetMouseButtonDown (0)) {
 				Debug.Log ("LeftDown");
 				mwm.OnMouseLeftDown ();
@@ -85,6 +90,7 @@ public class MyAppManager : MonoBehaviour {
 	public void ActivateSimuPanel() {
 		spc.gameObject.SetActive (true);
 		foreach (Button b in buttonList)
-			b.gameObject.SetActive (true);
+			b.interactable = true;
+			//b.gameObject.SetActive (true);
 	}
 }

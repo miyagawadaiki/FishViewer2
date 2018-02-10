@@ -5,16 +5,13 @@ using UnityEngine.UI;
 
 public class SampleContent : MyWindowContent {
 
+	public override void Awake () {
+		base.Awake ();
+	}
+
 	// Use this for initialization
-	void Start () {
-		mwc = this.GetComponentInParent<MyWindowController> ();
-		mwc.SetSize (defaultSize);
-		int num = mwc.mwm.Count ();
-		//Vector2 tmp = mwc.mwm.GetComponent<RectTransform> ().rect.size;
-		//Vector2 hoge = mwc.GetComponent<RectTransform> ().rect.size;
-		//Vector2 topLeft = new Vector2 (-tmp.x / 2 + hoge.x / 2, tmp.y / 2 - hoge.y / 2);
-		//mwc.MoveTo (topLeft + new Vector2 (10f * num + 10f, - 10f * num - 10f));
-		mwc.MoveTo(new Vector2(0.1f * num - 1f, 1f - 0.1f * num));
+	public override void Start () {
+		base.Start ();
 	}
 	
 	// Update is called once per frame
