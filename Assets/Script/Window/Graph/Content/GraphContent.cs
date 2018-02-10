@@ -53,7 +53,12 @@ public class GraphContent : MyWindowContent {
 	}
 
 	public virtual void Init() {
-
+		string s = System.Enum.GetName (typeof(GraphContentType), gcType);
+		if (s [0] == 'M')
+			s = s.Substring (5, s.Length - 5);
+		if (s [0] != 'V')
+			s += "\t";
+		contentName = s + "\t" + GetShortTypeText ();
 	}
 
 	public virtual void Set(string parameters) {
@@ -70,7 +75,9 @@ public class GraphContent : MyWindowContent {
 	}
 
 	public void OpenFileSelectWindow () {
-		ProjectData.FileName.Set (ProjectData.FileKey.Image, ProjectData.FileName.GetPath (ProjectData.FileKey.Image),  GetShortTitle () + ".png");
+		char[] sep = { '.' };
+		string n = ProjectData.FileName.GetName (ProjectData.FileKey.Read).Split (sep) [0];
+		ProjectData.FileName.Set (ProjectData.FileKey.Image, ProjectData.FileName.GetPath (ProjectData.FileKey.Image),  n.Substring (0, n.Length - 3) + "_" + GetShortTitle () + ".png");
 		mwc.mwm.AddWindow ("FileSelect/Image");
 		mwc.mwm.GetLastWindowController ().gameObject.GetComponentInChildren<FileSelectContent> ().doneButton.onClick.AddListener (() => Capture ());
 	}
@@ -218,10 +225,12 @@ public class GraphContent : MyWindowContent {
 		return "";
 	}
 
+	public virtual string GetShortTypeText () {
+		return "";
+	}
+
 	public virtual string GetShortTitle () {
-		char[] sep = { '.' };
-		string name = ProjectData.FileName.GetName (ProjectData.FileKey.Read).Split (sep) [0];
-		return name.Substring (0, name.Length - 3) + "_";
+		return "";
 	}
 
 	public virtual string GetParameterText() {
@@ -232,8 +241,10 @@ public class GraphContent : MyWindowContent {
 		base.MakeClone ();
 
 		mwc.mwm.AddWindow (System.Enum.GetName (typeof (GraphContentType), gcType) + "Graph/" + this.GetParameterText ());
-		mwc.mwm.GetLastWindowController ().gameObject.GetComponentInChildren<MyWindowContent> ().defaultSize = this.defaultSize;
-		mwc.mwm.GetLastWindowController ().gameObject.GetComponentInChildren<GraphContent> ().SetGridMode (viewMode);
+		MyWindowController mwc_ = mwc.mwm.GetLastWindowController ();
+		mwc_.content.defaultSize = this.defaultSize;
+		mwc_.content.defaultPosition = mwc.transform.localPosition + new Vector3 (30f, -30f, 0f);
+		mwc_.gameObject.GetComponentInChildren<GraphContent> ().SetGridMode (viewMode);
 	}
 
 	public void Capture () {

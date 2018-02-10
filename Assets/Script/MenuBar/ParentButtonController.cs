@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class ParentButtonController : MonoBehaviour {
 
-	[SerializeField]
-	private RectTransform templete = null;
+	public RectTransform templete = null;
 
 	private Button button;
 	private MenuBarController mbc;

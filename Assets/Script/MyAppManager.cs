@@ -12,7 +12,7 @@ public class MyAppManager : MonoBehaviour {
 	[SerializeField]
 	private SimuPanelController spc = null;
 	[SerializeField]
-	private List<Button> buttonList = null;
+	private WindowListPanelController wlpc = null;
 
 
 	void Awake() {
@@ -21,16 +21,20 @@ public class MyAppManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		foreach (Button b in buttonList)
-			b.interactable = false;
-			//b.gameObject.SetActive (false);
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		/*
 		if (!mbc.isActive && !mwm.isDraging && Input.mousePosition.y > Screen.height - 10f && Input.mousePosition.y <= Screen.height) {
 			mbc.SlideIn ();
+			return;
+		}
+		*/
+
+		if (Input.GetKeyDown (KeyCode.W)) {
+			wlpc.Slide ();
 			return;
 		}
 
@@ -39,14 +43,19 @@ public class MyAppManager : MonoBehaviour {
 			return;
 		}
 
-		if (mbc.isActive) {
+		//if (mbc.isActive) {
 			
-			if (!mbc.IsMouseInArea ())
-					mbc.SlideOut ();
-				//if (Input.GetMouseButtonDown (0))
-				//	mbc.OnMouseLeftDown ();
+		if (!mbc.IsMouseInArea ()) {
+			mbc.HidePanel ();
+			//mbc.SlideOut ();
+			//if (Input.GetMouseButtonDown (0))
+			//	mbc.OnMouseLeftDown ();
 				
-		} else if (!spc.gameObject.activeSelf || !spc.IsMouseInArea ()) {
+		} else {
+			return;
+		}
+
+		if (!wlpc.IsMouseInArea () && (!spc.gameObject.activeSelf || !spc.IsMouseInArea ())) {
 			if (Input.GetKeyDown (KeyCode.LeftControl)) {
 				mwm.multiSelect = true;
 			} else if (Input.GetKeyUp (KeyCode.LeftControl)) {
@@ -89,8 +98,7 @@ public class MyAppManager : MonoBehaviour {
 
 	public void ActivateSimuPanel() {
 		spc.gameObject.SetActive (true);
-		foreach (Button b in buttonList)
-			b.interactable = true;
-			//b.gameObject.SetActive (true);
+
+		mbc.Interactivate ();
 	}
 }

@@ -28,6 +28,7 @@ public class SingleGraphContent : GraphContent {
 
 		ShowView();
 		//graphMan.ShowAxis ();
+		base.Init ();
 	}
 
 	/*
@@ -148,9 +149,13 @@ public class SingleGraphContent : GraphContent {
 		return s;
 	}
 
+	public override string GetShortTypeText () {
+		return base.GetShortTypeText () + DataBase.GetShortTags () [graphMan.xType] + "-" + DataBase.GetShortTags () [graphMan.yType];
+	}
+
 	public override string GetShortTitle () {
 		string s = base.GetShortTitle ();
-		return s + graphMan.GetStepText () + "_" + DataBase.GetShortTags () [graphMan.xType] + "-" + DataBase.GetShortTags () [graphMan.yType];
+		return s + graphMan.GetStepText () + "_" + GetShortTypeText ();
 	}
 
 	public override string GetParameterText() {

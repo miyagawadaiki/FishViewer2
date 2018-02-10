@@ -15,7 +15,7 @@ public class SimuPanelController : MonoBehaviour {
 
 	public bool isActive = false;
 
-	void Awake() {
+	void Awake () {
 		recTra = this.GetComponent<RectTransform> ();
 	}
 
@@ -54,10 +54,12 @@ public class SimuPanelController : MonoBehaviour {
 	}
 
 	public void SlideIn() {
+		inPosition = (Vector2)recTra.localPosition + new Vector2 (0f, recTra.rect.height);
 		StartCoroutine (StartSlidePanel (true));
 	}
 
 	public void SlideOut() {
+		outPosition = (Vector2)recTra.localPosition - new Vector2 (0f, recTra.rect.height);
 		StartCoroutine (StartSlidePanel(false));
 	}
 

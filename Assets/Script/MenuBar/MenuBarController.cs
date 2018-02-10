@@ -8,7 +8,21 @@ public class MenuBarController : MonoBehaviour {
 	public bool isActive = false;
 	public float duration = 0.1f;
 
+	[SerializeField]
+	private Color normalColor = Color.white;
+	[SerializeField]
+	private Color highlightedColor = Color.white;
+	[SerializeField]
+	private Color pressedColor = Color.white;
+	[SerializeField]
+	private Color disabledColor = Color.white;
+	[SerializeField]
+	private Color normalTextColor = Color.black;
+	[SerializeField]
+	private Color disabledTextColor = Color.black;
+
 	private RectTransform panelRecTra = null;
+	private Image image = null;
 
 	private Vector2 inPosition;
 	private Vector2 outPosition;
@@ -23,10 +37,32 @@ public class MenuBarController : MonoBehaviour {
 		outPosition = new Vector2 (0f, Screen.height / 2 + recTra.rect.height / 2); //this.transform.localPosition;
 		inPosition = outPosition - new Vector2 (0f, recTra.rect.height);
 
+		image = this.GetComponent<Image> ();
+		image.color = normalColor;
+
 		foreach (Button button in this.GetComponentsInChildren<Button>()) {
-			if(!button.gameObject.CompareTag("ParentButton"))
-				button.onClick.AddListener (() => SlideOut ());
+			if (button.gameObject.GetComponent<ParentButtonController> () != null) {
+				button.gameObject.GetComponent<ParentButtonController> ().templete.gameObject.SetActive (true);
+			}
 		}
+
+		foreach (Button button in this.GetComponentsInChildren<Button>()) {
+			ColorBlock cb = button.colors;
+			cb.normalColor = normalColor;
+			cb.highlightedColor = highlightedColor;
+			cb.pressedColor = pressedColor;
+			cb.disabledColor = disabledColor;
+			button.colors = cb;
+			button.gameObject.GetComponentInChildren<Text> ().color = normalTextColor;
+
+			if (button.gameObject.GetComponent<ParentButtonController> () != null) {
+				button.gameObject.GetComponent<ParentButtonController> ().templete.gameObject.SetActive (false);
+			} else {
+				button.onClick.AddListener (() => HidePanel ());
+			}
+		}
+
+		DisInteractivate ();
 	}
 	
 	// Update is called once per frame
@@ -68,7 +104,7 @@ public class MenuBarController : MonoBehaviour {
 	}
 
 	public bool IsMouseInArea() {
-		Vector2 vec = (Vector2)Input.mousePosition - inPosition - new Vector2(Screen.width, Screen.height) / 2f;
+		Vector2 vec = (Vector2)Input.mousePosition - (Vector2)recTra.localPosition - new Vector2(Screen.width, Screen.height) / 2f;
 
 
 		if (recTra.rect.Contains (vec))
@@ -88,6 +124,31 @@ public class MenuBarController : MonoBehaviour {
 		}
 		
 		panelRecTra = panel;
+	}
+
+	public void HidePanel () {
+		if (panelRecTra != null) {
+			panelRecTra.gameObject.SetActive (false);
+			panelRecTra = null;
+		}
+	}
+
+	public void Interactivate () {
+		foreach (Button button in this.GetComponentsInChildren<Button>()) {
+			if (button.gameObject.CompareTag ("UseDataButton")) {
+				button.interactable = true;
+				button.gameObject.GetComponentInChildren<Text> ().color = normalTextColor;
+			}
+		}
+	}
+
+	public void DisInteractivate () {
+		foreach (Button button in this.GetComponentsInChildren<Button>()) {
+			if (button.gameObject.CompareTag ("UseDataButton")) {
+				button.interactable = false;
+				button.gameObject.GetComponentInChildren<Text> ().color = disabledTextColor;
+			}
+		}
 	}
 
 	public void OnMouseLeftDown() {

@@ -41,6 +41,8 @@ public class MultiEvenGraphContent : GraphContent {
 		*/
 
 		ShowView ();
+
+		base.Init ();
 	}
 
 	/*
@@ -199,9 +201,13 @@ public class MultiEvenGraphContent : GraphContent {
 		return graphManList[0].GetStepText () + ", " + fishText + "\n" + graphManList [0].GetTypeText ();
 	}
 
+	public override string GetShortTypeText () {
+		return base.GetShortTypeText () + DataBase.GetShortTags () [graphManList [0].xType] + "-" + DataBase.GetShortTags () [graphManList [0].yType];
+	}
+
 	public override string GetShortTitle () {
 		string s = base.GetShortTitle ();
-		return s + graphManList [0].GetStepText () + "_" + DataBase.GetShortTags () [graphManList [0].xType] + "-" + DataBase.GetShortTags () [graphManList [0].yType] + "_me";
+		return s + graphManList [0].GetStepText () + "_" + GetShortTypeText () + "_me";
 	}
 
 	public override string GetParameterText () {

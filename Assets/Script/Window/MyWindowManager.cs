@@ -6,12 +6,13 @@ using UnityEngine.UI;
 public class MyWindowManager : MonoBehaviour {
 
 	public bool multiSelect, squareExpand, isDraging;
+	public RectTransform recTra;
 
 	[SerializeField]
 	private GameObject windowObj = null;
 
-	private List<MyWindowController> windowList;
-	private RectTransform recTra;
+	[System.NonSerialized]
+	public List<MyWindowController> windowList;
 
 	private Vector2 leftOrigin, rightOrigin, leftStart, rightStart;
 	private Vector2 expandDir = new Vector2();
@@ -63,6 +64,7 @@ public class MyWindowManager : MonoBehaviour {
 		// 追加したWindowにContentを設定する
 		GameObject contentObj = Instantiate(Resources.Load ("Content/" + System.Enum.GetName (typeof(ContentType), content) + "Content"), obj.transform) as GameObject;
 		contentObj.GetComponent<MyWindowContent>().typeName = type;
+		contentObj.GetComponent<MyWindowContent> ().contentName = System.Enum.GetName (typeof(ContentType), content);
 		//mwc.content = contentObj.GetComponent<MyWindowContent> ();
 	}
 

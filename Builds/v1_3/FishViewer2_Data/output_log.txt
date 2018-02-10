@@ -1,0 +1,38 @@
+Initialize engine version: 5.6.2f1 (a2913c821e27)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: Intel(R) HD Graphics 4600 (ID=0x416)
+    Vendor:   Intel
+    VRAM:     880 MB
+    Driver:   9.18.10.3293
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Daiki\Desktop\Unity\FishViewer_2\Builds\v1_3\FishViewer2_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Daiki\Desktop\Unity\FishViewer_2\Builds\v1_3\FishViewer2_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Daiki\Desktop\Unity\FishViewer_2\Builds\v1_3\FishViewer2_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Daiki\Desktop\Unity\FishViewer_2\Builds\v1_3\FishViewer2_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Daiki\Desktop\Unity\FishViewer_2\Builds\v1_3\FishViewer2_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Daiki\Desktop\Unity\FishViewer_2\Builds\v1_3\FishViewer2_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Daiki\Desktop\Unity\FishViewer_2\Builds\v1_3\FishViewer2_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Daiki\Desktop\Unity\FishViewer_2\Builds\v1_3\FishViewer2_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.021 seconds
+Platform assembly: C:\Users\Daiki\Desktop\Unity\FishViewer_2\Builds\v1_3\FishViewer2_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Daiki\Desktop\Unity\FishViewer_2\Builds\v1_3\FishViewer2_Data\Managed\System.dll (this message is harmless)
+<RI> Initializing input.
+<RI> Input initialized.
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initialized touch support.
+The referenced script on this Behaviour (Game Object 'StartSlider') is missing!
+ 
+(Filename:  Line: 1743)
+
+The referenced script on this Behaviour (Game Object 'Slider') is missing!
+ 
+(Filename:  Line: 1743)
+
+UnloadTime: 3.712416 ms
+Setting up 4 worker threads for Enlighten.
+  Thread -> id: e5c -> priority: 1 
+  Thread -> id: 302c -> priority: 1 
+  Thread -> id: 2810 -> priority: 1 
+  Thread -> id: 23f8 -> priority: 1 

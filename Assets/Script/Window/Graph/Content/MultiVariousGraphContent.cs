@@ -56,6 +56,8 @@ public class MultiVariousGraphContent : GraphContent {
 		allToggle.isOn = false;
 
 		ShowView ();
+
+		base.Init ();
 	}
 
 	public override void Set(string parameters) {
@@ -219,9 +221,13 @@ public class MultiVariousGraphContent : GraphContent {
 		return "Various Graphs";
 	}
 
+	public override string GetShortTypeText () {
+		return base.GetShortTypeText () + DataBase.GetShortTags () [graphManList [0].xType] + "-" + DataBase.GetShortTags () [graphManList [0].yType];
+	}
+
 	public override string GetShortTitle () {
 		string s = base.GetShortTitle ();
-		return s + graphManList [0].GetStepText () + "_" + DataBase.GetShortTags () [graphManList [0].xType] + "-" + DataBase.GetShortTags () [graphManList [0].yType] + "_mv";
+		return s + graphManList [0].GetStepText () + "_" + GetShortTypeText () + "_mv";
 	}
 
 	public override string GetParameterText () {
