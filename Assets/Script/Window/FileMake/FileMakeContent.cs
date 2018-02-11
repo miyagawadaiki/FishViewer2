@@ -179,6 +179,7 @@ public class FileMakeContent : MyWindowContent {
 
 		Write ();
 		mwc.Destroy ();
+		mwc.mwm.AddWindow (MyWindowManager.ContentType.FileRead, "");
 		yield break;
 	}
 }

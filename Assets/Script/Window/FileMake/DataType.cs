@@ -6,6 +6,7 @@ using UnityEngine;
 public class DataType {
 
 	public string dataName;
+	public string formula;
 
 	private string[] elements;
 	private List<float> parameters;
@@ -20,6 +21,7 @@ public class DataType {
 
 	public DataType (string name, string text) : this () {
 		this.dataName = name;
+		this.formula = text;
 
 		elements = text.Split (elementSeparator, StringSplitOptions.RemoveEmptyEntries);
 
@@ -165,6 +167,9 @@ public class DataType {
 		case "Ave":
 			Ave ();
 			break;
+		case "CalcAngle":
+			CalcAngle ();
+			break;
 		default :
 			break;
 		}
@@ -296,5 +301,29 @@ public class DataType {
 
 	public void Ave () {
 
+	}
+
+	public void CalcAngle () {
+		float bY = values.Pop ();
+		float bX = values.Pop ();
+		float aY = values.Pop ();
+		float aX = values.Pop ();
+
+		float ip = aX * bX + aY * bY;
+		float p = Mathf.Sqrt ((aX * aX + aY * aY) * (bX * bX + bY * bY));
+		if (p == 0f) {
+			values.Push (0f);
+			return;
+		}
+
+		float cos = ip / p;
+		if (cos * cos > 1f)
+			cos = (float)((int)cos);
+
+		float cp = aX * bY - aY * bX;
+		if (cp > 0)
+			values.Push (Mathf.Acos (ip / p));
+		else
+			values.Push (Mathf.Acos (ip / p) * -1f);
 	}
 }

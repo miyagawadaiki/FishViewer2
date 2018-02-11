@@ -96,8 +96,8 @@ namespace ProjectData {
 			new DataType ("Speed", "!VelocityX,0 !VelocityY,0 Mag"), // 7
 			new DataType ("Accelaration", "!Speed,0 !Speed,-1 -  @dt /"), // 8
 			new DataType ("AbsAcceleration", "!AccelerationX,0 !AccelerationY,0 Mag"), // 9
-			new DataType ("PositionAngle", "!PositionX,0 !Distance,0 /   PositionY,0 #0 >   #1 #-1 If   *   Acos"), // 10
-			new DataType ("AugumentAngle", "!VelocityX,-1 !VelocityY,-1 !VelocityX,0 !VelocityY,0 Dot   !Speed,-1 !Speed,0 *   /   !VelocityX,-1 !VelocityY,-1 !VelocityX,0 !VelocityY,0 Cross   #0 >   #1 #-1 If   *   Acos"), // 11
+			new DataType ("PositionAngle", "#1 #0 !PositionX,0 !PositionY,0 CalcAngle"), // 10
+			new DataType ("AugumentAngle", "!VelocityX,-1 !VelocityY,-1 !VelocityX,0 !VelocityY,0 CalcAngle"), // 11
 		};
 
 		public static string[] defaultGraphNames = {
@@ -113,6 +113,8 @@ namespace ProjectData {
 			System.Enum.GetName (typeof(GraphContentType), GraphContentType.Single) + "Graph/0 :0,7,8,0,:0,50,0,1,1,10,0,:",
 			//System.Enum.GetName (typeof(GraphContentType), GraphContentType.Single) + "Graph/0 :0,7,11,:0,50,0,1,1,10,0,:",
 		};
+
+		public static List<string> shortcutTexts = new List<string> ();
 
 		public static int Search (string s) {
 			for (int i = 0; i < dataTypes.Length; i++) {

@@ -11,10 +11,12 @@ public class SimulationManager : MonoBehaviour {
 	private GameObject shortcutNode = null;
 
 	private MyWindowManager mwm;
+	private MenuBarController mbc;
 
 	void Awake () {
 		DataBase.simuMan = this;
 		mwm = GameObject.Find ("MyWindowManager").GetComponent<MyWindowManager> ();
+		mbc = GameObject.Find ("MenuBar").GetComponent<MenuBarController> ();
 	}
 
 	// Use this for initialization
@@ -35,6 +37,7 @@ public class SimulationManager : MonoBehaviour {
 			GameObject obj = Instantiate (shortcutNode, content) as GameObject;
 			string hoge = ProjectData.DefaultData.defaultGraphTexts [i];
 			obj.GetComponent<Button> ().onClick.AddListener (() => mwm.AddWindow (hoge));
+			ProjectData.DefaultData.shortcutTexts.Add (hoge);
 			obj.GetComponentInChildren<Text> ().text = ProjectData.DefaultData.defaultGraphNames [i];
 		}
 
@@ -43,7 +46,10 @@ public class SimulationManager : MonoBehaviour {
 			GameObject obj = Instantiate (shortcutNode, content) as GameObject;
 			string[] tmp = s.Split (sep, System.StringSplitOptions.RemoveEmptyEntries);
 			obj.gameObject.GetComponent<Button> ().onClick.AddListener (() => mwm.AddWindow (tmp[1]));
+			ProjectData.DefaultData.shortcutTexts.Add (tmp[1]);
 			obj.gameObject.GetComponentInChildren<Text> ().text = tmp[0];
 		}
+
+		mbc.UpdateButtonImage ();
 	}
 }

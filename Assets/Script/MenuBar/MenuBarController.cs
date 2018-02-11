@@ -40,6 +40,17 @@ public class MenuBarController : MonoBehaviour {
 		image = this.GetComponent<Image> ();
 		image.color = normalColor;
 
+		UpdateButtonImage ();
+
+		DisInteractivate ();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
+
+	public void UpdateButtonImage () {
 		foreach (Button button in this.GetComponentsInChildren<Button>()) {
 			if (button.gameObject.GetComponent<ParentButtonController> () != null) {
 				button.gameObject.GetComponent<ParentButtonController> ().templete.gameObject.SetActive (true);
@@ -61,15 +72,9 @@ public class MenuBarController : MonoBehaviour {
 				button.onClick.AddListener (() => HidePanel ());
 			}
 		}
-
-		DisInteractivate ();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
+	/*
 	public void SlideIn() {
 		StartCoroutine (StartSlidePanel (true));
 		isActive = true;
@@ -102,6 +107,7 @@ public class MenuBarController : MonoBehaviour {
 		//if (!isActive)
 		//	isActive = true;
 	}
+	*/
 
 	public bool IsMouseInArea() {
 		Vector2 vec = (Vector2)Input.mousePosition - (Vector2)recTra.localPosition - new Vector2(Screen.width, Screen.height) / 2f;
@@ -151,7 +157,9 @@ public class MenuBarController : MonoBehaviour {
 		}
 	}
 
+	/*
 	public void OnMouseLeftDown() {
 		SlideOut ();
 	}
+	*/
 }

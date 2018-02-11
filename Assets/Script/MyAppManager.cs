@@ -14,6 +14,19 @@ public class MyAppManager : MonoBehaviour {
 	[SerializeField]
 	private WindowListPanelController wlpc = null;
 
+	private bool isCommandMode = false;
+	private KeyCode[] commands = {
+		KeyCode.Alpha1,
+		KeyCode.Alpha2,
+		KeyCode.Alpha3,
+		KeyCode.Alpha4,
+		KeyCode.Alpha5,
+		KeyCode.Alpha6,
+		KeyCode.Alpha7,
+		KeyCode.Alpha8,
+		KeyCode.Alpha9,
+		KeyCode.Alpha0,
+	};
 
 	void Awake() {
 		spc.gameObject.SetActive (false);
@@ -38,9 +51,27 @@ public class MyAppManager : MonoBehaviour {
 			return;
 		}
 
-		if (Simulation.isEnabled && Input.GetKeyDown (KeyCode.Space)) {
+		if (Simulation.isEnabled && Input.GetKeyDown (KeyCode.A)) {
 			spc.Slide ();
 			return;
+		}
+
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			isCommandMode = true;
+		}
+		if (Input.GetKeyUp (KeyCode.Space)) {
+			isCommandMode = false;
+		}
+
+		if (isCommandMode) {
+			if (Simulation.isEnabled) {
+				for (int i = 0; i < ProjectData.DefaultData.shortcutTexts.Count; i++) {
+					if (Input.GetKeyDown (commands [i])) {
+						mwm.AddWindow (ProjectData.DefaultData.shortcutTexts [i]);
+						return;
+					}
+				}
+			}
 		}
 
 		//if (mbc.isActive) {

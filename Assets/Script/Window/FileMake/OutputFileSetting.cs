@@ -107,7 +107,27 @@ public class OutputFileSetting : MonoBehaviour {
 
 			// UseDefaultとあればDefaultFormulaを使う
 			if (name.IndexOf ("UseDefault") >= 0) {
+				DataType[] dts = ProjectData.DefaultData.dataTypes;
+				for (int i = 2; i < dts.Length; i++) {
 
+					// DataTypeに登録
+					dataTypes.Add (dts [i]);
+
+					// 確認用Toggleを生成
+					GameObject ob = Instantiate (nodeObj, content) as GameObject;
+					toggles.Add (ob.GetComponentInChildren<Toggle> ());
+					Text[] textArray = ob.GetComponentsInChildren<Text> ();
+					textArray [0].text = dts [i].dataName;
+					textArray [1].text = dts [i].formula;
+					textArray [2].text = dts [i].GetParametersText ();
+
+					// パラメータ付きの式ならParameterWindowを開けるようにする
+					if (dts [i].HasParameter ()) {
+						Button b = ob.GetComponentInChildren<Button> ();
+						b.interactable = true;
+						b.onClick.AddListener (() => OpenParameterWindow (textArray [2]));
+					}
+				}
 				continue;
 			}
 
@@ -127,7 +147,7 @@ public class OutputFileSetting : MonoBehaviour {
 			string formula;
 			do {
 				formula = sr.ReadLine ();
-			} while (formula.Equals ("") || name.IndexOf("//") >= 0);
+			} while (formula.Equals ("") || formula.IndexOf("//") >= 0);
 
 			// DataTypeに登録
 			DataType dt = new DataType (name, formula);
@@ -144,6 +164,7 @@ public class OutputFileSetting : MonoBehaviour {
 			// パラメータ付きの式ならParameterWindowを開けるようにする
 			if (dt.HasParameter ()) {
 				Button b = obj.GetComponentInChildren<Button> ();
+				b.interactable = true;
 				b.onClick.AddListener (() => OpenParameterWindow (texts [2]));
 			}
 		}

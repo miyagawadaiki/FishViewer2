@@ -70,6 +70,8 @@ public class FileReadContent : MyWindowContent {
 			GameObject obj = Instantiate (nodeObj, content) as GameObject;
 			obj.GetComponentInChildren<Text> ().text = tmp [i];
 		}
+
+		sr.Close ();
 	}
 
 	public void CallAddListener() {
