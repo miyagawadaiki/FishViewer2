@@ -41,7 +41,7 @@ public class MyWindowManager : MonoBehaviour {
 	}
 
 	public void AddWindow() {
-		Debug.Log ("Add window");
+		//Debug.Log ("Add window");
 		GameObject obj = Instantiate (windowObj, this.transform) as GameObject;
 		RectTransform wrt = obj.GetComponent<RectTransform>();
 		wrt.position = new Vector3 (wrt.rect.width / 2 + windowList.Count * 20f + 10f, recTra.rect.height - wrt.rect.height / 2 - windowList.Count * 20f - 10f, 0f) * canvasScale;
@@ -52,11 +52,11 @@ public class MyWindowManager : MonoBehaviour {
 
 	// WindowにContentを指定して追加する
 	public void AddWindow(ContentType content, string type) {
-		Debug.Log ("Add window");
+		//Debug.Log ("Add window");
 
 		// MyWindowManagerに新規Windowを追加
 		GameObject obj = Instantiate (windowObj, this.transform) as GameObject;
-		RectTransform wrt = obj.GetComponent<RectTransform>();
+		//RectTransform wrt = obj.GetComponent<RectTransform>();
 		//wrt.position = new Vector3 (wrt.rect.width / 2 + windowList.Count * 20f + 10f, recTra.rect.height - wrt.rect.height / 2 - windowList.Count * 20f - 10f, 0f) * canvasScale;
 		MyWindowController mwc = obj.GetComponent<MyWindowController> ();
 		windowList.Add (mwc);
@@ -123,7 +123,7 @@ public class MyWindowManager : MonoBehaviour {
 		Vector2 pos = Input.mousePosition;
 		foreach (MyWindowController mwc in windowList) {
 			if (!multiSelect && this.GetComponent<RectTransform>().rect.Contains (pos / canvasScale - this.GetComponent<RectTransform>().rect.size / 2)) {
-				Debug.Log ("in window");
+				//Debug.Log ("in window");
 				mwc.SetNormalMode ();
 			}
 
@@ -174,7 +174,7 @@ public class MyWindowManager : MonoBehaviour {
 		Vector2 pos = Input.mousePosition;
 		foreach (MyWindowController mwc in windowList) {
 			if (!multiSelect && this.GetComponent<RectTransform>().rect.Contains (pos / canvasScale - this.GetComponent<RectTransform>().rect.size / 2)) {
-				Debug.Log ("in window");
+				//Debug.Log ("in window");
 				mwc.SetNormalMode ();
 			}
 

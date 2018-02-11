@@ -13,8 +13,8 @@ public class ParameterContent : MyWindowContent {
 	private GameObject paramNodeObj = null;
 	[SerializeField]
 	private Transform content = null;
-	[SerializeField]
-	private Button doneButton = null;
+
+	public Button doneButton = null;
 
 	private Image[] images;
 	private Text[] texts;
@@ -25,6 +25,8 @@ public class ParameterContent : MyWindowContent {
 	private float height;
 
 	private Text paramText;
+
+	private OutputFileSetting ofs;
 
 	public override void Awake () {
 		base.Awake ();
@@ -42,7 +44,7 @@ public class ParameterContent : MyWindowContent {
 		//Register (typeName);
 
 
-		doneButton.onClick.AddListener (() => SetText ());
+		//doneButton.onClick.AddListener (() => SetText ());
 		doneButton.onClick.AddListener (() => mwc.Destroy ());
 	}
 	
@@ -53,10 +55,16 @@ public class ParameterContent : MyWindowContent {
 
 	public void RegisterTextArea (Text t) {
 		paramText = t;
-		Register (paramText.text);
+		Set (paramText.text);
 	}
 
-	public void Register (string text) {
+	public void Register (OutputFileSetting ofs, string parameterText) {
+		this.ofs = ofs;
+		doneButton.onClick.AddListener (() => this.ofs.UpdateDataType (GetParameterText ()));
+		Set (parameterText);
+	}
+
+	public void Set (string text) {
 		Debug.Log ("text = " + text);
 
 		foreach (Transform t in circleArea)
@@ -88,12 +96,12 @@ public class ParameterContent : MyWindowContent {
 		texts [images.Length - 1].text = (((int)((1f - prev) * 20f + 0.5f)) / 20f) + "";
 	}
 
-	public void Register (int num) {
+	public void Set (int num) {
 		string s = "";
 		for (int i = 0; i < num; i++)
 			s += (10f / num) + ",";
 
-		Register (s);
+		Set (s);
 	}
 
 	public string GetParameterText () {

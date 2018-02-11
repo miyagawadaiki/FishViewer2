@@ -57,8 +57,10 @@ public class RectGraphManager : GraphManager {
 		base.SetGrid ();
 
 		// 拡大を考慮した最大最小を求める
-		float xMax_ = LocalToRectGraph(new Vector2(view.rect.width / 2f, 0f)).x, xMin_ = LocalToGraph(new Vector2(view.rect.width / -2f, 0f)).x;
-		float yMax_ = LocalToRectGraph(new Vector2(0f, view.rect.height / 2f)).y, yMin_ = LocalToGraph(new Vector2(0f, view.rect.height / -2f)).y;
+		//float xMax_ = LocalToRectGraph(new Vector2(view.rect.width / 2f, 0f)).x;
+		float xMin_ = LocalToGraph(new Vector2(view.rect.width / -2f, 0f)).x;
+		//float yMax_ = LocalToRectGraph (new Vector2 (0f, view.rect.height / 2f)).y;
+		float yMin_ = LocalToGraph(new Vector2(0f, view.rect.height / -2f)).y;
 
 		// グリッドの中で最小の地点を求める(グリッド描画のスタート地点)
 		int xStart = (int)(xMin_ / xGridValue) + (xMin_ > 0 ? 1 : 0), yStart = (int)(yMin_ / yGridValue) + (yMin_ > 0 ? 1 : 0);
@@ -78,9 +80,9 @@ public class RectGraphManager : GraphManager {
 				yGrids [i].isAxis = false;
 		}
 
-		Debug.Log ("xAxisValue = " + xAxisValue + " xStart = " + xStart);
+		//Debug.Log ("xAxisValue = " + xAxisValue + " xStart = " + xStart);
 		xGrids [xAxisValue - xStart].isAxis = true;
-		Debug.Log ("yAxisValue = " + yAxisValue + " yStart = " + yStart);
+		//Debug.Log ("yAxisValue = " + yAxisValue + " yStart = " + yStart);
 		yGrids [yAxisValue - yStart].isAxis = true;
 	}
 

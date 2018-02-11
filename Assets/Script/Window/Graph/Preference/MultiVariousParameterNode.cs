@@ -8,8 +8,8 @@ public class MultiVariousParameterNode : MonoBehaviour {
 	//[SerializeField]
 	//private Text buttonText = null;
 
-	[SerializeField]
-	private Color pressedColor = Color.white;
+	//[SerializeField]
+	//private Color pressedColor = Color.white;
 
 	public bool isSelected = false;
 	public int number = 0;

@@ -24,18 +24,18 @@ public class MenuBarController : MonoBehaviour {
 	private RectTransform panelRecTra = null;
 	private Image image = null;
 
-	private Vector2 inPosition;
-	private Vector2 outPosition;
-	private AnimationCurve animCurve = AnimationCurve.Linear (0, 0, 1, 1);
+	//private Vector2 inPosition;
+	//private Vector2 outPosition;
+	//private AnimationCurve animCurve = AnimationCurve.Linear (0, 0, 1, 1);
 	private RectTransform recTra;
-	private float canvasScale;
+	//private float canvasScale;
 
 	// Use this for initialization
 	void Start () {
 		recTra = this.GetComponent<RectTransform> ();
-		canvasScale = GameObject.Find ("Canvas").transform.localScale.x;
-		outPosition = new Vector2 (0f, Screen.height / 2 + recTra.rect.height / 2); //this.transform.localPosition;
-		inPosition = outPosition - new Vector2 (0f, recTra.rect.height);
+		//canvasScale = GameObject.Find ("Canvas").transform.localScale.x;
+		//outPosition = new Vector2 (0f, Screen.height / 2 + recTra.rect.height / 2); //this.transform.localPosition;
+		//inPosition = outPosition - new Vector2 (0f, recTra.rect.height);
 
 		image = this.GetComponent<Image> ();
 		image.color = normalColor;

@@ -110,14 +110,14 @@ public class SimulationController : MonoBehaviour {
 		time = 0f;
 
 		if (Simulation.IsEnd()) {
-			Debug.Log ("<color=blue>Simulation end</color>");
+			//Debug.Log ("<color=blue>Simulation end</color>");
 			Pause ();
 			Simulation.step = DataBase.step - 1;
 			return;
 		}
 
 		if (Simulation.playing) {
-			Debug.Log ("<color=blue>Simulating... step=" + Simulation.step + "</color>");
+			//Debug.Log ("<color=blue>Simulating... step=" + Simulation.step + "</color>");
 			GoNext ();
 		} else {
 			Simulation.Execute ();

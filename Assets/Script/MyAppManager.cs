@@ -104,10 +104,10 @@ public class MyAppManager : MonoBehaviour {
 			}
 
 			if (Input.GetMouseButtonDown (0)) {
-				Debug.Log ("LeftDown");
+				//Debug.Log ("LeftDown");
 				mwm.OnMouseLeftDown ();
 			} else if (Input.GetMouseButton (0)) {
-				Debug.Log ("LeftDrag");
+				//Debug.Log ("LeftDrag");
 				mwm.OnMouseLeftDrag ();
 			} else if(Input.GetMouseButtonUp(0)) {
 				mwm.OnMouseLeftUp ();

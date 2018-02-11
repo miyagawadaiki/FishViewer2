@@ -60,8 +60,9 @@ public class FileReadContent : MyWindowContent {
 		sr = new StreamReader (ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Read), System.Text.Encoding.GetEncoding("UTF-8"));
 		string[] tmp = sr.ReadLine ().Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
 		valueText.text = tmp [0] + "\n" + tmp [1] + "\n" + tmp [2];
-		int step = int.Parse (tmp [0]), fish = int.Parse (tmp [1]);
-		float deltaTime = float.Parse (tmp [2]);
+		//int step = int.Parse (tmp [0]);
+		int fish = int.Parse (tmp [1]);
+		//float deltaTime = float.Parse (tmp [2]);
 
 		foreach (Transform t in content)
 			Destroy (t.gameObject);

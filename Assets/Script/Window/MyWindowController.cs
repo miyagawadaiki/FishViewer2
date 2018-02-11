@@ -21,7 +21,7 @@ public class MyWindowController : MonoBehaviour {
 	private RectTransform frameRT = null;
 
 	private Vector2 canvas;
-	private Rect rect;//, parRect;
+	//private Rect rect;//, parRect;
 	//private Vector2 expandDir;
 
 	[System.NonSerialized]
@@ -43,7 +43,7 @@ public class MyWindowController : MonoBehaviour {
 		mwm = this.GetComponentInParent<MyWindowManager> ();
 		recTra = this.GetComponent<RectTransform> ();
 		parRecTra = this.transform.parent.gameObject.GetComponent<RectTransform> ();
-		rect = recTra.rect;
+		//rect = recTra.rect;
 		//parRect = parRecTra.rect;
 		menuImg.color = new Color (selectedColor.r, selectedColor.g, selectedColor.b, 0.4f);
 		SetNormalMode ();

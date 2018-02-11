@@ -28,6 +28,9 @@ public class OutputFileSetting : MonoBehaviour {
 	private bool addListenerFlagO = false, addListenerFlagF = false;
 	private StreamReader sr;
 
+	private Text settingText;
+	private DataType settingDT;
+
 
 	void Awake () {
 		outputSelectButton.onClick.AddListener (() => this.GetComponentInParent<MyWindowManager> ().AddWindow ("FileSelect/Output"));
@@ -125,7 +128,7 @@ public class OutputFileSetting : MonoBehaviour {
 					if (dts [i].HasParameter ()) {
 						Button b = ob.GetComponentInChildren<Button> ();
 						b.interactable = true;
-						b.onClick.AddListener (() => OpenParameterWindow (textArray [2]));
+						b.onClick.AddListener (() => OpenParameterWindow (textArray [2], dts [i]));
 					}
 				}
 				continue;
@@ -165,16 +168,25 @@ public class OutputFileSetting : MonoBehaviour {
 			if (dt.HasParameter ()) {
 				Button b = obj.GetComponentInChildren<Button> ();
 				b.interactable = true;
-				b.onClick.AddListener (() => OpenParameterWindow (texts [2]));
+				b.onClick.AddListener (() => OpenParameterWindow (texts [2], dt));
 			}
 		}
 
 		sr.Close ();
 	}
 
-	public void OpenParameterWindow (Text text) {
+	public void OpenParameterWindow (Text text, DataType dt) {
 		this.GetComponentInParent<MyWindowManager> ().AddWindow ("Parameter");
-		this.GetComponentInParent<MyWindowManager> ().GetLastWindowController ().gameObject.GetComponentInChildren<ParameterContent> ().RegisterTextArea (text);
+		this.GetComponentInParent<MyWindowManager> ().GetLastWindowController ().gameObject.GetComponentInChildren<ParameterContent> ().Register (this, dt.GetParametersText ());
+		settingText = text;
+		settingDT = dt;
+		//this.GetComponentInParent<MyWindowManager> ().GetLastWindowController ().gameObject.GetComponentInChildren<ParameterContent> ().RegisterTextArea (text);
+		//this.GetComponentInParent<MyWindowManager> ().GetLastWindowController ().gameObject.GetComponentInChildren<ParameterContent> ().doneButton.onClick.AddListener (() => UpdateDataType ());
+	}
+
+	public void UpdateDataType (string parameterText) {
+		settingText.text = parameterText;
+		settingDT.SetParametersText (parameterText);
 	}
 
 	public void AllExecute (bool b) {
