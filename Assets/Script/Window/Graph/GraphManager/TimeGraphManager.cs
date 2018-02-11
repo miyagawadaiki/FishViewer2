@@ -58,6 +58,8 @@ public class TimeGraphManager : GraphManager {
 				points [i].localPosition = GraphToLocal (new Vector2 (step - markerIdx + i, DataBase.GetData (step - markerIdx + i, fish, yType)));
 				if (!recTra.rect.Contains (points [i].localPosition))
 					points [i].gameObject.SetActive (false);
+				if ((int)pointType > 0)
+					points [i].rotation = Quaternion.FromToRotation (Vector3.right, (Vector3)new Vector2(Mathf.Cos (DataBase.GetData (step - markerIdx + i, fish, dType)), Mathf.Sin (DataBase.GetData (step - markerIdx + i, fish, dType))));
 			}
 		}
 

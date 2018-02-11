@@ -70,7 +70,7 @@ public class PolarGraphManager : GraphManager {
 				//if ((int)pointType > 0 && i > 0)
 				//	points [i].rotation = Quaternion.FromToRotation (Vector3.left, points [i - 1].position - points [i].position);
 				if ((int)pointType > 0)
-					points [i].rotation = Quaternion.FromToRotation (Vector3.right, (Vector3)new Vector2(Mathf.Cos (DataBase.GetData (step - markerIdx + i, fish, yType + 5)), Mathf.Sin (DataBase.GetData (step - markerIdx + i, fish, yType + 5))));
+					points [i].rotation = Quaternion.FromToRotation (Vector3.right, (Vector3)new Vector2(Mathf.Cos (DataBase.GetData (step - markerIdx + i, fish, dType)), Mathf.Sin (DataBase.GetData (step - markerIdx + i, fish, dType))));
 			}
 		}
 	}

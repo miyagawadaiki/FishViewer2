@@ -9,6 +9,7 @@ public class PointerSettingGroup : SettingGroup {
 	private Dropdown pointTypeDD, colorNumDD;
 	private List<Toggle> toggleList;
 	private InputField plotSizeIF;
+	private SourceSettingGroup ssg;
 
 	protected override void Awake () {
 		base.Awake ();
@@ -25,6 +26,9 @@ public class PointerSettingGroup : SettingGroup {
 		string[] tmp = System.Enum.GetNames (typeof(PointType));
 		for (int i = 0; i < tmp.Length; i++)
 			pointTypeDD.options.Add (new Dropdown.OptionData { text = tmp [i] });
+		
+		ssg = this.transform.parent.GetComponentInChildren<SourceSettingGroup> ();
+		pointTypeDD.onValueChanged.AddListener (value => ssg.CoverDType (value));
 
 		toggleList = new List<Toggle> ();
 		foreach (Toggle t in this.GetComponentsInChildren<Toggle>())

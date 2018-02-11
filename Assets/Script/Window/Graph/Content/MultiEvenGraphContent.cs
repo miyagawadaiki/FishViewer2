@@ -70,9 +70,14 @@ public class MultiEvenGraphContent : GraphContent {
 		string[] pointerTexts = groupTexts [3].Split (allSeparator, System.StringSplitOptions.RemoveEmptyEntries);
 
 		List<int> fishNumList = new List<int> ();
-		for (int i = 0; i < fishTexts.Length; i++)
-			if (int.Parse (fishTexts [i]) > 0)
+		if (fishTexts [0][0] == 'a') {
+			for (int i = 0; i < DataBase.fish; i++)
 				fishNumList.Add (i);
+		} else {
+			for (int i = 0; i < fishTexts.Length; i++)
+				if (int.Parse (fishTexts [i]) > 0)
+					fishNumList.Add (i);
+		}
 
 		if (fishNumList.Count <= 0)
 			return;
@@ -84,8 +89,8 @@ public class MultiEvenGraphContent : GraphContent {
 			graphManList.Add (obj.GetComponent<GraphManager> ());
 			//Simulation.Register (graphManList [graphManList.Count - 1]);
 
-			string p = fishNumList [i] + "," + sourceTexts[1] + "," + sourceTexts[2] + ",";
-			p += pointerTexts [0] + "," + pointerTexts [1] + "," + fishNumList [i] + "," + pointerTexts[3] + "," + pointerTexts[4] + "," + pointerTexts[5] + "," + pointerTexts[6] + ",";
+			string p = fishNumList [i] + "," + sourceTexts [1] + "," + sourceTexts [2] + "," + sourceTexts [3] + ",";
+			p += pointerTexts [0] + "," + pointerTexts [1] + "," + fishNumList [i] + "," + pointerTexts [3] + "," + pointerTexts [4] + "," + pointerTexts [5] + "," + pointerTexts [6] + ",";
 
 			//Debug.Log (p);
 			graphManList [i].Set (p);

@@ -49,49 +49,22 @@ public class FileMakeContent : MyWindowContent {
 	
 	// Update is called once per frame
 	void Update () {
-		//if (!flag)
-		//	return;
-
-		/*
-		if (k >= DB.fish) {
-			j++;
-			if (j >= DB.step) {
-				i++;
-				if (i >= DB.dataTypes.Count) {
-					Write ();
-
-					mwc.Destroy ();
-					flag = false;
-					return;
-				}
-				dataT = DB.dataTypes [i];
-				tagNum = DB.tags [dataT.dataName];
-				j = 0;
-			}
-			k = 0;
-		}
-		debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
-		debug.WriteLine ("\ti, j, k = " + i + ", " + j + ", " + k);
-		debug.Close ();
-		Debug.Log ("\ti, j, k = " + i + ", " + j + ", " + k);
-		DB.data [j, k, tagNum] = dataT.Eval (j, k);
-		k++;
-
-		slider.value++;
-		*/
+		
 	}
 
 	public void Make () {
 
+		// ReadファイルにOutputで使ったファイルを登録
 		ProjectData.FileName.Set (ProjectData.FileKey.Read, ProjectData.FileName.GetPath (ProjectData.FileKey.Output), ProjectData.FileName.GetName (ProjectData.FileKey.Output));
 
 		tagNames = new List<string> ();
-		//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", false, Encoding.GetEncoding ("UTF-8"));
 
 
 		DB.Init (ifs.step, ifs.fish, ifs.dt);
 
-		//debug.WriteLine ("Read tags in InputFile");
+		// 一時的な処置
+		DB.start = 2;
+
 		// Input File から読み込む系列名をハッシュに登録
 		for (i = 0; i < ifs.ddArray.Length; i++) {
 			if (ifs.ddArray [i].value == 0)
@@ -102,14 +75,9 @@ public class FileMakeContent : MyWindowContent {
 
 			tagNames.Add (ifs.constTags [ifs.ddArray [i].value]);
 		}
-		//debug.WriteLine ("...End reading tags in InputFile");
-		//debug.Close ();
 
 		int fillNum = DB.tags.Count;
 
-		//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
-		//debug.WriteLine ("Read tags in OutputFile");
-		// Output File Setting で定めたこれから用意する系列名をハッシュに登録
 		for (i = 0; i < ofs.toggles.Count; i++) {
 			if (ofs.toggles [i].isOn) {
 				if (!DB.tags.ContainsKey (ofs.dataTypes [i].dataName)) {
@@ -123,16 +91,9 @@ public class FileMakeContent : MyWindowContent {
 				tagNames.Add (ofs.dataTypes [i].dataName);
 			}
 		}
-		//debug.WriteLine ("...End reading tags in OutputFile");
-		//debug.Close ();
 
 		DB.data = new float[ifs.step, ifs.fish, DB.tags.Count];
 
-		//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
-		//debug.WriteLine ("DB.data = float[" + ifs.step + "," + ifs.fish + "," + DB.tags.Count + "]");
-	
-		//debug.WriteLine ("Read data in InputFile");
-		//debug.Close ();
 		// Input File からすでにある情報を読み取り
 		for (i = 0; i < ifs.step; i++) {
 			for (j = 0; j < ifs.fish; j++) {
@@ -147,88 +108,15 @@ public class FileMakeContent : MyWindowContent {
 				}
 			}
 		}
-		//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
-		//debug.WriteLine ("...End reading data in InputFile");
-		//debug.Close ();
-
-		//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
-		//debug.WriteLine ("Calculate data by FormulaFile");
-		//debug.Close ();
 
 		i = 0; j = 0; k = 0;
-		//dataT = DB.dataTypes [i];
-		//tagNum = DB.tags [dataT.dataName];
 
-		//slider.gameObject.SetActive (true);
-		//slider.minValue = 0f;
-		//slider.maxValue = DB.step * DB.fish * DB.dataTypes.Count;
-		//slider.value = 0f;
-		//flag = true;
 		StartCoroutine("CreateData");
 
-		/*
-		// DataTypeを使ってデータを生成
-		for (i = 0; i < DB.dataTypes.Count; i++) {
-			DataType dataT = DB.dataTypes [i];
-			int tagNum = DB.tags [dataT.dataName];
-			for (j = 0; j < DB.step; j++) {
-				for (k = 0; k < DB.fish; k++) {
-					debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
-					debug.WriteLine ("\ti, j, k = " + i + ", " + j + ", " + k);
-					debug.Close ();
-					Debug.Log ("\ti, j, k = " + i + ", " + j + ", " + k);
-					DB.data [j, k, tagNum] = dataT.Eval (j, k);
-				}
-			}
-		}
-		debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
-		debug.WriteLine ("...End calculating data by FormulaFile");
-		debug.Close ();
-		*/
-
-
-		/*
-		debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
-		debug.WriteLine ("Write data");
-		debug.Close ();
-		streamWriter = new StreamWriter (ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Output), false, Encoding.GetEncoding ("UTF-8"));
-		streamWriter.WriteLine ((DB.step - DB.start) + "," + DB.fish + "," + DB.constNums ["dt"]);
-
-		string t = "";
-		for (i = 0; i < DB.fish; i++) {
-			for (j = 0; j < tagNames.Count; j++) {
-				t += tagNames [j] + ",";
-			}
-			t += ",";
-		}
-		streamWriter.WriteLine (t);
-
-		for (i = DB.start; i < DB.step; i++) {
-			string s = "";
-			for (j = 0; j < DB.fish; j++) {
-				for (k = 0; k < DB.tags.Count; k++) {
-					s += DB.data [i, j, k] + ",";
-				}
-				s += ",";
-			}
-
-			streamWriter.WriteLine (s);
-		}
-
-		streamWriter.Close ();
-		
-		debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
-		debug.WriteLine ("...End");
-		debug.Close ();
-
-		*/
 		return;
 	}
 
 	private void Write () {
-		//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
-		//debug.WriteLine ("Write data");
-		//debug.Close ();
 		streamWriter = new StreamWriter (ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Output), false, Encoding.GetEncoding ("UTF-8"));
 		streamWriter.WriteLine ((DB.step - DB.start) + "," + DB.fish + "," + DB.constNums ["dt"]);
 
@@ -253,11 +141,12 @@ public class FileMakeContent : MyWindowContent {
 			streamWriter.WriteLine (s);
 		}
 
+		foreach (string sc in ofs.shortcuts) {
+			streamWriter.WriteLine (sc);
+		}
+
 		streamWriter.Close ();
 
-		//debug = new StreamWriter ("C:/Users/Daiki/Desktop/Debug.txt", true, Encoding.GetEncoding ("UTF-8"));
-		//debug.WriteLine ("...End");
-		//debug.Close ();
 	}
 
 	private IEnumerator CreateData () {
@@ -294,6 +183,7 @@ public class FileMakeContent : MyWindowContent {
 	}
 }
 
+// ファイル作成用の簡易データベース
 public class DB {
 	public static Dictionary<string, int> tags;
 	public static Dictionary<string, float> constNums;

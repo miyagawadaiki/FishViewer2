@@ -80,7 +80,7 @@ public class SimulationController : MonoBehaviour {
 		RepeatOff ();
 
 		MyWindowManager mwm = GameObject.Find ("MyWindowManager").GetComponent<MyWindowManager> ();
-		mwm.AddWindow ("MultiEvenGraph/" + DataBase.GetDefMEGraphSetting ());
+		mwm.AddWindow (ProjectData.DefaultData.defaultGraphTexts [0]);
 		mwm.GetLastWindowController ().gameObject.GetComponentInChildren<MyWindowContent> ().defaultSize = new Vector2 (1f, 1f) * (Screen.height - this.GetComponent<RectTransform> ().rect.height - 50);
 		mwm.GetLastWindowController ().gameObject.GetComponentInChildren<GraphContent> ().SetGridMode (ViewMode.ShowGridCompletely);
 	}

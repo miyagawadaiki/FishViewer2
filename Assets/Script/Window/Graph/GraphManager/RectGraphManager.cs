@@ -47,8 +47,8 @@ public class RectGraphManager : GraphManager {
 				points [i].localPosition = RectGraphToLocal (new Vector2 (DataBase.GetData (step - markerIdx + i, fish, xType), DataBase.GetData (step - markerIdx + i, fish, yType)));
 				if (!recTra.rect.Contains (points [i].localPosition))
 					points [i].gameObject.SetActive (false);
-				if ((int)pointType > 0 && i > 0)
-					points [i].rotation = Quaternion.FromToRotation (Vector3.left, points [i - 1].position - points [i].position);
+				if ((int)pointType > 0)
+					points [i].rotation = Quaternion.FromToRotation (Vector3.right, (Vector3)new Vector2(Mathf.Cos (DataBase.GetData (step - markerIdx + i, fish, dType)), Mathf.Sin (DataBase.GetData (step - markerIdx + i, fish, dType))));
 			}
 		}
 	}
@@ -56,10 +56,14 @@ public class RectGraphManager : GraphManager {
 	public override void SetGrid() {
 		base.SetGrid ();
 
+		// 拡大を考慮した最大最小を求める
 		float xMax_ = LocalToRectGraph(new Vector2(view.rect.width / 2f, 0f)).x, xMin_ = LocalToGraph(new Vector2(view.rect.width / -2f, 0f)).x;
 		float yMax_ = LocalToRectGraph(new Vector2(0f, view.rect.height / 2f)).y, yMin_ = LocalToGraph(new Vector2(0f, view.rect.height / -2f)).y;
 
+		// グリッドの中で最小の地点を求める(グリッド描画のスタート地点)
 		int xStart = (int)(xMin_ / xGridValue) + (xMin_ > 0 ? 1 : 0), yStart = (int)(yMin_ / yGridValue) + (yMin_ > 0 ? 1 : 0);
+
+		// 各グリッドに地点を登録する
 		for (int i = 0; i < gridNum; i++) {
 			xGrids [i].Set (true, RectGraphToLocal(new Vector2 ((xStart + i) * xGridValue, (float)yAxisValue * yGridValue)), (xStart + i) * xGridValue, TextPos.BelowLeft);
 			//if (xStart + i == xAxisValue)
@@ -74,7 +78,9 @@ public class RectGraphManager : GraphManager {
 				yGrids [i].isAxis = false;
 		}
 
+		Debug.Log ("xAxisValue = " + xAxisValue + " xStart = " + xStart);
 		xGrids [xAxisValue - xStart].isAxis = true;
+		Debug.Log ("yAxisValue = " + yAxisValue + " yStart = " + yStart);
 		yGrids [yAxisValue - yStart].isAxis = true;
 	}
 

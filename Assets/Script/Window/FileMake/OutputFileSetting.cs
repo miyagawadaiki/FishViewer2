@@ -23,6 +23,7 @@ public class OutputFileSetting : MonoBehaviour {
 
 	public List<DataType> dataTypes;
 	public List<Toggle> toggles;
+	public List<string> shortcuts;
 
 	private bool addListenerFlagO = false, addListenerFlagF = false;
 	private StreamReader sr;
@@ -91,27 +92,48 @@ public class OutputFileSetting : MonoBehaviour {
 
 		dataTypes = new List<DataType> ();
 		toggles = new List<Toggle> ();
+		shortcuts = new List<string> ();
 
 		while (true) {
+			// 空白行とコメント行を飛ばす
 			string name;
 			do {
 				name = sr.ReadLine ();
 			} while (name != null && (name.Equals ("") || name.IndexOf("//") >= 0));
 
+			// nullが出たらファイルは読み終えたことになる
 			if (name == null)
 				break;
 
+			// UseDefaultとあればDefaultFormulaを使う
+			if (name.IndexOf ("UseDefault") >= 0) {
+
+				continue;
+			}
+
+			// Shortcutとあればショートカット用記述と判断
+			if (name.IndexOf ("Shortcut") >= 0) {
+				char[] sepa = { '_' };
+				string[] hoge = name.Split (sepa, System.StringSplitOptions.RemoveEmptyEntries);
+				shortcuts.Add (hoge[hoge.Length-1]);
+				continue;
+			}
+
+			// タグ名と判断してタブやスペースなどのいらないものをそぎ落とす
 			char[] sep = { '\t', ' ' };
 			name = name.Split (sep, System.StringSplitOptions.RemoveEmptyEntries) [0];
 
+			// 式の記述を見つけるまで空白行とコメントを飛ばす
 			string formula;
 			do {
 				formula = sr.ReadLine ();
 			} while (formula.Equals ("") || name.IndexOf("//") >= 0);
 
+			// DataTypeに登録
 			DataType dt = new DataType (name, formula);
 			dataTypes.Add (dt);
 
+			// 確認用Toggleを生成
 			GameObject obj = Instantiate (nodeObj, content) as GameObject;
 			toggles.Add (obj.GetComponentInChildren<Toggle> ());
 			Text[] texts = obj.GetComponentsInChildren<Text> ();
@@ -119,6 +141,7 @@ public class OutputFileSetting : MonoBehaviour {
 			texts [1].text = formula;
 			texts [2].text = dt.GetParametersText ();
 
+			// パラメータ付きの式ならParameterWindowを開けるようにする
 			if (dt.HasParameter ()) {
 				Button b = obj.GetComponentInChildren<Button> ();
 				b.onClick.AddListener (() => OpenParameterWindow (texts [2]));

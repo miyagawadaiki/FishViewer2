@@ -37,6 +37,8 @@ public class GraphManager : MonoBehaviour {
 
 	public int yType = 1;
 
+	public int dType = 0;
+
 	public PointType pointType = PointType.Circle;
 
 	//public bool showAxis, showGrid;
@@ -150,13 +152,14 @@ public class GraphManager : MonoBehaviour {
 		fish = int.Parse (tmp [0]);
 		xType = int.Parse (tmp [1]);
 		yType = int.Parse (tmp [2]);
-		pointType = (PointType)int.Parse (tmp [3]);
-		pointNum = int.Parse (tmp [4]);
-		pointColorNum = int.Parse (tmp [5]);
-		useColorGrad = int.Parse (tmp [6]) > 0 ? true : false;
-		useSizeGrad = int.Parse (tmp [7]) > 0 ? true : false;
-		plotSize = float.Parse (tmp [8]);
-		useAutoSize = int.Parse (tmp [9]) > 0 ? true : false;
+		dType = int.Parse (tmp [3]);
+		pointType = (PointType)int.Parse (tmp [4]);
+		pointNum = int.Parse (tmp [5]);
+		pointColorNum = int.Parse (tmp [6]);
+		useColorGrad = int.Parse (tmp [7]) > 0 ? true : false;
+		useSizeGrad = int.Parse (tmp [8]) > 0 ? true : false;
+		plotSize = float.Parse (tmp [9]);
+		useAutoSize = int.Parse (tmp [10]) > 0 ? true : false;
 	}
 
 	public virtual void Plot(int step) {
@@ -183,40 +186,57 @@ public class GraphManager : MonoBehaviour {
 	}
 
 	public virtual void SetGrid() {
+		// 拡大も考慮したxの範囲を求める
 		float xMax_ = LocalToRectGraph(new Vector2(view.rect.width / 2f, 0f)).x, xMin_ = LocalToGraph(new Vector2(view.rect.width / -2f, 0f)).x;
 		float xRange = (xMax_ - xMin_);
+
+		// gridNumを超えないように最大のグリッド幅を決める
 		for (int i = 0; i < gridDiv.Length; i++) {
 			xGridValue = gridDiv [i];
 			if (xRange / gridDiv [i] <= (float)gridNum - 1)
 				break;
 		}
 
+		// yについても同様に
 		//float yMax_ = yMax / yExp, yMin_ = yMin / yExp;
 		float yMax_ = LocalToRectGraph(new Vector2(0f, view.rect.height / 2f)).y, yMin_ = LocalToGraph(new Vector2(0f, view.rect.height / -2f)).y;
 		float yRange = (yMax_ - yMin_);
+
 		for (int i = 0; i < gridDiv.Length; i++) {
 			yGridValue = gridDiv [i];
 			if (yRange / gridDiv [i] <= (float)gridNum - 1)
 				break;
 		}
 
-		//int xAxisValue;
+		//Debug.Log ("GridValue = " + new Vector2 (xGridValue, yGridValue));
+
+		// xのレンジが0をまたいでいたら基準グリッド線は0を通るとする
 		if (xMax_ * xMin_ <= 0f)
 			xAxisValue = 0;
 		//else if (xMax_ * xMax_ < xMin_ * xMin_)
+		// レンジが負の領域にあればxMax_に最も近いグリッド線を基準とする
+		// この値の次元はグリッド幅を決めた上での原点から何番目かの値となる
 		else if (xMax_ < 0)
 			//xAxisValue = (int)(xMax_ / xGridValue) + (xMax_ < 0 ? -1 : 0);
 			xAxisValue = (int)(xMax_ / xGridValue) - 1;
 		else
 			xAxisValue = (int)(xMin_ / xGridValue) + 1;//+ (xMin_ > 0 ? 1 : 0);
 
+		// yについても同様にAxisValueを決める
 		//int yAxisValue;
 		if (yMax_ * yMin_ <= 0f)
 			yAxisValue = 0;
+		else if (yMax_ < 0)
+			yAxisValue = (int)(yMax_ / yGridValue) - 1;
+		else
+			yAxisValue = (int)(yMin_ / yGridValue) + 1;
+		
+		/*
 		else if (yMax_ * yMax_ < yMin_ * yMin_)
 			yAxisValue = (int)(yMax_ / yGridValue) + (yMax_ < 0 ? -1 : 0);
 		else
 			yAxisValue = (int)(yMin_ / yGridValue) + (yMin_ > 0 ? 1 : 0);
+		*/
 
 	}
 
@@ -301,7 +321,8 @@ public class GraphManager : MonoBehaviour {
 			(int)graphType + " :" +
 			fish + "," +
 			xType + "," +
-			yType + ",:" +
+			yType + "," +
+			dType + ",:" +
 			(int)pointType + "," + 
 			pointNum + "," +
 			pointColorNum + "," +
