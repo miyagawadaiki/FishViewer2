@@ -21,6 +21,9 @@ public class GraphContent : MyWindowContent {
 
 	public override void Awake () {
 		base.Awake ();
+
+		//if (!typeName.Equals (""))
+		//	Set (typeName);
 	}
 
 	// Use this for initialization
@@ -242,7 +245,7 @@ public class GraphContent : MyWindowContent {
 
 		mwc.mwm.AddWindow (System.Enum.GetName (typeof (GraphContentType), gcType) + "Graph/" + this.GetParameterText ());
 		MyWindowController mwc_ = mwc.mwm.GetLastWindowController ();
-		mwc_.content.defaultSize = this.defaultSize;
+		mwc_.content.defaultSize = mwc.recTra.sizeDelta;
 		mwc_.content.defaultPosition = mwc.transform.localPosition + new Vector3 (30f, -30f, 0f);
 		mwc_.gameObject.GetComponentInChildren<GraphContent> ().SetGridMode (viewMode);
 	}

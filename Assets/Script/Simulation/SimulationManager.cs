@@ -9,6 +9,8 @@ public class SimulationManager : MonoBehaviour {
 	private RectTransform content = null;
 	[SerializeField]
 	private GameObject shortcutNode = null;
+	[SerializeField]
+	private Text fileNameText = null;
 
 	private MyWindowManager mwm;
 	private MenuBarController mbc;
@@ -30,6 +32,7 @@ public class SimulationManager : MonoBehaviour {
 	}
 
 	public void Init () {
+//		Debug.Log ("SimulationManager.Init ()");
 		foreach (Transform t in content)
 			Destroy (t.gameObject);
 
@@ -51,5 +54,20 @@ public class SimulationManager : MonoBehaviour {
 		}
 
 		mbc.UpdateButtonImage ();
+
+
+		StartCoroutine (AddWindowCoroutine ());
+
+		fileNameText.text = ProjectData.FileName.GetName (ProjectData.FileKey.Read);
+	}
+
+	private IEnumerator AddWindowCoroutine () {
+		yield return null;
+
+		mwm.AddWindow (ProjectData.DefaultData.defaultGraphTexts [0]);
+		mwm.GetLastWindowController ().gameObject.GetComponentInChildren<MyWindowContent> ().defaultSize = new Vector2 (1f, 1f) * (Screen.height - 100);
+		mwm.GetLastWindowController ().gameObject.GetComponentInChildren<GraphContent> ().SetGridMode (ViewMode.ShowGridCompletely);
+
+		yield break;
 	}
 }

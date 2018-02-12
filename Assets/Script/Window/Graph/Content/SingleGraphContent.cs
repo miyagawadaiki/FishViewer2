@@ -8,8 +8,9 @@ public class SingleGraphContent : GraphContent {
 	public GraphManager graphMan;
 
 	public override void Awake() {
-		base.Awake ();
 		gcType = GraphContentType.Single;
+		base.Awake ();
+
 	}
 
 	public override bool IsReady () {

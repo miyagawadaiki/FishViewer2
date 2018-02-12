@@ -81,7 +81,7 @@ public class SimuPanelController : MonoBehaviour {
 	}
 
 	public bool IsMouseInArea() {
-		Vector2 vec = (Vector2)Input.mousePosition - inPosition - new Vector2(Screen.width, Screen.height) / 2f;
+		Vector2 vec = (Vector2)Input.mousePosition - (Vector2)recTra.localPosition - new Vector2(Screen.width, Screen.height) / 2f;
 		return recTra.rect.Contains (vec);
 	}
 }

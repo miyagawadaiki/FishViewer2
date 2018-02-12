@@ -64,6 +64,8 @@ public class Simulation {
 	*/
 
 	public static void Remove (GraphContent gc) {
+		if (graphConList == null)
+			return;
 		graphConList.Remove (gc);
 	}
 

@@ -22,10 +22,10 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 929
-  m_MinSize: {x: 911, y: 421}
-  m_MaxSize: {x: 22006, y: 14021}
+  m_MinSize: {x: 913, y: 421}
+  m_MaxSize: {x: 22008, y: 14042}
   vertical: 0
-  controlID: 2130
+  controlID: 13637
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -54,7 +54,7 @@ MonoBehaviour:
     height: 476
   m_MaximizeOnPlay: 1
   m_Gizmos: 0
-  m_Stats: 0
+  m_Stats: 1
   m_SelectedSizes: 05000000000000000000000000000000000000000000000000000000000000000000000000000000
   m_TargetDisplay: 0
   m_ZoomArea:
@@ -125,7 +125,7 @@ MonoBehaviour:
   m_MinSize: {x: 202, y: 421}
   m_MaxSize: {x: 4002, y: 8021}
   vertical: 1
-  controlID: 1934
+  controlID: 13638
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -179,14 +179,14 @@ MonoBehaviour:
     width: 809
     height: 411
   m_SceneLighting: 1
-  lastFramingTime: 2927.345676837146
+  lastFramingTime: 14214.453107499747
   m_2DMode: 1
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 479.59998, y: -29.450012, z: 0}
+    m_Target: {x: 433.1201, y: 334.65683, z: 0}
     speed: 2
-    m_Value: {x: 479.59998, y: -29.450012, z: 0}
+    m_Value: {x: 433.1201, y: 334.65683, z: 0}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -213,9 +213,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 323.73834
+    m_Target: 384.07388
     speed: 2
-    m_Value: 323.73834
+    m_Value: 384.07388
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -380,9 +380,9 @@ MonoBehaviour:
     height: 908
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 8c4e0000
-    m_LastClickedID: 20108
-    m_ExpandedIDs: 6ab1ffff72b2ffff86b3ffffdcfbffff00000000944e0000e44e0000284f0000384f0000fe4f0000
+    m_SelectedIDs: a2d4feff
+    m_LastClickedID: -76638
+    m_ExpandedIDs: 6afdfdffa8fdfdffbe9afeff78f1ffff5af2ffff72f3ffffdcfbffff000000009e46000042470000b6470000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -425,10 +425,10 @@ MonoBehaviour:
     y: 0
     width: 483
     height: 929
-  m_MinSize: {x: 234, y: 371}
-  m_MaxSize: {x: 10004, y: 14021}
+  m_MinSize: {x: 234, y: 392}
+  m_MaxSize: {x: 10004, y: 14042}
   vertical: 1
-  controlID: 2131
+  controlID: 13479
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -491,18 +491,18 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Script/Window/Graph/Preference
+    - Assets/Script/Window
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Script/Window/Graph/Preference
+  - Assets/Script/Window
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Daiki\Desktop\Unity\FishViewer_2
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 72}
-    m_SelectedIDs: dc260000
-    m_LastClickedID: 9948
+    m_SelectedIDs: 84260000
+    m_LastClickedID: 9860
     m_ExpandedIDs: 000000000a250000bc25000078260000842600008a260000de260000b027000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -556,9 +556,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 8c4e0000
-    m_LastClickedInstanceID: 20108
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: a2d4feff
+    m_LastClickedInstanceID: -76638
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: 0e250000422e000000000000de3ffdffe82b0000c0f1fbffec2b0000489ef9ffe817ffff6e73feff9e7bffffec24000044250000dce4fcffc4c3fbff6214f8ff8825fcff965500002a25000020250000d62dffffb825000088260000842cfeff8e3b00003853f8ff1883ffffc85fffff423afcffa88cffffea2600006c260000fc260000882ffaffee3efdffb426000054270000b026000054250000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -655,8 +655,8 @@ MonoBehaviour:
     y: 0
     width: 404
     height: 929
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 277, y: 71}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -689,7 +689,7 @@ MonoBehaviour:
     y: 102
     width: 402
     height: 908
-  m_ScrollPosition: {x: 0, y: 81.95508}
+  m_ScrollPosition: {x: 0, y: 0}
   m_InspectorMode: 0
   m_PreviewResizer:
     m_CachedPref: 189

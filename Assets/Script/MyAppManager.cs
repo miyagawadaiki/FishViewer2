@@ -12,8 +12,13 @@ public class MyAppManager : MonoBehaviour {
 	[SerializeField]
 	private SimuPanelController spc = null;
 	[SerializeField]
+	private SimulationController sc = null;
+	[SerializeField]
 	private WindowListPanelController wlpc = null;
+	[SerializeField]
+	private Text commandModeText = null;
 
+	//private bool killCoroutine = false;
 	private bool isCommandMode = false;
 	private KeyCode[] commands = {
 		KeyCode.Alpha1,
@@ -51,24 +56,48 @@ public class MyAppManager : MonoBehaviour {
 			return;
 		}
 
-		if (Simulation.isEnabled && Input.GetKeyDown (KeyCode.A)) {
-			spc.Slide ();
-			return;
+		if (Simulation.isEnabled) {
+			if (Input.GetKeyDown (KeyCode.G)) {
+				spc.Slide ();
+				return;
+			}
+			if (Input.GetKeyDown (KeyCode.Space)) {
+				sc.SwitchPlay ();
+				return;
+			}
 		}
 
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			isCommandMode = true;
-		}
-		if (Input.GetKeyUp (KeyCode.Space)) {
-			isCommandMode = false;
+		if (Input.GetKeyDown (KeyCode.C)) {
+			if (isCommandMode) {
+				isCommandMode = false;
+				commandModeText.text = "";
+			} else {
+				isCommandMode = true;
+				commandModeText.text = "Command";
+			}
 		}
 
 		if (isCommandMode) {
 			if (Simulation.isEnabled) {
-				for (int i = 0; i < ProjectData.DefaultData.shortcutTexts.Count; i++) {
-					if (Input.GetKeyDown (commands [i])) {
-						mwm.AddWindow (ProjectData.DefaultData.shortcutTexts [i]);
-						return;
+				if (Input.GetKeyDown (KeyCode.F)) {
+					sc.StartSimuCoroutine (true);
+				} else if (Input.GetKeyUp (KeyCode.F)) {
+					sc.StopSimuCoroutine ();
+				} else if (Input.GetKeyDown (KeyCode.D)) {
+					sc.StartSimuCoroutine (false);
+				} else if (Input.GetKeyUp (KeyCode.D)) {
+					sc.StopSimuCoroutine ();
+				} else if (Input.GetKeyDown (KeyCode.S)) {
+					sc.Reset ();
+				} else if (Input.GetKeyDown (KeyCode.A)) {
+					sc.SwitchRepeat ();
+				} else {
+
+					for (int i = 0; i < ProjectData.DefaultData.shortcutTexts.Count; i++) {
+						if (Input.GetKeyDown (commands [i])) {
+							mwm.AddWindow (ProjectData.DefaultData.shortcutTexts [i]);
+							return;
+						}
 					}
 				}
 			}

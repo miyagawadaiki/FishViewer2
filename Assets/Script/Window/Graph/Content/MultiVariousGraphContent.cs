@@ -17,9 +17,10 @@ public class MultiVariousGraphContent : GraphContent {
 	public GraphManager selected;
 
 	public override void Awake() {
-		base.Awake ();
-		graphManList = new List<GraphManager> ();
 		gcType = GraphContentType.MultiVarious;
+		base.Awake ();
+		//graphManList = new List<GraphManager> ();
+
 
 		allToggle.gameObject.SetActive (false);
 	}
@@ -77,6 +78,7 @@ public class MultiVariousGraphContent : GraphContent {
 
 		Simulation.Register (this);
 
+		graphManList = new List<GraphManager> ();
 		for (int i = 0; i < graphParameters.Length; i++) {
 			string[] tmp = graphParameters [i].Split (typeSeparator, System.StringSplitOptions.RemoveEmptyEntries);
 			string graphTypeName = System.Enum.GetNames(typeof(GraphType))[(int.Parse (tmp [0]))];

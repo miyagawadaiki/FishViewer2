@@ -9,6 +9,8 @@ public class MenuBarController : MonoBehaviour {
 	public float duration = 0.1f;
 
 	[SerializeField]
+	private Text fileNameText = null;
+	[SerializeField]
 	private Color normalColor = Color.white;
 	[SerializeField]
 	private Color highlightedColor = Color.white;
@@ -57,6 +59,10 @@ public class MenuBarController : MonoBehaviour {
 			}
 		}
 
+		foreach (Text txt in this.GetComponentsInChildren<Text> ()) {
+			txt.color = normalTextColor;
+		}
+
 		foreach (Button button in this.GetComponentsInChildren<Button>()) {
 			ColorBlock cb = button.colors;
 			cb.normalColor = normalColor;
@@ -64,7 +70,7 @@ public class MenuBarController : MonoBehaviour {
 			cb.pressedColor = pressedColor;
 			cb.disabledColor = disabledColor;
 			button.colors = cb;
-			button.gameObject.GetComponentInChildren<Text> ().color = normalTextColor;
+			//button.gameObject.GetComponentInChildren<Text> ().color = normalTextColor;
 
 			if (button.gameObject.GetComponent<ParentButtonController> () != null) {
 				button.gameObject.GetComponent<ParentButtonController> ().templete.gameObject.SetActive (false);
@@ -72,6 +78,8 @@ public class MenuBarController : MonoBehaviour {
 				button.onClick.AddListener (() => HidePanel ());
 			}
 		}
+
+		fileNameText.color = normalTextColor;
 	}
 
 	/*

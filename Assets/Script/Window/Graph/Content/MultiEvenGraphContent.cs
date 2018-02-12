@@ -12,9 +12,10 @@ public class MultiEvenGraphContent : GraphContent {
 	public List<GraphManager> graphManList;
 
 	public override void Awake() {
-		base.Awake ();
-		graphManList = new List<GraphManager> ();
 		gcType = GraphContentType.MultiEven;
+		base.Awake ();
+		//graphManList = new List<GraphManager> ();
+
 	}
 
 	public override bool IsReady () {
@@ -84,6 +85,7 @@ public class MultiEvenGraphContent : GraphContent {
 
 		Simulation.Register (this);
 
+		graphManList = new List<GraphManager> ();
 		for (int i = 0; i < fishNumList.Count; i++) {
 			GameObject obj = Instantiate (graphManObj, graphRecTra) as GameObject;
 			graphManList.Add (obj.GetComponent<GraphManager> ());
@@ -236,7 +238,7 @@ public class MultiEvenGraphContent : GraphContent {
 		ret += ":";
 
 		ret += typeTexts [1] + ":" + typeTexts [2] + ":";
-		Debug.Log ("ret = " + ret);
+		//Debug.Log ("ret = " + ret);
 
 		return ret;
 	}

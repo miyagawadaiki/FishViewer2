@@ -29,7 +29,7 @@ public class MyWindowContent : MonoBehaviour {
 	void Update () {
 		
 	}
-
+	
 	public virtual void MakeClone () {
 
 	}
