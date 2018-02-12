@@ -5,16 +5,16 @@ using UnityEngine.UI;
 
 public class MultiEvenGraphSettingContent : GraphSettingContent {
 
-	protected override void Awake () {
+	public override void Awake () {
 		base.Awake ();
 	}
 
 	// Use this for initialization
-	protected override void Start () {
+	public override void Start () {
 		base.Start ();
 
 		sm.CoverSettingElement (2, 0);
-		sm.CoverSettingElement (3, 1);
+		sm.CoverSettingElement (3, 2);
 	}
 	
 	// Update is called once per frame

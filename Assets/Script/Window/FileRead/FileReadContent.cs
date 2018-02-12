@@ -23,13 +23,18 @@ public class FileReadContent : MyWindowContent {
 	private StreamReader sr;
 	private char[] separator = { ',' };
 
+	public override void Awake () {
+		base.Awake ();
+		defaultPosition = new Vector2 ();
+	}
+
 	// Use this for initialization
-	void Start () {
-		mwc = this.GetComponentInParent<MyWindowController> ();
+	public override void Start () {
+		base.Start ();
+
+		//mwc = this.GetComponentInParent<MyWindowController> ();
 		mwc.canMove = false;
 		mwc.canExpand = false;
-		mwc.SetSize (defaultSize);
-		mwc.MoveTo (new Vector2 (0f, 0f));
 
 		button.onClick.AddListener (() => this.GetComponentInParent<MyWindowManager> ().AddWindow ("FileSelect/Read"));
 		button.onClick.AddListener (() => CallAddListener());
@@ -55,8 +60,9 @@ public class FileReadContent : MyWindowContent {
 		sr = new StreamReader (ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Read), System.Text.Encoding.GetEncoding("UTF-8"));
 		string[] tmp = sr.ReadLine ().Split (separator, System.StringSplitOptions.RemoveEmptyEntries);
 		valueText.text = tmp [0] + "\n" + tmp [1] + "\n" + tmp [2];
-		int step = int.Parse (tmp [0]), fish = int.Parse (tmp [1]);
-		float deltaTime = float.Parse (tmp [2]);
+		//int step = int.Parse (tmp [0]);
+		int fish = int.Parse (tmp [1]);
+		//float deltaTime = float.Parse (tmp [2]);
 
 		foreach (Transform t in content)
 			Destroy (t.gameObject);
@@ -65,6 +71,8 @@ public class FileReadContent : MyWindowContent {
 			GameObject obj = Instantiate (nodeObj, content) as GameObject;
 			obj.GetComponentInChildren<Text> ().text = tmp [i];
 		}
+
+		sr.Close ();
 	}
 
 	public void CallAddListener() {

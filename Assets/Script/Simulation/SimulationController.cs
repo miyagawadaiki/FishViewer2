@@ -33,14 +33,15 @@ public class SimulationController : MonoBehaviour {
 	private Image repEndFill = null;
 	[SerializeField]
 	private Image repEndHandle = null;
-	[SerializeField]
-	private Text fileName = null;
+	//[SerializeField]
+	//private Text fileName = null;
 
-	private bool playing, repeating;
+	private bool repeating;
 	private float time = 0f, dt, defDt;
 	private int repStartStep, repEndStep;
 	private Color repButtonColor, repOnColor, repOffColor;
 	private bool firstFlag = true;
+	private bool killCoroutine = false;
 
 	void Awake() {
 		
@@ -48,7 +49,7 @@ public class SimulationController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Init ();
+		// Init ();
 	}
 
 	public void Init() {
@@ -72,12 +73,19 @@ public class SimulationController : MonoBehaviour {
 			firstFlag = false;
 		}
 
-		fileName.text = ProjectData.FileName.GetName (ProjectData.FileKey.Read);
+		//fileName.text = ProjectData.FileName.GetName (ProjectData.FileKey.Read);
 
 		defDt = DataBase.dt;
 
 		Pause ();
 		RepeatOff ();
+
+		/*
+		MyWindowManager mwm = GameObject.Find ("MyWindowManager").GetComponent<MyWindowManager> ();
+		mwm.AddWindow (ProjectData.DefaultData.defaultGraphTexts [0]);
+		mwm.GetLastWindowController ().gameObject.GetComponentInChildren<MyWindowContent> ().defaultSize = new Vector2 (1f, 1f) * (Screen.height - this.GetComponent<RectTransform> ().rect.height - 50);
+		mwm.GetLastWindowController ().gameObject.GetComponentInChildren<GraphContent> ().SetGridMode (ViewMode.ShowGridCompletely);
+		*/
 	}
 	
 	// Update is called once per frame
@@ -105,14 +113,14 @@ public class SimulationController : MonoBehaviour {
 		time = 0f;
 
 		if (Simulation.IsEnd()) {
-			Debug.Log ("<color=blue>Simulation end</color>");
+			//Debug.Log ("<color=blue>Simulation end</color>");
 			Pause ();
 			Simulation.step = DataBase.step - 1;
 			return;
 		}
 
-		if (playing) {
-			Debug.Log ("<color=blue>Simulating... step=" + Simulation.step + "</color>");
+		if (Simulation.playing) {
+			//Debug.Log ("<color=blue>Simulating... step=" + Simulation.step + "</color>");
 			GoNext ();
 		} else {
 			Simulation.Execute ();
@@ -128,17 +136,17 @@ public class SimulationController : MonoBehaviour {
 	}
 
 	public void Play() {
-		playing = true;
+		Simulation.playing = true;
 		playPauseImage.sprite = pauseSprite;
 	}
 
 	public void Pause() {
-		playing = false;
+		Simulation.playing = false;
 		playPauseImage.sprite = playSprite;
 	}
 
 	public void SwitchPlay() {
-		if (playing)
+		if (Simulation.playing)
 			Pause ();
 		else
 			Play ();
@@ -183,5 +191,27 @@ public class SimulationController : MonoBehaviour {
 		Simulation.step--;
 		Simulation.Execute ();
 		stepSlider.value = (float)Simulation.step;
+	}
+
+	public void StartSimuCoroutine (bool next) {
+		StartCoroutine (SimuCoroutine (next));
+	}
+
+	public void StopSimuCoroutine () {
+		killCoroutine = true;
+	}
+
+	private IEnumerator SimuCoroutine (bool next) {
+		while (!killCoroutine && !Simulation.IsEnd ()) {
+			if (next)
+				GoNext ();
+			else
+				GoBack ();
+
+			yield return new WaitForSeconds (dt);
+			yield return null;
+		}
+		killCoroutine = false;
+		yield break;
 	}
 }

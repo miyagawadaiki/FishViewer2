@@ -6,12 +6,13 @@ using UnityEngine;
 public class DataType {
 
 	public string dataName;
+	public string formula;
 
 	private string[] elements;
 	private List<float> parameters;
 	private Stack<float> values;
 	private char[] elementSeparator = { '\t', ' ' };
-	private char[] prefixSeparator = { '!', '#', '$', '@' };
+	private char[] prefixSeparator = { '!', '#', '$', '@', '?' };
 
 	public DataType () {
 		parameters = new List<float> ();
@@ -20,6 +21,7 @@ public class DataType {
 
 	public DataType (string name, string text) : this () {
 		this.dataName = name;
+		this.formula = text;
 
 		elements = text.Split (elementSeparator, StringSplitOptions.RemoveEmptyEntries);
 
@@ -52,6 +54,10 @@ public class DataType {
 				break;
 			case '@':
 				values.Push (DB.constNums [text]);
+				break;
+			case '?':
+				float f = values.ToArray () [values.Count + int.Parse (text)];
+				values.Push (f);
 				break;
 			default :
 				EvalOperator (text);
@@ -131,6 +137,9 @@ public class DataType {
 		case "<":
 			Smaller ();
 			break;
+		case "IsNaN":
+			IsNaN ();
+			break;
 		case "Abs":
 			Abs ();
 			break;
@@ -157,6 +166,9 @@ public class DataType {
 			break;
 		case "Ave":
 			Ave ();
+			break;
+		case "CalcAngle":
+			CalcAngle ();
 			break;
 		default :
 			break;
@@ -220,6 +232,16 @@ public class DataType {
 			values.Push (0f);
 	}
 
+	public void IsNaN () {
+		float c = values.Pop ();
+		float b = values.Pop ();
+		float a = values.Pop ();
+		if (float.IsNaN (a))
+			values.Push (b);
+		else
+			values.Push (c);
+	}
+
 	public void Abs () {
 		float a = values.Pop ();
 		values.Push (Mathf.Abs (a));
@@ -279,5 +301,29 @@ public class DataType {
 
 	public void Ave () {
 
+	}
+
+	public void CalcAngle () {
+		float bY = values.Pop ();
+		float bX = values.Pop ();
+		float aY = values.Pop ();
+		float aX = values.Pop ();
+
+		float ip = aX * bX + aY * bY;
+		float p = Mathf.Sqrt ((aX * aX + aY * aY) * (bX * bX + bY * bY));
+		if (p == 0f) {
+			values.Push (0f);
+			return;
+		}
+
+		float cos = ip / p;
+		if (cos * cos > 1f)
+			cos = (float)((int)cos);
+
+		float cp = aX * bY - aY * bX;
+		if (cp > 0)
+			values.Push (Mathf.Acos (ip / p));
+		else
+			values.Push (Mathf.Acos (ip / p) * -1f);
 	}
 }

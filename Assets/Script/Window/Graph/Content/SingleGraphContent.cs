@@ -7,8 +7,14 @@ public class SingleGraphContent : GraphContent {
 	//private GraphType graphType = GraphType.Rect;
 	public GraphManager graphMan;
 
-	void Awake() {
+	public override void Awake() {
 		gcType = GraphContentType.Single;
+		base.Awake ();
+
+	}
+
+	public override bool IsReady () {
+		return graphMan != null;
 	}
 
 	public override void Init() {
@@ -23,6 +29,7 @@ public class SingleGraphContent : GraphContent {
 
 		ShowView();
 		//graphMan.ShowAxis ();
+		base.Init ();
 	}
 
 	/*
@@ -39,13 +46,14 @@ public class SingleGraphContent : GraphContent {
 		GraphType gt = (GraphType)(int.Parse(tmp [0]));
 		if (graphMan == null || graphMan.graphType != gt) {
 			if (graphMan != null) {
-				Simulation.Remove (graphMan);
+				//Simulation.Remove (graphMan);
 				Destroy (graphMan.gameObject);
 			}
 			GameObject obj = Instantiate (Resources.Load ("GraphManager/" + System.Enum.GetName (typeof(GraphType), gt) + "GraphManager"), graphRecTra) as GameObject;
 			graphMan = obj.GetComponent<GraphManager> ();
 			//memo = graphMan;
-			Simulation.Register (graphMan);
+			Simulation.Register (this);
+			//Simulation.Register (graphMan);
 		}
 
 		Debug.Log ("SingleGraph = " + tmp [1]);
@@ -54,22 +62,37 @@ public class SingleGraphContent : GraphContent {
 		Init ();
 	}
 
+	public override void Plot (int step) {
+		base.Plot (step);
+
+		graphMan.Plot (step);
+	}
+
 	public override void Translate(Vector2 start, Vector2 end) {
 		if (graphMan == null)
 			return;
 		graphMan.Translate (start, end);
-		ShowView ();
+
+		if (!Simulation.playing)
+			graphMan.Plot (Simulation.step);
+
+		base.Translate (start, end);
 	}
 
 	public override void Expand(float expand) {
 		if (graphMan == null)
 			return;
 		graphMan.Expand (expand);
-		ShowView ();
-	}
 
+		if (!Simulation.playing)
+			graphMan.Plot (Simulation.step);
+		
+		base.Expand (expand);
+	}
+		
 	public override void RemoveGraphManager() {
-		Simulation.Remove (graphMan);
+		base.RemoveGraphManager ();
+		//Simulation.Remove (graphMan);
 	}
 		
 	public override void SetGrid() {
@@ -123,7 +146,17 @@ public class SingleGraphContent : GraphContent {
 	}
 
 	public override string GetTitle () {
-		return graphMan.GetFishText () + ", " + graphMan.GetTypeText ();
+		string s = graphMan.GetStepText () + ", " + graphMan.GetFishText () + "\n" + graphMan.GetTypeText ();
+		return s;
+	}
+
+	public override string GetShortTypeText () {
+		return base.GetShortTypeText () + DataBase.GetShortTags () [graphMan.xType] + "-" + DataBase.GetShortTags () [graphMan.yType];
+	}
+
+	public override string GetShortTitle () {
+		string s = base.GetShortTitle ();
+		return s + graphMan.GetStepText () + "_" + GetShortTypeText ();
 	}
 
 	public override string GetParameterText() {

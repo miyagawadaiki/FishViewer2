@@ -13,8 +13,8 @@ public class ParameterContent : MyWindowContent {
 	private GameObject paramNodeObj = null;
 	[SerializeField]
 	private Transform content = null;
-	[SerializeField]
-	private Button doneButton = null;
+
+	public Button doneButton = null;
 
 	private Image[] images;
 	private Text[] texts;
@@ -26,19 +26,25 @@ public class ParameterContent : MyWindowContent {
 
 	private Text paramText;
 
-	// Use this for initialization
-	void Start () {
-		mwc = this.GetComponentInParent<MyWindowController> ();
-		mwc.SetSize (defaultSize);
+	private OutputFileSetting ofs;
+
+	public override void Awake () {
+		base.Awake ();
+
+		defaultPosition = new Vector2 ();
 		mwc.canMove = false;
 		mwc.canExpand = false;
-		mwc.MoveTo (new Vector2 (0f, 0f));
+	}
+
+	// Use this for initialization
+	public override void Start () {
+		base.Start ();
 
 		height = this.GetComponent<RectTransform> ().rect.height;
 		//Register (typeName);
 
 
-		doneButton.onClick.AddListener (() => SetText ());
+		//doneButton.onClick.AddListener (() => SetText ());
 		doneButton.onClick.AddListener (() => mwc.Destroy ());
 	}
 	
@@ -49,10 +55,16 @@ public class ParameterContent : MyWindowContent {
 
 	public void RegisterTextArea (Text t) {
 		paramText = t;
-		Register (paramText.text);
+		Set (paramText.text);
 	}
 
-	public void Register (string text) {
+	public void Register (OutputFileSetting ofs, string parameterText) {
+		this.ofs = ofs;
+		doneButton.onClick.AddListener (() => this.ofs.UpdateDataType (GetParameterText ()));
+		Set (parameterText);
+	}
+
+	public void Set (string text) {
 		Debug.Log ("text = " + text);
 
 		foreach (Transform t in circleArea)
@@ -84,12 +96,12 @@ public class ParameterContent : MyWindowContent {
 		texts [images.Length - 1].text = (((int)((1f - prev) * 20f + 0.5f)) / 20f) + "";
 	}
 
-	public void Register (int num) {
+	public void Set (int num) {
 		string s = "";
 		for (int i = 0; i < num; i++)
 			s += (10f / num) + ",";
 
-		Register (s);
+		Set (s);
 	}
 
 	public string GetParameterText () {

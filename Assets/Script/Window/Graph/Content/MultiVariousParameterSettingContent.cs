@@ -9,18 +9,20 @@ public class MultiVariousParameterSettingContent : MyWindowContent {
 	private Button doneButton;
 	private SettingManager sm; 
 
-	void Awake () {
+	public override void Awake () {
+		base.Awake ();
+
+		defaultPosition = new Vector2 ();
+		mwc.canExpand = false;
+
 		doneButton = this.GetComponentInChildren<Button> ();
 
 		sm = this.GetComponentInChildren<SettingManager> ();
 	}
 
 	// Use this for initialization
-	void Start () {
-		mwc = this.GetComponentInParent<MyWindowController> ();
-		mwc.SetSize (defaultSize);
-		mwc.MoveTo (new Vector2 ());
-		mwc.canExpand = false;
+	public override void Start () {
+		base.Start ();
 
 		doneButton.onClick.AddListener (() => mwc.Destroy ());
 		doneButton.onClick.AddListener (() => mvpn.RegisterParameter (sm.GetParameterText ()));

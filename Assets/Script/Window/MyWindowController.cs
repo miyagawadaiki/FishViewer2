@@ -20,9 +20,8 @@ public class MyWindowController : MonoBehaviour {
 	[SerializeField]
 	private RectTransform frameRT = null;
 
-	private RectTransform recTra, parRecTra;
 	private Vector2 canvas;
-	private Rect rect, parRect;
+	//private Rect rect;//, parRect;
 	//private Vector2 expandDir;
 
 	[System.NonSerialized]
@@ -35,13 +34,17 @@ public class MyWindowController : MonoBehaviour {
 	public bool canMove = true;
 	[System.NonSerialized]
 	public bool canExpand = true;
+	[System.NonSerialized]
+	public RectTransform recTra;
+	[System.NonSerialized]
+	public RectTransform parRecTra;
 
 	void Awake() {
 		mwm = this.GetComponentInParent<MyWindowManager> ();
 		recTra = this.GetComponent<RectTransform> ();
 		parRecTra = this.transform.parent.gameObject.GetComponent<RectTransform> ();
-		rect = recTra.rect;
-		parRect = parRecTra.rect;
+		//rect = recTra.rect;
+		//parRect = parRecTra.rect;
 		menuImg.color = new Color (selectedColor.r, selectedColor.g, selectedColor.b, 0.4f);
 		SetNormalMode ();
 	}
@@ -103,6 +106,11 @@ public class MyWindowController : MonoBehaviour {
 		recTra.sizeDelta = size;
 	}
 
+	public void MoveTo (Vector2 localPos) {
+		recTra.localPosition = localPos;
+		TranslateIntoWindowManager ();
+	}
+	/*
 	public void MoveTo(Vector2 ratePos) {
 		//Debug.Log ("screen=" + new Vector2 (Screen.width, Screen.height) + " rect.size=" + rect.size);
 		Vector2 tmp = (new Vector2 (Screen.width, Screen.height) - rect.size) / 2f;
@@ -111,6 +119,7 @@ public class MyWindowController : MonoBehaviour {
 		//Vector2 v = localPos - (Vector2)recTra.localPosition;
 		//recTra.localPosition += (Vector3)v;
 	}
+	*/
 
 	public void Translate(Vector2 vec) {
 		if (!canMove)
@@ -124,15 +133,15 @@ public class MyWindowController : MonoBehaviour {
 		Vector2 v = (Vector2)recTra.localPosition;
 		Vector2 size = recTra.rect.size;
 		Vector2 tmp = new Vector2 ();
-		if ((v + size / 2f).x > parRect.width / 2f)
-			tmp += new Vector2 (parRect.width / 2f - (v + size / 2f).x, 0f);
-		if ((v + size / 2f).y > parRect.height / 2f)
-			tmp += new Vector2 (0f, parRect.height / 2f - (v + size / 2f).y);
+		if ((v + size / 2f).x > parRecTra.rect.width / 2f)
+			tmp += new Vector2 (parRecTra.rect.width / 2f - (v + size / 2f).x, 0f);
+		if ((v + size / 2f).y > parRecTra.rect.height / 2f)
+			tmp += new Vector2 (0f, parRecTra.rect.height / 2f - (v + size / 2f).y);
 
-		if ((v - size / 2f).x < -parRect.width / 2f)
-			tmp += new Vector2 (-parRect.width / 2f - (v - size / 2f).x, 0f);
-		if ((v - size / 2f).y < -parRect.height / 2f)
-			tmp += new Vector2 (0f, -parRect.height / 2f - (v - size / 2f).y);
+		if ((v - size / 2f).x < -parRecTra.rect.width / 2f)
+			tmp += new Vector2 (-parRecTra.rect.width / 2f - (v - size / 2f).x, 0f);
+		if ((v - size / 2f).y < -parRecTra.rect.height / 2f)
+			tmp += new Vector2 (0f, -parRecTra.rect.height / 2f - (v - size / 2f).y);
 
 		recTra.position += (Vector3)tmp;
 	}
@@ -234,7 +243,7 @@ public class MyWindowController : MonoBehaviour {
 	public bool IsInWindowManager() {
 		Vector2 v = (Vector2)recTra.localPosition;
 		Vector2 size = recTra.rect.size;
-		return parRect.Contains (v - size / 2f) && parRect.Contains (v + size / 2f);// && parRect.Contains (v + new Vector2 (size.x, size.y * -1f) / 2f) && parRect.Contains (v + new Vector2 (size.x * -1f, size.y) / 2f);
+		return parRecTra.rect.Contains (v - size / 2f) && parRecTra.rect.Contains (v + size / 2f);// && parRect.Contains (v + new Vector2 (size.x, size.y * -1f) / 2f) && parRect.Contains (v + new Vector2 (size.x * -1f, size.y) / 2f);
 	}
 
 	/*

@@ -5,17 +5,16 @@ using UnityEngine.UI;
 
 public class ParentButtonController : MonoBehaviour {
 
-	[SerializeField]
-	private RectTransform templete = null;
+	public RectTransform templete = null;
 
 	private Button button;
 	private MenuBarController mbc;
-	private RectTransform recTra;
+	//private RectTransform recTra;
 
 	void Awake () {
 		button = this.GetComponent<Button> ();
 		mbc = this.GetComponentInParent<MenuBarController> ();
-		recTra = this.GetComponent<RectTransform> ();
+		//recTra = this.GetComponent<RectTransform> ();
 	}
 
 	// Use this for initialization

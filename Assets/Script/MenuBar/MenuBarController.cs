@@ -8,25 +8,43 @@ public class MenuBarController : MonoBehaviour {
 	public bool isActive = false;
 	public float duration = 0.1f;
 
-	private RectTransform panelRecTra = null;
+	[SerializeField]
+	private Text fileNameText = null;
+	[SerializeField]
+	private Color normalColor = Color.white;
+	[SerializeField]
+	private Color highlightedColor = Color.white;
+	[SerializeField]
+	private Color pressedColor = Color.white;
+	[SerializeField]
+	private Color disabledColor = Color.white;
+	[SerializeField]
+	private Color normalTextColor = Color.black;
+	[SerializeField]
+	private Color disabledTextColor = Color.black;
 
-	private Vector2 inPosition;
-	private Vector2 outPosition;
-	private AnimationCurve animCurve = AnimationCurve.Linear (0, 0, 1, 1);
+	private RectTransform panelRecTra = null;
+	private Image image = null;
+
+	//private Vector2 inPosition;
+	//private Vector2 outPosition;
+	//private AnimationCurve animCurve = AnimationCurve.Linear (0, 0, 1, 1);
 	private RectTransform recTra;
-	private float canvasScale;
+	//private float canvasScale;
 
 	// Use this for initialization
 	void Start () {
 		recTra = this.GetComponent<RectTransform> ();
-		canvasScale = GameObject.Find ("Canvas").transform.localScale.x;
-		outPosition = new Vector2 (0f, Screen.height / 2 + recTra.rect.height / 2); //this.transform.localPosition;
-		inPosition = outPosition - new Vector2 (0f, recTra.rect.height);
+		//canvasScale = GameObject.Find ("Canvas").transform.localScale.x;
+		//outPosition = new Vector2 (0f, Screen.height / 2 + recTra.rect.height / 2); //this.transform.localPosition;
+		//inPosition = outPosition - new Vector2 (0f, recTra.rect.height);
 
-		foreach (Button button in this.GetComponentsInChildren<Button>()) {
-			if(!button.gameObject.CompareTag("ParentButton"))
-				button.onClick.AddListener (() => SlideOut ());
-		}
+		image = this.GetComponent<Image> ();
+		image.color = normalColor;
+
+		UpdateButtonImage ();
+
+		DisInteractivate ();
 	}
 	
 	// Update is called once per frame
@@ -34,6 +52,37 @@ public class MenuBarController : MonoBehaviour {
 		
 	}
 
+	public void UpdateButtonImage () {
+		foreach (Button button in this.GetComponentsInChildren<Button>()) {
+			if (button.gameObject.GetComponent<ParentButtonController> () != null) {
+				button.gameObject.GetComponent<ParentButtonController> ().templete.gameObject.SetActive (true);
+			}
+		}
+
+		foreach (Text txt in this.GetComponentsInChildren<Text> ()) {
+			txt.color = normalTextColor;
+		}
+
+		foreach (Button button in this.GetComponentsInChildren<Button>()) {
+			ColorBlock cb = button.colors;
+			cb.normalColor = normalColor;
+			cb.highlightedColor = highlightedColor;
+			cb.pressedColor = pressedColor;
+			cb.disabledColor = disabledColor;
+			button.colors = cb;
+			//button.gameObject.GetComponentInChildren<Text> ().color = normalTextColor;
+
+			if (button.gameObject.GetComponent<ParentButtonController> () != null) {
+				button.gameObject.GetComponent<ParentButtonController> ().templete.gameObject.SetActive (false);
+			} else {
+				button.onClick.AddListener (() => HidePanel ());
+			}
+		}
+
+		fileNameText.color = normalTextColor;
+	}
+
+	/*
 	public void SlideIn() {
 		StartCoroutine (StartSlidePanel (true));
 		isActive = true;
@@ -66,9 +115,10 @@ public class MenuBarController : MonoBehaviour {
 		//if (!isActive)
 		//	isActive = true;
 	}
+	*/
 
 	public bool IsMouseInArea() {
-		Vector2 vec = (Vector2)Input.mousePosition - inPosition - new Vector2(Screen.width, Screen.height) / 2f;
+		Vector2 vec = (Vector2)Input.mousePosition - (Vector2)recTra.localPosition - new Vector2(Screen.width, Screen.height) / 2f;
 
 
 		if (recTra.rect.Contains (vec))
@@ -90,7 +140,34 @@ public class MenuBarController : MonoBehaviour {
 		panelRecTra = panel;
 	}
 
+	public void HidePanel () {
+		if (panelRecTra != null) {
+			panelRecTra.gameObject.SetActive (false);
+			panelRecTra = null;
+		}
+	}
+
+	public void Interactivate () {
+		foreach (Button button in this.GetComponentsInChildren<Button>()) {
+			if (button.gameObject.CompareTag ("UseDataButton")) {
+				button.interactable = true;
+				button.gameObject.GetComponentInChildren<Text> ().color = normalTextColor;
+			}
+		}
+	}
+
+	public void DisInteractivate () {
+		foreach (Button button in this.GetComponentsInChildren<Button>()) {
+			if (button.gameObject.CompareTag ("UseDataButton")) {
+				button.interactable = false;
+				button.gameObject.GetComponentInChildren<Text> ().color = disabledTextColor;
+			}
+		}
+	}
+
+	/*
 	public void OnMouseLeftDown() {
 		SlideOut ();
 	}
+	*/
 }

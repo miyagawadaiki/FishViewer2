@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class SingleGraphSettingContent : GraphSettingContent {
 
-	protected override void Awake () {
+	public override void Awake () {
 		base.Awake ();
 	}
 
 	// Use this for initialization
-	protected override void Start () {
+	public override void Start () {
 		base.Start ();
 	}
 	

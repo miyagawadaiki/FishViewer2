@@ -6,22 +6,33 @@ public class MyWindowContent : MonoBehaviour {
 
 	public MyWindowController mwc;
 	public string typeName;
+	public string contentName;
 	public Vector2 defaultSize;
+	public Vector2 defaultPosition;
+
+	public virtual void Awake () {
+		mwc = this.GetComponentInParent<MyWindowController> ();
+		mwc.content = this;
+
+		int num = mwc.mwm.Count ();
+		defaultPosition = new Vector2 ((0.1f * num - 1f) * mwc.mwm.recTra.rect.width / 2f, (1f - 0.1f * num) * mwc.mwm.recTra.rect.height / 2f);
+	}
 
 	// Use this for initialization
-	void Start () {
-		/*
-		mwc = this.GetComponentInParent<MyWindowController> (); 
-		 */
-
+	public virtual void Start () {
+		mwc.SetSize (defaultSize);
+		mwc.MoveTo (defaultPosition);
+		mwc.TranslateIntoWindowManager ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+	
+	public virtual void MakeClone () {
 
-	//public abstract MyWindowContent Clone ();
+	}
 
 	public virtual void OnTranslate(Vector2 vec) {
 

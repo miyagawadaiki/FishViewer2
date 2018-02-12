@@ -52,7 +52,7 @@ public class GridLineController : MonoBehaviour {
 	private Vector2 rightMiddle = new Vector2 (1f, 0.5f);
 	private Vector2 leftTop = new Vector2 (0f, 1f);
 	private Vector2 centerTop = new Vector2 (0.5f, 1f);
-	private Vector2 rightTop = new Vector2 (1f, 1f);
+	//private Vector2 rightTop = new Vector2 (1f, 1f);
 
 	protected virtual void Awake() {
 		viewRecTra = this.transform.parent.GetComponent<RectTransform> ();

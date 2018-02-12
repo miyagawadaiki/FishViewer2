@@ -7,6 +7,7 @@ namespace ProjectData {
 		Input,
 		Output,
 		Formula,
+		Image,
 	}
 
 	public class FileName {
@@ -50,14 +51,14 @@ namespace ProjectData {
 		public static UnityEngine.Color[] colors = {
 			new UnityEngine.Color(1f, 0f, 0f),						// red
 			new UnityEngine.Color(1f, 96f / 255f, 0f),				// orange
-			new UnityEngine.Color(1f, 1f, 0f),						// yellow
-			new UnityEngine.Color(0f, 1f, 0f),						// yello-green
 			new UnityEngine.Color(0f, 163f / 255, 40f / 255f),		// green
-			new UnityEngine.Color(0f, 224f / 255f, 1f),				// light-blue
 			new UnityEngine.Color(0f, 32f / 255f, 1f),				// blue
-			new UnityEngine.Color(28f / 255f, 0f, 88f / 255f),		// deap-blue
 			new UnityEngine.Color(149f / 255f, 0f, 183f / 255f),	// purple
 			new UnityEngine.Color(1f, 0f, 146f / 255f),				// pink
+			new UnityEngine.Color(1f, 0.9f, 0.08f),					// yellow
+			new UnityEngine.Color(0f, 1f, 0f),						// yello-green
+			new UnityEngine.Color(0f, 224f / 255f, 1f),				// light-blue
+			new UnityEngine.Color(28f / 255f, 0f, 88f / 255f),		// deap-blue
 		};
 
 		public static string[] names = {
@@ -85,18 +86,35 @@ namespace ProjectData {
 
 	public class DefaultData {
 		public static DataType[] dataTypes = {
-			new DataType ("PositionX", ""),
-			new DataType ("PositionY", ""),
-			new DataType ("VelocityX", "!PositionX,0 !PositionX,-1 -   %dt /"),
-			new DataType ("VelocityY", "!PositionY,0 !PositionY,-1 -   %dt /"),
-			new DataType ("AccelerationX", "!VelocityX,0 !VelocityX,-1 -   %dt /"),
-			new DataType ("AccelerationY", "!VelocityY,0 !VelocityY,-1 -   %dt /"),
-			new DataType ("Distance", "!PositionX,0 !PositionY,0 Mag"),
-			new DataType ("Speed", "!VelocityX,0 !VelocityY,0 Mag"),
-			new DataType ("Acceleration", "!AccelerationX,0 !AccelerationY,0 Mag"),
-			new DataType ("PositionAngle", "!PositionX,0 !Distance,0 /   PositionY,0 #0 >   #1 #-1 If   *   Acos"),
-			new DataType ("AugumentAngle", "!VelocityX,-1 !VelocityY,-1 !VelocityX,0 !VelocityY,0 Dot   !Speed,-1 !Speed,0 *   /   !VelocityX,-1 !VelocityY,-1 !VelocityX,0 !VelocityY,0 Cross   #0 >   #1 #-1 If   *   Acos"),
+			new DataType ("PositionX", ""), // 0
+			new DataType ("PositionY", ""), // 1
+			new DataType ("VelocityX", "!PositionX,0 !PositionX,-1 -   @dt /"), // 2
+			new DataType ("VelocityY", "!PositionY,0 !PositionY,-1 -   @dt /"), // 3
+			new DataType ("AccelerationX", "!VelocityX,0 !VelocityX,-1 -   @dt /"), // 4
+			new DataType ("AccelerationY", "!VelocityY,0 !VelocityY,-1 -   @dt /"), // 5
+			new DataType ("Distance", "!PositionX,0 !PositionY,0 Mag"), // 6
+			new DataType ("Speed", "!VelocityX,0 !VelocityY,0 Mag"), // 7
+			new DataType ("Accelaration", "!Speed,0 !Speed,-1 -  @dt /"), // 8
+			new DataType ("AbsAcceleration", "!AccelerationX,0 !AccelerationY,0 Mag"), // 9
+			new DataType ("PositionAngle", "#1 #0 !PositionX,0 !PositionY,0 CalcAngle"), // 10
+			new DataType ("AugumentAngle", "!VelocityX,-1 !VelocityY,-1 !VelocityX,0 !VelocityY,0 CalcAngle"), // 11
 		};
+
+		public static string[] defaultGraphNames = {
+			"PolarPos",
+			"Speed",
+			"V-A",
+			//"V-Angle",
+		};
+
+		public static string[] defaultGraphTexts = {
+			System.Enum.GetName (typeof(GraphContentType), GraphContentType.MultiEven) + "Graph/2 :a:0,6,10,0,:0,50,0,1,1,10,0,:",
+			System.Enum.GetName (typeof(GraphContentType), GraphContentType.Single) + "Graph/1 :0,0,7,0,:0,200,0,0,0,10,1,:",
+			System.Enum.GetName (typeof(GraphContentType), GraphContentType.Single) + "Graph/0 :0,7,8,0,:0,50,0,1,1,10,0,:",
+			//System.Enum.GetName (typeof(GraphContentType), GraphContentType.Single) + "Graph/0 :0,7,11,:0,50,0,1,1,10,0,:",
+		};
+
+		public static List<string> shortcutTexts = new List<string> ();
 
 		public static int Search (string s) {
 			for (int i = 0; i < dataTypes.Length; i++) {

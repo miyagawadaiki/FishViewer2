@@ -13,6 +13,9 @@ public class DataBase {
 	public static int step, fish, tag;
 	public static float dt;
 	private static char[] separator = { ',' };
+	public static List<string> shortcutList;
+
+	public static SimulationManager simuMan;
 
 	private DataBase() {
 		
@@ -62,6 +65,14 @@ public class DataBase {
 			if (max [i] < 0f)
 				max [i] = 0f;
 		}
+
+		shortcutList = new List<string> ();
+		string shortcut;
+		while ((shortcut = sr.ReadLine ()) != null) {
+			shortcutList.Add (shortcut);
+		}
+
+		simuMan.Init ();
 	}
 
 	private static void SetData(int step, int fish, int tag, float value) {

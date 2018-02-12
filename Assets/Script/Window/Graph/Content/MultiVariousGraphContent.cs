@@ -16,11 +16,17 @@ public class MultiVariousGraphContent : GraphContent {
 	public List<MultiVariousLabelNode> nodes;
 	public GraphManager selected;
 
-	void Awake() {
-		graphManList = new List<GraphManager> ();
+	public override void Awake() {
 		gcType = GraphContentType.MultiVarious;
+		base.Awake ();
+		//graphManList = new List<GraphManager> ();
+
 
 		allToggle.gameObject.SetActive (false);
+	}
+
+	public override bool IsReady () {
+		return graphManList != null;
 	}
 
 	public void Select(int index) {
@@ -51,6 +57,8 @@ public class MultiVariousGraphContent : GraphContent {
 		allToggle.isOn = false;
 
 		ShowView ();
+
+		base.Init ();
 	}
 
 	public override void Set(string parameters) {
@@ -68,13 +76,16 @@ public class MultiVariousGraphContent : GraphContent {
 		char[] graphSeparator = {'\t'}, typeSeparator = { ' ' };
 		string[] graphParameters = parameters.Split (graphSeparator, System.StringSplitOptions.RemoveEmptyEntries);
 
+		Simulation.Register (this);
+
+		graphManList = new List<GraphManager> ();
 		for (int i = 0; i < graphParameters.Length; i++) {
 			string[] tmp = graphParameters [i].Split (typeSeparator, System.StringSplitOptions.RemoveEmptyEntries);
 			string graphTypeName = System.Enum.GetNames(typeof(GraphType))[(int.Parse (tmp [0]))];
 			GameObject graphManObj = Resources.Load ("GraphManager/" + graphTypeName + "GraphManager") as GameObject;
 			GameObject obj = Instantiate (graphManObj, graphRecTra) as GameObject;
 			graphManList.Add (obj.GetComponent<GraphManager> ());
-			Simulation.Register (graphManList [graphManList.Count - 1]);
+			//Simulation.Register (graphManList [graphManList.Count - 1]);
 
 			Debug.Log ("MultiVarious " + i + " = " + tmp [1]);
 			graphManList [i].Set (tmp [1]);
@@ -83,37 +94,67 @@ public class MultiVariousGraphContent : GraphContent {
 		Init ();
 	}
 
+	public override void Plot (int step) {
+		base.Plot (step);
+
+		foreach (GraphManager gm in graphManList) {
+			gm.Plot (step);
+		}
+	}
+
 	public override void Translate(Vector2 start, Vector2 end) {
 		if (graphManList.Count == 0)
 			return;
 
-		if (allToggle.isOn)
+		if (allToggle.isOn) {
 			foreach (GraphManager gm in graphManList)
 				gm.Translate (start, end);
-		else
+
+			if (!Simulation.playing) {
+				foreach (GraphManager gm in graphManList)
+					gm.Plot (Simulation.step);
+			}
+		} else {
 			selected.Translate (start, end);
 
-		ShowView ();
+			if (!Simulation.playing) {
+				selected.Plot (Simulation.step);
+			}
+		}
+
+		base.Translate (start, end);
 	}
 
 	public override void Expand(float expand) {
 		if (graphManList.Count == 0)
 			return;
 		
-		if(allToggle.isOn)
+		if (allToggle.isOn) {
 			foreach (GraphManager gm in graphManList)
 				gm.Expand (expand);
-		else
+
+			if (!Simulation.playing) {
+				foreach (GraphManager gm in graphManList)
+					gm.Plot (Simulation.step);
+			}
+		} else {
 			selected.Expand (expand);
 
-		ShowView ();
+			if (!Simulation.playing) {
+				selected.Plot (Simulation.step);
+			}
+		}
+
+		base.Expand (expand);
 	}
 
 	public override void RemoveGraphManager() {
+		base.RemoveGraphManager ();
+
 		int num = graphManList.Count;
 		for (int i = 0; i < num; i++) {
 			GraphManager gm = graphManList [0];
-			Simulation.Remove (gm);
+			//Simulation.Remove (gm);
 			graphManList.RemoveAt (0);
 			Destroy (gm.gameObject);
 		}
@@ -180,6 +221,15 @@ public class MultiVariousGraphContent : GraphContent {
 
 	public override string GetTitle () {
 		return "Various Graphs";
+	}
+
+	public override string GetShortTypeText () {
+		return base.GetShortTypeText () + DataBase.GetShortTags () [graphManList [0].xType] + "-" + DataBase.GetShortTags () [graphManList [0].yType];
+	}
+
+	public override string GetShortTitle () {
+		string s = base.GetShortTitle ();
+		return s + graphManList [0].GetStepText () + "_" + GetShortTypeText () + "_mv";
 	}
 
 	public override string GetParameterText () {

@@ -58,6 +58,8 @@ public class TimeGraphManager : GraphManager {
 				points [i].localPosition = GraphToLocal (new Vector2 (step - markerIdx + i, DataBase.GetData (step - markerIdx + i, fish, yType)));
 				if (!recTra.rect.Contains (points [i].localPosition))
 					points [i].gameObject.SetActive (false);
+				if ((int)pointType > 0)
+					points [i].rotation = Quaternion.FromToRotation (Vector3.right, (Vector3)new Vector2(Mathf.Cos (DataBase.GetData (step - markerIdx + i, fish, dType)), Mathf.Sin (DataBase.GetData (step - markerIdx + i, fish, dType))));
 			}
 		}
 
@@ -83,8 +85,10 @@ public class TimeGraphManager : GraphManager {
 	public override void SetGrid() {
 		base.SetGrid ();
 
-		float xMax_ = LocalToRectGraph(new Vector2(view.rect.width / 2f, 0f)).x, xMin_ = LocalToGraph(new Vector2(view.rect.width / -2f, 0f)).x;
-		float yMax_ = LocalToRectGraph(new Vector2(0f, view.rect.height / 2f)).y, yMin_ = LocalToGraph(new Vector2(0f, view.rect.height / -2f)).y;
+		//float xMax_ = LocalToRectGraph (new Vector2 (view.rect.width / 2f, 0f)).x;
+		float xMin_ = LocalToGraph(new Vector2(view.rect.width / -2f, 0f)).x;
+		//float yMax_ = LocalToRectGraph (new Vector2 (0f, view.rect.height / 2f)).y;
+		float yMin_ = LocalToGraph (new Vector2 (0f, view.rect.height / -2f)).y;
 
 		xAxisValue = (int)((Simulation.step - xMin_) / xGridValue);
 		int xStart = (int)((xMin_ - Simulation.step) / xGridValue);

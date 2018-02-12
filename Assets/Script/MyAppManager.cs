@@ -12,8 +12,26 @@ public class MyAppManager : MonoBehaviour {
 	[SerializeField]
 	private SimuPanelController spc = null;
 	[SerializeField]
-	private List<Button> buttonList = null;
+	private SimulationController sc = null;
+	[SerializeField]
+	private WindowListPanelController wlpc = null;
+	[SerializeField]
+	private Text commandModeText = null;
 
+	//private bool killCoroutine = false;
+	private bool isCommandMode = false;
+	private KeyCode[] commands = {
+		KeyCode.Alpha1,
+		KeyCode.Alpha2,
+		KeyCode.Alpha3,
+		KeyCode.Alpha4,
+		KeyCode.Alpha5,
+		KeyCode.Alpha6,
+		KeyCode.Alpha7,
+		KeyCode.Alpha8,
+		KeyCode.Alpha9,
+		KeyCode.Alpha0,
+	};
 
 	void Awake() {
 		spc.gameObject.SetActive (false);
@@ -21,31 +39,83 @@ public class MyAppManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		foreach (Button b in buttonList)
-			b.gameObject.SetActive (false);
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		/*
 		if (!mbc.isActive && !mwm.isDraging && Input.mousePosition.y > Screen.height - 10f && Input.mousePosition.y <= Screen.height) {
 			mbc.SlideIn ();
 			return;
 		}
+		*/
 
-		if (Simulation.isEnabled && Input.GetKeyDown (KeyCode.Space)) {
-			spc.Slide ();
+		if (Input.GetKeyDown (KeyCode.W)) {
+			wlpc.Slide ();
 			return;
 		}
 
-		if (mbc.isActive) {
+		if (Simulation.isEnabled) {
+			if (Input.GetKeyDown (KeyCode.G)) {
+				spc.Slide ();
+				return;
+			}
+			if (Input.GetKeyDown (KeyCode.Space)) {
+				sc.SwitchPlay ();
+				return;
+			}
+		}
+
+		if (Input.GetKeyDown (KeyCode.C)) {
+			if (isCommandMode) {
+				isCommandMode = false;
+				commandModeText.text = "";
+			} else {
+				isCommandMode = true;
+				commandModeText.text = "Command";
+			}
+		}
+
+		if (isCommandMode) {
+			if (Simulation.isEnabled) {
+				if (Input.GetKeyDown (KeyCode.F)) {
+					sc.StartSimuCoroutine (true);
+				} else if (Input.GetKeyUp (KeyCode.F)) {
+					sc.StopSimuCoroutine ();
+				} else if (Input.GetKeyDown (KeyCode.D)) {
+					sc.StartSimuCoroutine (false);
+				} else if (Input.GetKeyUp (KeyCode.D)) {
+					sc.StopSimuCoroutine ();
+				} else if (Input.GetKeyDown (KeyCode.S)) {
+					sc.Reset ();
+				} else if (Input.GetKeyDown (KeyCode.A)) {
+					sc.SwitchRepeat ();
+				} else {
+
+					for (int i = 0; i < ProjectData.DefaultData.shortcutTexts.Count; i++) {
+						if (Input.GetKeyDown (commands [i])) {
+							mwm.AddWindow (ProjectData.DefaultData.shortcutTexts [i]);
+							return;
+						}
+					}
+				}
+			}
+		}
+
+		//if (mbc.isActive) {
 			
-			if (!mbc.IsMouseInArea ())
-					mbc.SlideOut ();
-				//if (Input.GetMouseButtonDown (0))
-				//	mbc.OnMouseLeftDown ();
+		if (!mbc.IsMouseInArea ()) {
+			mbc.HidePanel ();
+			//mbc.SlideOut ();
+			//if (Input.GetMouseButtonDown (0))
+			//	mbc.OnMouseLeftDown ();
 				
-		} else if (!spc.gameObject.activeSelf || !spc.IsMouseInArea ()) {
+		} else {
+			return;
+		}
+
+		if (!wlpc.IsMouseInArea () && (!spc.gameObject.activeSelf || !spc.IsMouseInArea ())) {
 			if (Input.GetKeyDown (KeyCode.LeftControl)) {
 				mwm.multiSelect = true;
 			} else if (Input.GetKeyUp (KeyCode.LeftControl)) {
@@ -58,11 +128,15 @@ public class MyAppManager : MonoBehaviour {
 				mwm.squareExpand = false;
 			}
 
+			if (Input.GetKeyDown (KeyCode.K)) {
+				mwm.MakeClone ();
+			}
+
 			if (Input.GetMouseButtonDown (0)) {
-				Debug.Log ("LeftDown");
+				//Debug.Log ("LeftDown");
 				mwm.OnMouseLeftDown ();
 			} else if (Input.GetMouseButton (0)) {
-				Debug.Log ("LeftDrag");
+				//Debug.Log ("LeftDrag");
 				mwm.OnMouseLeftDrag ();
 			} else if(Input.GetMouseButtonUp(0)) {
 				mwm.OnMouseLeftUp ();
@@ -84,7 +158,7 @@ public class MyAppManager : MonoBehaviour {
 
 	public void ActivateSimuPanel() {
 		spc.gameObject.SetActive (true);
-		foreach (Button b in buttonList)
-			b.gameObject.SetActive (true);
+
+		mbc.Interactivate ();
 	}
 }
