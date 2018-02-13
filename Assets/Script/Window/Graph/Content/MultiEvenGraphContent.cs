@@ -19,7 +19,7 @@ public class MultiEvenGraphContent : GraphContent {
 	}
 
 	public override bool IsReady () {
-		return graphManList != null;
+		return graphManList != null && graphManList.Count > 0;
 	}
 
 	public override void Init() {

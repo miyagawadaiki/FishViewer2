@@ -96,7 +96,7 @@ namespace ProjectData {
 			new DataType ("Speed", "!VelocityX,0 !VelocityY,0 Mag"), // 7
 			new DataType ("Accelaration", "!Speed,0 !Speed,-1 -  @dt /"), // 8
 			new DataType ("AbsAcceleration", "!AccelerationX,0 !AccelerationY,0 Mag"), // 9
-			new DataType ("PositionAngle", "#1 #0 !PositionX,0 !PositionY,0 CalcAngle"), // 10
+			new DataType ("PositionAngle", "1 0 !PositionX,0 !PositionY,0 CalcAngle"), // 10
 			new DataType ("AugumentAngle", "!VelocityX,-1 !VelocityY,-1 !VelocityX,0 !VelocityY,0 CalcAngle"), // 11
 		};
 

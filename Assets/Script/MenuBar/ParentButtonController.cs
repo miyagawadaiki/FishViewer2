@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ParentButtonController : MonoBehaviour {
 
+	//public RectTransform child = null;
 	public RectTransform templete = null;
 
 	private Button button;

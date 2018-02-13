@@ -26,18 +26,11 @@ public class MenuBarController : MonoBehaviour {
 	private RectTransform panelRecTra = null;
 	private Image image = null;
 
-	//private Vector2 inPosition;
-	//private Vector2 outPosition;
-	//private AnimationCurve animCurve = AnimationCurve.Linear (0, 0, 1, 1);
 	private RectTransform recTra;
-	//private float canvasScale;
 
 	// Use this for initialization
 	void Start () {
 		recTra = this.GetComponent<RectTransform> ();
-		//canvasScale = GameObject.Find ("Canvas").transform.localScale.x;
-		//outPosition = new Vector2 (0f, Screen.height / 2 + recTra.rect.height / 2); //this.transform.localPosition;
-		//inPosition = outPosition - new Vector2 (0f, recTra.rect.height);
 
 		image = this.GetComponent<Image> ();
 		image.color = normalColor;
@@ -70,7 +63,6 @@ public class MenuBarController : MonoBehaviour {
 			cb.pressedColor = pressedColor;
 			cb.disabledColor = disabledColor;
 			button.colors = cb;
-			//button.gameObject.GetComponentInChildren<Text> ().color = normalTextColor;
 
 			if (button.gameObject.GetComponent<ParentButtonController> () != null) {
 				button.gameObject.GetComponent<ParentButtonController> ().templete.gameObject.SetActive (false);
@@ -81,41 +73,6 @@ public class MenuBarController : MonoBehaviour {
 
 		fileNameText.color = normalTextColor;
 	}
-
-	/*
-	public void SlideIn() {
-		StartCoroutine (StartSlidePanel (true));
-		isActive = true;
-	}
-
-	public void SlideOut() {
-		if (panelRecTra != null) {
-			panelRecTra.gameObject.SetActive (false);
-			panelRecTra = null;
-		}
-		StartCoroutine (StartSlidePanel(false));
-		isActive = false;
-	}
-
-	private IEnumerator StartSlidePanel(bool isSlideIn) {
-		float startTime = Time.time;
-		Vector2 startPos = (Vector2)this.transform.localPosition;
-		Vector2 moveDistance;
-
-		if (isSlideIn)
-			moveDistance = (inPosition - startPos);
-		else
-			moveDistance = (outPosition - startPos);
-
-		while ((Time.time - startTime) < duration) {
-			transform.localPosition = (Vector3)(startPos + moveDistance * animCurve.Evaluate((Time.time - startTime) / duration));
-			yield return 0;
-		}
-		transform.localPosition = (Vector3)(startPos + moveDistance);
-		//if (!isActive)
-		//	isActive = true;
-	}
-	*/
 
 	public bool IsMouseInArea() {
 		Vector2 vec = (Vector2)Input.mousePosition - (Vector2)recTra.localPosition - new Vector2(Screen.width, Screen.height) / 2f;
@@ -164,10 +121,4 @@ public class MenuBarController : MonoBehaviour {
 			}
 		}
 	}
-
-	/*
-	public void OnMouseLeftDown() {
-		SlideOut ();
-	}
-	*/
 }

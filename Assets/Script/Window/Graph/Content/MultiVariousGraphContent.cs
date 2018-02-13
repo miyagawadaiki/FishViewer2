@@ -26,7 +26,7 @@ public class MultiVariousGraphContent : GraphContent {
 	}
 
 	public override bool IsReady () {
-		return graphManList != null;
+		return graphManList != null && graphManList.Count > 0;
 	}
 
 	public void Select(int index) {

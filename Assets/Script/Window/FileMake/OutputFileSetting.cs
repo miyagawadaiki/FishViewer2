@@ -136,8 +136,8 @@ public class OutputFileSetting : MonoBehaviour {
 
 			// Shortcutとあればショートカット用記述と判断
 			if (name.IndexOf ("Shortcut") >= 0) {
-				char[] sepa = { '_' };
-				string[] hoge = name.Split (sepa, System.StringSplitOptions.RemoveEmptyEntries);
+				char[] scSeparator = { '"' };
+				string[] hoge = name.Split (scSeparator, System.StringSplitOptions.RemoveEmptyEntries);
 				shortcuts.Add (hoge[hoge.Length-1]);
 				continue;
 			}
@@ -146,7 +146,7 @@ public class OutputFileSetting : MonoBehaviour {
 			char[] sep = { '\t', ' ' };
 			name = name.Split (sep, System.StringSplitOptions.RemoveEmptyEntries) [0];
 
-			// 式の記述を見つけるまで空白行とコメントを飛ばす
+			// 式の記述を見つけるまで空白行とコメントを飛ばす ("//"が存在する行は全てコメントとみなされることに注意)
 			string formula;
 			do {
 				formula = sr.ReadLine ();
