@@ -29,6 +29,10 @@ public class MultiVariousGraphContent : GraphContent {
 		return graphManList != null && graphManList.Count > 0;
 	}
 
+	public override bool Equals (string parameter) {
+		return base.Equals (parameter);
+	}
+
 	public void Select(int index) {
 		if (graphManList.Count == 0 || index < 0 || index > graphManList.Count - 1)
 			return;
@@ -42,6 +46,10 @@ public class MultiVariousGraphContent : GraphContent {
 	}
 
 	public override void Init () {
+		nodes.Clear ();
+		foreach (Transform t in plotViewTra)
+			Destroy (t.gameObject);
+
 		foreach (GraphManager gm in graphManList) {
 			gm.Init ();
 			GameObject obj = Instantiate (nodeObj, plotViewTra) as GameObject;
@@ -63,10 +71,6 @@ public class MultiVariousGraphContent : GraphContent {
 
 	public override void Set(string parameters) {
 		RemoveGraphManager ();
-
-		nodes.Clear ();
-		foreach (Transform t in plotViewTra)
-			Destroy (t.gameObject);
 
 		if (parameters.Equals ("")) {
 			allToggle.gameObject.SetActive (false);

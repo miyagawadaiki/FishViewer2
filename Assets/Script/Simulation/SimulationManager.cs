@@ -55,8 +55,10 @@ public class SimulationManager : MonoBehaviour {
 
 		mbc.UpdateButtonImage ();
 
-
-		StartCoroutine (AddWindowCoroutine ());
+		char[] paramSep = { '/' };
+		string[] foo = ProjectData.DefaultData.defaultGraphTexts [0].Split (paramSep, System.StringSplitOptions.RemoveEmptyEntries);
+		if (!Simulation.isEnabled || !Simulation.HasGraphContent ((GraphContentType)System.Enum.Parse (typeof (GraphContentType), foo [0].Substring (0, foo [0].Length - 5)), foo [1]))
+			StartCoroutine (AddWindowCoroutine ());
 
 		fileNameText.text = ProjectData.FileName.GetName (ProjectData.FileKey.Read);
 	}

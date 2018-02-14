@@ -44,6 +44,11 @@ public class FileViewController : MonoBehaviour {
 		// セパレータを設定
 		char[] separator = { '/', '\\' };
 
+		// もしフォルダ構造が変更されていたら
+		if (!Directory.Exists (fifMan.GetPath ())) {
+			fifMan.SetPath ("C:/Users");
+		}
+
 		// フォルダを読み込んでcontentに追加
 		string[] folders = Directory.GetDirectories (fifMan.GetPath ());
 		foreach (string name in folders) {

@@ -313,7 +313,7 @@ public class GraphManager : MonoBehaviour {
 	}
 
 	public string GetLabelText () {
-		return fish + ", " + DataBase.GetShortTags () [xType] + "-" + DataBase.GetShortTags () [yType];
+		return (fish + 1) + ", " + DataBase.GetShortTags () [xType] + "-" + DataBase.GetShortTags () [yType];
 	}
 
 	public string GetParameterText() {

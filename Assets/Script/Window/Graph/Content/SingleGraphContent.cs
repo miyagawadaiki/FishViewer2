@@ -17,6 +17,14 @@ public class SingleGraphContent : GraphContent {
 		return graphMan != null;
 	}
 
+	public override bool Equals (string parameter) {
+		char[] groupSeparator = { ':' };//, typeSeparator = { ' ' }, allSeparator = { ':', ' ', ',' };
+		string[] tmp = parameter.Split (groupSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+		string[] thistmp = this.GetParameterText ().Split (groupSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+
+		return thistmp [0].Equals (tmp [0]) && thistmp [1].Equals (tmp [1]) && thistmp [2].Equals (tmp [2]);
+	}
+
 	public override void Init() {
 		graphMan.Init ();
 		graphTitleText.text = GetTitle ();

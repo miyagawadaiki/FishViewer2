@@ -22,8 +22,19 @@ public class MultiEvenGraphContent : GraphContent {
 		return graphManList != null && graphManList.Count > 0;
 	}
 
-	public override void Init() {
+	public override bool Equals (string parameter) {
+		char[] groupSeparator = { ':' };//, typeSeparator = { ' ' }, allSeparator = { ':', ' ', ',' };
+		string[] tmp = parameter.Split (groupSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+		string[] thistmp = this.GetParameterText ().Split (groupSeparator, System.StringSplitOptions.RemoveEmptyEntries);
 
+		return thistmp [0].Equals (tmp [0]) && thistmp [2].Equals (tmp [2]);
+	}
+
+	public override void Init() {
+		
+		foreach (Transform t in plotViewTra)
+			Destroy (t.gameObject);
+		
 		foreach (GraphManager gm in graphManList) {
 			gm.Init ();
 			GameObject obj = Instantiate (nodeObj, plotViewTra) as GameObject;
@@ -56,8 +67,6 @@ public class MultiEvenGraphContent : GraphContent {
 	public override void Set(string parameters) {
 		//Debug.Log (parameters);
 		RemoveGraphManager ();
-		foreach (Transform t in plotViewTra)
-			Destroy (t.gameObject);
 
 		char[] groupSeparator = { ':' }, typeSeparator = { ' ' }, allSeparator = { ':', ' ', ',' };
 		string[] groupTexts = parameters.Split (groupSeparator, System.StringSplitOptions.RemoveEmptyEntries);

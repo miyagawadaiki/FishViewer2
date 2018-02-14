@@ -7,7 +7,8 @@ public class Simulation {
 	public static bool isEnabled = false, playing = false;
 	public static int step = 0;
 
-	private static List<GraphContent> graphConList;
+	[System.NonSerialized]
+	public static List<GraphContent> graphConList;
 	//private static List<GraphManager> graphList;
 	private static int memo = 0;
 
@@ -50,6 +51,18 @@ public class Simulation {
 			graphList.Add (gm);
 	}
 	*/
+
+	public static bool HasGraphContent (GraphContentType type, string parameter) {
+		if (graphConList == null)
+			return false;
+
+		foreach (GraphContent gc in graphConList) {
+			if (gc.Equals (parameter))
+				return true;
+		}
+
+		return false;
+	}
 
 	public static void Register (GraphContent gc) {
 		if (graphConList.Contains (gc))

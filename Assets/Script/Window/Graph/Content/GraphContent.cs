@@ -55,6 +55,10 @@ public class GraphContent : MyWindowContent {
 		return false;
 	}
 
+	public virtual bool Equals (string parameter) {
+		return false;
+	}
+
 	public virtual void Init() {
 		string s = System.Enum.GetName (typeof(GraphContentType), gcType);
 		if (s [0] == 'M')
