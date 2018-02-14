@@ -52,6 +52,10 @@ public class DataBase {
 			if (tags [i].IndexOf ("Angle") > 0) {
 				max [i] = UnityEngine.Mathf.PI;
 				min [i] = -UnityEngine.Mathf.PI;
+				if (tags [i].IndexOf ("Abs") > 0) {
+					max [i] = UnityEngine.Mathf.PI * 2f;
+					min [i] = 0f;
+				}
 			}
 		}
 

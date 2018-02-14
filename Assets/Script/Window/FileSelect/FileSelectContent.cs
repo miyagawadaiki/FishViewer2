@@ -36,6 +36,7 @@ public class FileSelectContent : MyWindowContent {
 		fifm = this.GetComponent<FileInputFieldManager> ();
 		fifm.key = key;
 
+		doneButton.onClick.AddListener (() => Set ());
 		doneButton.onClick.AddListener (() => mwc.Destroy ());
 	}
 	

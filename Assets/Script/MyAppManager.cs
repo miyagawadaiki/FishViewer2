@@ -21,6 +21,7 @@ public class MyAppManager : MonoBehaviour {
 	//private bool killCoroutine = false;
 	private bool isCommandMode = false;
 	private KeyCode[] commands = {
+		KeyCode.Alpha0,
 		KeyCode.Alpha1,
 		KeyCode.Alpha2,
 		KeyCode.Alpha3,
@@ -30,7 +31,16 @@ public class MyAppManager : MonoBehaviour {
 		KeyCode.Alpha7,
 		KeyCode.Alpha8,
 		KeyCode.Alpha9,
-		KeyCode.Alpha0,
+		KeyCode.Keypad0,
+		KeyCode.Keypad1,
+		KeyCode.Keypad2,
+		KeyCode.Keypad3,
+		KeyCode.Keypad4,
+		KeyCode.Keypad5,
+		KeyCode.Keypad6,
+		KeyCode.Keypad7,
+		KeyCode.Keypad8,
+		KeyCode.Keypad9,
 	};
 
 	void Awake() {

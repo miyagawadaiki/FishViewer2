@@ -77,16 +77,30 @@ public class OutputFileSetting : MonoBehaviour {
 	}
 
 	public void UpdateOutputContent () {
+		StartCoroutine (UpdateOutputContentCoroutine ());
+	}
+
+	public IEnumerator UpdateOutputContentCoroutine () {
+		yield return null;
+
 		// ファイル名を表示
 		outputFileNameText.text = ProjectData.FileName.GetName (ProjectData.FileKey.Output);
+
+		yield break;
 	}
 
 	public void UpdateFormulaContent () {
+		StartCoroutine (UpdateFormulaContentCoroutine ());
+	}
+
+	public IEnumerator UpdateFormulaContentCoroutine () {
+
+		yield return null;
 
 		formulaFileNameText.text = ProjectData.FileName.GetName (ProjectData.FileKey.Formula);
 
 		if (!File.Exists (ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Formula)))
-			return;
+			yield break;;
 
 		sr = new StreamReader (ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Formula), System.Text.Encoding.GetEncoding("UTF-8"));
 
@@ -173,6 +187,8 @@ public class OutputFileSetting : MonoBehaviour {
 		}
 
 		sr.Close ();
+
+		yield break;
 	}
 
 	public void OpenParameterWindow (Text text, DataType dt) {

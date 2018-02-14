@@ -32,25 +32,29 @@ public class SimulationManager : MonoBehaviour {
 	}
 
 	public void Init () {
-//		Debug.Log ("SimulationManager.Init ()");
+		// Shortcutメニュー直下を初期化
 		foreach (Transform t in content)
 			Destroy (t.gameObject);
 
+		// ProjectData.DefaultDataからデフォルトのショートカットを読み込み
+		ProjectData.DefaultData.shortcutTexts.Add (ProjectData.DefaultData.defaultGraphTexts [0]);	// PolarPosはメニューに追加しない
 		for (int i = 1; i < ProjectData.DefaultData.defaultGraphTexts.Length; i++) {
 			GameObject obj = Instantiate (shortcutNode, content) as GameObject;
 			string hoge = ProjectData.DefaultData.defaultGraphTexts [i];
 			obj.GetComponent<Button> ().onClick.AddListener (() => mwm.AddWindow (hoge));
 			ProjectData.DefaultData.shortcutTexts.Add (hoge);
-			obj.GetComponentInChildren<Text> ().text = ProjectData.DefaultData.defaultGraphNames [i];
+			obj.GetComponentInChildren<Text> ().text = i + ". " + ProjectData.DefaultData.defaultGraphNames [i];
 		}
 
+		int j = ProjectData.DefaultData.defaultGraphNames.Length;
 		char[] sep = { '@' };
 		foreach (string s in DataBase.shortcutList) {
 			GameObject obj = Instantiate (shortcutNode, content) as GameObject;
 			string[] tmp = s.Split (sep, System.StringSplitOptions.RemoveEmptyEntries);
 			obj.gameObject.GetComponent<Button> ().onClick.AddListener (() => mwm.AddWindow (tmp[1]));
 			ProjectData.DefaultData.shortcutTexts.Add (tmp[1]);
-			obj.gameObject.GetComponentInChildren<Text> ().text = tmp[0];
+			obj.gameObject.GetComponentInChildren<Text> ().text = j + ". " + tmp[0];
+			j++;
 		}
 
 		mbc.UpdateButtonImage ();
@@ -67,7 +71,7 @@ public class SimulationManager : MonoBehaviour {
 		yield return null;
 
 		mwm.AddWindow (ProjectData.DefaultData.defaultGraphTexts [0]);
-		mwm.GetLastWindowController ().gameObject.GetComponentInChildren<MyWindowContent> ().defaultSize = new Vector2 (1f, 1f) * (Screen.height - 100);
+		mwm.GetLastWindowController ().gameObject.GetComponentInChildren<MyWindowContent> ().defaultSize = new Vector2 (1f, 1f) * (Screen.height * 0.6f);
 		mwm.GetLastWindowController ().gameObject.GetComponentInChildren<GraphContent> ().SetGridMode (ViewMode.ShowGridCompletely);
 
 		yield break;

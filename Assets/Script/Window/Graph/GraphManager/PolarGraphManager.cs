@@ -152,7 +152,7 @@ public class PolarGraphManager : GraphManager {
 				angle = 0f;
 			else {
 				angle = Mathf.Acos (localZero.x * -1f / localZero.magnitude) * (localZero.y * -1f > 0f ? 1f : -1f);
-				Debug.Log ("angle = " + angle);
+				//Debug.Log ("angle = " + angle);
 			}
 
 			if (first) {

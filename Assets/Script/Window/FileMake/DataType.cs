@@ -63,9 +63,12 @@ public class DataType {
 			case '!':	// データベース内変数の接頭辞 (e.q. !PositionX,0)
 				values.Push (GetData (step, fish, text));
 				break;
-			//case '#':	// 数値の接頭辞 (e.q. #0)
-			//	values.Push (float.Parse (text));
-			//	break;
+			case '#':	// そのときのstepとfishの接頭辞 (e.q. #step, #fish)
+				if (text.Equals ("step"))
+					values.Push (step);
+				else
+					values.Push (fish);
+				break;
 			case '$':	// パラメータの接頭辞 (e.q. $0, $1)
 				values.Push (parameters [int.Parse (text)]);
 				break;
@@ -73,7 +76,7 @@ public class DataType {
 				values.Push (DB.constNums [text]);
 				break;
 			case '?':	// 同じ式内においてこの要素より前で計算された結果を取得する接頭辞 (e.q. ?-1)
-				float f = values.ToArray () [values.Count + int.Parse (text)];
+				float f = values.ToArray () [-1 * int.Parse (text) - 1];
 				values.Push (f);
 				break;
 			default :	// 上記以外は演算子あるいは関数
@@ -176,6 +179,15 @@ public class DataType {
 		case "Sqrt":
 			Sqrt ();
 			break;
+		case "Sin":
+			Sin ();
+			break;
+		case "Asin":
+			Asin ();
+			break;
+		case "Cos":
+			Cos ();
+			break;
 		case "Acos":
 			Acos ();
 			break;
@@ -194,6 +206,9 @@ public class DataType {
 		case "Cross":
 			CrossProduct ();
 			break;
+		case "CalcAngle":
+			CalcAngle ();
+			break;
 		case "Sum":
 			Sum (step, fish);
 			break;
@@ -203,8 +218,17 @@ public class DataType {
 		case "SD":
 			StandardDeviation (step, fish);
 			break;
-		case "CalcAngle":
-			CalcAngle ();
+		case "OtherSum":
+			OtherSum (step, fish);
+			break;
+		case "OtherAve":
+			OtherAve (step, fish);
+			break;
+		case "OtherMax":
+			OtherMax (step, fish);
+			break;
+		case "OtherMin":
+			OtherMin (step, fish);
 			break;
 		default :
 			break;
@@ -213,7 +237,7 @@ public class DataType {
 
 	// 引数の個数：役割
 
-	// 2 : 和算
+	// 2 : 加算
 	public void Plus () {
 		float b = values.Pop ();
 		float a = values.Pop ();
@@ -301,6 +325,28 @@ public class DataType {
 		values.Push (Mathf.Sqrt (a));
 	}
 
+	// 1 : 正弦
+	public void Sin () {
+		float a = values.Pop ();
+		values.Push (Mathf.Sin (a));
+	}
+
+	// 1 : 逆正弦
+	public void Asin () {
+		float a = values.Pop ();
+		if (a > 1f)
+			a = 1f;
+		else if (a < -1f)
+			a = -1f;
+		values.Push (Mathf.Asin (a));
+	}
+
+	// 1 : 余弦
+	public void Cos () {
+		float a = values.Pop ();
+		values.Push (Mathf.Cos (a));
+	}
+
 	// 1 : 逆余弦
 	public void Acos () {
 		float a = values.Pop ();
@@ -352,6 +398,32 @@ public class DataType {
 		float b = values.Pop ();
 		float a = values.Pop ();
 		values.Push (a * d - b * c);
+	}
+
+	// 4 : ベクトル (aX, bY) からベクトル (cX, dY) までの角度 (正負)
+	public void CalcAngle () {
+		float bY = values.Pop ();
+		float bX = values.Pop ();
+		float aY = values.Pop ();
+		float aX = values.Pop ();
+
+		float ip = aX * bX + aY * bY;
+		float p = (aX * aX + aY * aY) * (bX * bX + bY * bY);
+		if (p <= 0f) {
+			values.Push (0f);
+			return;
+		}
+		p = Mathf.Sqrt (p);
+
+		float cos = ip / p;
+		if (cos * cos > 1f)
+			cos = (float)((int)cos);
+
+		float cp = aX * bY - aY * bX;
+		if (cp > 0f)
+			values.Push (Mathf.Acos (cos));
+		else
+			values.Push (Mathf.Acos (cos) * -1f);
 	}
 
 	// 2 : 過去からの合計 (a = タグのindex, b = サンプル数)
@@ -469,29 +541,61 @@ public class DataType {
 		values.Push (Mathf.Sqrt (sum / num));
 	}
 
-	// 4 : ベクトル (aX, bY) からベクトル (cX, dY) までの角度 (正負)
-	public void CalcAngle () {
-		float bY = values.Pop ();
-		float bX = values.Pop ();
-		float aY = values.Pop ();
-		float aX = values.Pop ();
+	// 1 : 他魚の持つ値を加算
+	public void OtherSum (int step, int fish) {
+		int a = (int)values.Pop ();
 
-		float ip = aX * bX + aY * bY;
-		float p = (aX * aX + aY * aY) * (bX * bX + bY * bY);
-		if (p <= 0f) {
-			values.Push (0f);
-			return;
+		float sum = 0f;
+		for (int i = 0; i < DB.fish; i++) {
+			if (i != fish)
+				sum += DB.data [step, i, a];
 		}
-		p = Mathf.Sqrt (p);
 
-		float cos = ip / p;
-		if (cos * cos > 1f)
-			cos = (float)((int)cos);
+		values.Push (sum);
+	}
 
-		float cp = aX * bY - aY * bX;
-		if (cp > 0f)
-			values.Push (Mathf.Acos (cos));
-		else
-			values.Push (Mathf.Acos (cos) * -1f);
+	// 1 : 他魚の持つ値の平均を出す
+	public void OtherAve (int step, int fish) {
+		int a = (int)values.Pop ();
+
+		float sum = 0f;
+		for (int i = 0; i < DB.fish; i++) {
+			if (i != fish)
+				sum += DB.data [step, i, a];
+		}
+
+		values.Push (sum / (DB.fish - 1));
+	}
+
+	// 1 : 他魚の持つ値の最大
+	public void OtherMax (int step, int fish) {
+		int a = (int)values.Pop ();
+
+		float max = -100000f;
+		for (int i = 0; i < DB.fish; i++) {
+			if (i != fish) {
+				float f = DB.data [step, i, a];
+				if (f > max)
+					max = f;
+			}
+		}
+
+		values.Push (max);
+	}
+
+	// 1 : 他魚の持つ値の最小
+	public void OtherMin (int step, int fish) {
+		int a = (int)values.Pop ();
+
+		float min = 100000f;
+		for (int i = 0; i < DB.fish; i++) {
+			if (i != fish) {
+				float f = DB.data [step, i, a];
+				if (f < min)
+					min = f;
+			}
+		}
+
+		values.Push (min);
 	}
 }

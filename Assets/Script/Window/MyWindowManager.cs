@@ -69,14 +69,30 @@ public class MyWindowManager : MonoBehaviour {
 	}
 
 
+	// WindowのTypeとサイズ, 位置を指定して追加
+	public void AddWindow (ContentType content, string type, string option) {
+		AddWindow (content, type);
+
+		char[] sep = { ',' };
+		string[] tmp = option.Split (sep, System.StringSplitOptions.RemoveEmptyEntries);
+		MyWindowController mwc = GetLastWindowController ();
+		if (float.Parse (tmp[0]) >= 0)
+			mwc.content.defaultSize = new Vector2 (float.Parse (tmp [0]), float.Parse (tmp [1]));
+		if (tmp.Length > 2)
+			mwc.content.defaultPosition = new Vector2 (float.Parse (tmp [2]), float.Parse (tmp [3]));
+	}
+
+
 
 	public void AddWindow(string name) {
 		char[] sep = { '/' };
 		string[] tmp = name.Split (sep);
 		if (tmp.Length == 1)
 			AddWindow ((ContentType)System.Enum.Parse (typeof(ContentType), name), "");
-		else
+		else if (tmp.Length == 2)
 			AddWindow ((ContentType)System.Enum.Parse (typeof(ContentType), tmp[0]), tmp[1]);
+		else
+			AddWindow ((ContentType)System.Enum.Parse (typeof(ContentType), tmp[0]), tmp[1], tmp[2]);
 	}
 
 

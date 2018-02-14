@@ -54,7 +54,14 @@ public class FileReadContent : MyWindowContent {
 		}
 	}
 
-	public void UpdateContent() {
+	public void UpdateContent () {
+		StartCoroutine (UpdateContentCoroutine ());
+	}
+
+	public IEnumerator UpdateContentCoroutine () {
+
+		yield return null;
+
 		nameText.text = ProjectData.FileName.GetName (ProjectData.FileKey.Read);
 
 		sr = new StreamReader (ProjectData.FileName.GetNameWithPath (ProjectData.FileKey.Read), System.Text.Encoding.GetEncoding("UTF-8"));
@@ -73,6 +80,8 @@ public class FileReadContent : MyWindowContent {
 		}
 
 		sr.Close ();
+
+		yield break;
 	}
 
 	public void CallAddListener() {

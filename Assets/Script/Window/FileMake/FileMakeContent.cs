@@ -142,7 +142,19 @@ public class FileMakeContent : MyWindowContent {
 		}
 
 		foreach (string sc in ofs.shortcuts) {
-			streamWriter.WriteLine (sc);
+			char[] sep = { '@' };
+			string[] tmp = sc.Split (sep, StringSplitOptions.RemoveEmptyEntries);
+			string bar = tmp [1];
+			for (int i = tagNames.Count - 1; i >= 0; i--) {
+				//Debug.Log ("tagName = " + tagName);
+				bar = bar.Replace (tagNames [i], DB.tags [tagNames [i]] + "");
+			}
+			char[] exSep = { '!' };
+			string[] hoge = bar.Split (exSep, StringSplitOptions.RemoveEmptyEntries);
+			string text = "";
+			foreach (string ele in hoge)
+				text += ele;
+			streamWriter.WriteLine (tmp [0] + "@" + text);
 		}
 
 		streamWriter.Close ();
@@ -205,6 +217,8 @@ public class DB {
 		fish = fi;
 		start = 0;
 
+		constNums.Add ("allStep", step);
+		constNums.Add ("allFish", fish);
 		constNums.Add ("dt", dt);
 		constNums.Add ("pi", 3.141592f);
 	}
