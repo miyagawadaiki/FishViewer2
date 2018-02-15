@@ -13,10 +13,11 @@ public class DataType {
 	private string[] elements;
 	private List<float> parameters;
 	private Stack<float> values;
+	private List<float> memos;
 	// 要素の区切り文字
 	private char[] elementSeparator = { '\t', ' ' };
 	// 接頭辞
-	private char[] prefixSeparator = { '!', '#', '$', '@', '?' };
+	private char[] prefixSeparator = { '!', '#', '$', '@', '?', '^' };
 
 	public DataType () {
 		parameters = new List<float> ();
@@ -47,6 +48,7 @@ public class DataType {
 	// 式を評価して値を返す
 	public float Eval (int step, int fish) {
 		values.Clear ();
+		memos = new List<float> ();
 
 		for (int i = 0; i < elements.Length; i++) {
 			// 接頭辞を取得
@@ -54,7 +56,7 @@ public class DataType {
 			// 接頭辞を除去した文字列を用意
 			string text = elements [i].Split (prefixSeparator, StringSplitOptions.RemoveEmptyEntries)[0];
 
-			if (prefix >= '0' && prefix <= '9') {
+			if ((prefix >= '0' && prefix <= '9') || (prefix == '-' && elements[i].Length > 1)) {
 				values.Push (float.Parse (elements [i]));
 				continue;
 			}
@@ -74,6 +76,9 @@ public class DataType {
 				break;
 			case '@':	// 定数の接頭辞 (e.q. @pi=3.141592, @dt)
 				values.Push (DB.constNums [text]);
+				break;
+			case '^':
+				values.Push (memos [int.Parse (text)]);
 				break;
 			case '?':	// 同じ式内においてこの要素より前で計算された結果を取得する接頭辞 (e.q. ?-1)
 				float f = values.ToArray () [-1 * int.Parse (text) - 1];
@@ -229,6 +234,9 @@ public class DataType {
 			break;
 		case "OtherMin":
 			OtherMin (step, fish);
+			break;
+		case "Memo":
+			Memo ();
 			break;
 		default :
 			break;
@@ -597,5 +605,15 @@ public class DataType {
 		}
 
 		values.Push (min);
+	}
+
+
+
+
+	// 1 : メモする
+	public void Memo () {
+		float a = values.Peek ();
+
+		memos.Add (a);
 	}
 }
